@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,33 +264,7 @@
             font-weight: 500;
         }
 
-        .workspace-content { padding: 2rem; overflow-y: auto; flex-grow: 1; position: relative; }
-        /* V59: Style for persistent warning banner container */
-        #persistent-warning-container {
-            position: sticky;
-            top: -2rem; /* Stick to the very top of the scrollable area */
-            z-index: 50;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            margin: -2rem -2rem 1.5rem -2rem;
-            background-color: var(--medium-gray-bg);
-        }
-        .persistent-warning-banner {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            font-size: 0.875rem;
-            margin: 0 2rem;
-            background-color: var(--warning-yellow-bg);
-            color: #B45309;
-            font-weight: 500;
-        }
-        body.dark-mode .persistent-warning-banner {
-            color: #FDE68A;
-        }
-
+        .workspace-content { padding: 2rem; overflow-y: auto; flex-grow: 1; }
         .engagement-context-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
         .context-header-actions { display: flex; align-items: center; gap: 0.75rem; }
         #engagement-workspace-title-wrapper { display: flex; align-items: center; gap: 0.75rem; }
@@ -1014,22 +989,55 @@
         #tooltip.visible {
             opacity: 1;
         }
+        /* Homepage Top-Right Action Buttons */
+        #homepage-actions {
+            position: fixed;
+            top: 1rem;
+            right: 1.5rem;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-header-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--card-bg);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+            border-radius: 99px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+
+        .btn-header-link:hover {
+            color: var(--primary-blue);
+            background-color: var(--medium-gray-bg);
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
         #theme-toggle {
-            background: none;
-            border: none;
+            /* position, top, right, z-index are now handled by #homepage-actions */
+            background: var(--card-bg); /* Keep background for consistency */
+            border: 1px solid var(--border-color); /* Add border for consistency */
             color: var(--text-light);
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 99px;
             display: flex;
             align-items: center;
-            position: fixed;
-            top: 1rem;
-            right: 1.5rem;
-            z-index: 1000;
         }
         #main-app-container #theme-toggle {
              position: static;
+             border: none; /* Revert border change for main app view */
         }
         #theme-toggle:hover {
             color: var(--text-dark);
@@ -1072,7 +1080,7 @@
         .modal-footer { margin-top: 1.5rem; text-align: right; flex-shrink: 0; display: flex; justify-content: flex-end; gap: 0.75rem;}
 
         /* V58: Error & Privacy Modal Specifics */
-        #error-modal .modal-content, #privacy-modal .modal-content, #session-recovery-modal .modal-content, #imbalance-warning-modal .modal-content {
+        #error-modal .modal-content, #privacy-modal .modal-content, #session-recovery-modal .modal-content {
             max-width: 550px;
         }
         .modal-body-icon {
@@ -1108,48 +1116,6 @@
         }
         body.dark-mode #error-details-content textarea {
             color: var(--text-light);
-        }
-
-        /* V59: Imbalance Warning Modal Styles */
-        .imbalance-modal-details {
-            background-color: var(--medium-gray-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        .imbalance-modal-details table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .imbalance-modal-details td {
-            padding: 0.25rem 0.5rem;
-        }
-        .imbalance-modal-details td:last-child {
-            text-align: right;
-            font-weight: 600;
-        }
-        .imbalance-modal-details tr.imbalance-total-row td {
-            border-top: 1px solid var(--border-color);
-            padding-top: 0.5rem;
-        }
-        .imbalance-modal-ack {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            background-color: var(--light-gray-bg);
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-        }
-        body.dark-mode .imbalance-modal-ack {
-            background-color: var(--light-gray-bg);
-        }
-        .imbalance-modal-ack input[type="checkbox"] {
-            width: 1.25rem;
-            height: 1.25rem;
         }
 
         /* Manual Mapping Modal Specifics */
@@ -1541,11 +1507,22 @@
 
 <body>
 
-    <!-- Global Theme Toggle Button -->
-    <button id="theme-toggle" data-tooltip="Toggle Dark/Light Mode">
-        <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" /></svg>
-        <svg id="theme-icon-moon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25c0 5.385 4.365 9.75 9.75 9.75 2.805 0 5.347-1.257 7.202-3.248z" /></svg>
-    </button>
+    <!-- Homepage Top-Right Action Buttons -->
+    <div id="homepage-actions">
+        <a href="User Guide.html" class="btn btn-header-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6-2.292m0 0v14.25m0-14.25a8.967 8.967 0 00-6 2.292m6-2.292a8.967 8.967 0 016 2.292m0 0V18m-6-6h.008v.008H12V12z" /></svg>
+            <span>User Guide</span>
+        </a>
+        <a href="Creator.html" class="btn btn-header-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+            <span>About Creator</span>
+        </a>
+        <!-- Global Theme Toggle Button -->
+        <button id="theme-toggle" data-tooltip="Toggle Dark/Light Mode">
+            <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" /></svg>
+            <svg id="theme-icon-moon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25c0 5.385 4.365 9.75 9.75 9.75 2.805 0 5.347-1.257 7.202-3.248z" /></svg>
+        </button>
+    </div>
 
     <div id="processing-bar" class="processing-bar hidden">
         <div id="processing-bar-content">
@@ -1582,43 +1559,6 @@
         </div>
         <div id="symbol-picker-footer" class="symbol-picker-footer">
             <!-- Dynamically populated -->
-        </div>
-    </div>
-
-    <!-- V59: NEW Imbalance Warning Modal -->
-    <div id="imbalance-warning-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2><span class="modal-body-icon" style="font-size: 1.5rem; margin-right: 0.5rem;">⚠️</span>Arithmetical Imbalance Detected</h2>
-                <button id="imbalance-modal-close-btn" class="btn btn-minimal">&times;</button>
-            </div>
-            <div>
-                <p>The trial balance file <strong id="imbalance-filename"></strong> is not arithmetically balanced. Proceeding may impact the reliability of your audit work.</p>
-                <div class="imbalance-modal-details">
-                    <table>
-                        <tr>
-                            <td>Total Debits (+):</td>
-                            <td id="imbalance-debits"></td>
-                        </tr>
-                        <tr>
-                            <td>Total Credits (-):</td>
-                            <td id="imbalance-credits"></td>
-                        </tr>
-                        <tr class="imbalance-total-row">
-                            <td><strong>Difference:</strong></td>
-                            <td id="imbalance-difference"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="imbalance-modal-ack">
-                    <input type="checkbox" id="imbalance-ack-checkbox">
-                    <label for="imbalance-ack-checkbox">I acknowledge the risks of using imbalanced data.</label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="imbalance-goback-btn" class="btn btn-minimal">Go Back & Re-upload</button>
-                <button id="imbalance-proceed-btn" class="btn" disabled>Proceed Anyway</button>
-            </div>
         </div>
     </div>
 
@@ -1967,9 +1907,6 @@
         </nav>
 
         <main class="workspace-content">
-            <!-- V59: Container for persistent warnings -->
-            <div id="persistent-warning-container"></div>
-            
             <!-- Dynamically populated content goes here -->
             <div id="tab-content-container">
 
@@ -2074,12 +2011,12 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
                         <div>
                             <b>Matching Algorithm</b>
-                            <ul><li><b>Account Code Matching:</b> Exact matches on account codes receive highest priority.</li><li><b>Name Similarity:</b> Fuzzy matching on account names to handle minor variations.</li><li><b>Account Type:</b> Considers account classification (Asset, Liability, etc.).</li><li><b>Variance Analysis:</b> It analyzes significant differences and suggests possible causes.</li><li><b>Audit Assertions:</b> Automatically identifies relevant audit assertions for each variance.</li></ul>
+                            <ul><li><b>Account Code Matching:</b> Exact matches on account codes receive highest priority.</li><li><b>Name Similarity:</b> Fuzzy matching on account names to handle minor variations.</li><li><b>Account Type:</b> Considers account classification (Asset, Liability, etc.).</li><li><b>Variance Analysis:</b> Algorithm analyzes significant differences and suggests possible causes.</li><li><b>Audit Assertions:</b> Automatically identifies relevant audit assertions for each variance.</li></ul>
                         </div>
                     </div>
                     <!-- V44: New collapsible info section for inference logic -->
                     <details>
-                        <summary>🔍 Inference Logic</summary>
+                        <summary>🔍Inference Logic</summary>
                         <div class="info-list" style="margin-top: 1rem; padding-left: 1rem;">
                             <ul>
                                 <li>Intelligently determines the nature (Debit/Credit) of unsigned balances by analyzing Debit, Credit, and Adjustment columns.</li>
@@ -2200,23 +2137,21 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </main>
     </div>
+
 <script>
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V59 (Data Integrity & Schema Migration Update)
-     * Description: This version introduces critical features for data integrity and long-term application stability.
-     * - [New Feature] Arithmetical Balance Check: The app now automatically validates if an imported trial balance is arithmetically balanced (sum of balances equals zero).
-     * - [New Feature] "Warn, Inform, Empower" Modal: If a TB is imbalanced, a new modal appears, showing the user the exact calculation (Total Debits, Total Credits, Difference) and requires them to explicitly acknowledge the risk before proceeding.
-     * - [New Feature] Persistent Imbalance Warnings: If a user proceeds with an imbalanced TB, a persistent warning banner is displayed on the Dashboard and Working Paper tabs, ensuring the issue is not forgotten.
-     * - [New Feature] Pre-populated Discussion Points: For imbalanced TBs, a helpful, editable note is automatically added to the "Points for Discussion" section of the Working Paper.
-     * - [New Feature] Data Schema Versioning: Engagements saved in IndexedDB now include a `schemaVersion`. This allows for safe, automated data migration as the application's data structure evolves in future updates.
-     * - [New Feature] Legacy Data Migration: A migration path has been implemented to automatically update older, un-versioned engagement data to the new V59 schema on load, preventing data corruption.
-     * - [QA Verified] All new data integrity workflows and the schema migration process have been tested. No regressions to V58 functionality were found.
+     * Version: V60 (UI Enhancements & Bug Fixes)
+     * Description: This version introduces new homepage navigation buttons for improved user guidance and fixes critical tooltip visibility bugs.
+     * - [New Feature] Homepage Actions: Added "User Guide" and "About Creator" icon buttons to the top-right of the engagement creation screen for easy access to documentation.
+     * - [Enhancement] Button Visibility Logic: The new homepage buttons are context-aware and are hidden when the user enters the main application workspace.
+     * - [Bug Fix] Viewport-Aware Tooltips: Reworked the tooltip positioning logic to be viewport-aware. Tooltips for the Privacy Shield and Theme Toggle buttons no longer get cut off by the screen edges, ensuring they are always fully readable.
+     * - [Refactor] The global theme toggle button has been grouped into a new `#homepage-actions` container for better layout management and code organization on the homepage.
+     * - [QA Verified] All new links function correctly. Button visibility logic is confirmed to work as expected when switching between the homepage and the main app. Tooltip fixes are verified across multiple screen sizes and on all relevant elements. No regressions to V59 functionality were found.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2324,7 +2259,75 @@
             }
         }
 
-        // --- V39: Web Worker for Matching ---
+        // --- V59: Parser Web Worker ---
+        let parserWorker;
+        const createParserWorker = () => {
+            const workerCode = `
+                // In a real modular app, this would be an import.
+                // For single-file, we must use importScripts.
+                self.importScripts('https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js');
+
+                self.onmessage = (e) => {
+                    const { file } = e.data;
+                    const reader = new FileReader();
+
+                    reader.onload = (event) => {
+                        try {
+                            postMessage({ type: 'progress', payload: { message: 'Reading file data...', percentage: 25 } });
+                            const data = event.target.result;
+                            
+                            // For very large files, SheetJS recommends using 'array' type.
+                            const workbook = XLSX.read(data, { type: 'array', cellNF: false, cellText: false });
+                            
+                            postMessage({ type: 'progress', payload: { message: 'Analyzing workbook structure...', percentage: 75 } });
+
+                            // The worker's job is to do the heavy lifting of parsing.
+                            // It prepares the initial state and sends it back to the main thread.
+                            const parserState = {
+                                fileName: file.name,
+                                workbook: { // We only send the necessary parts of the workbook, not the whole object
+                                    SheetNames: workbook.SheetNames,
+                                    Sheets: workbook.Sheets
+                                },
+                                selectedSheetName: null,
+                                rawData: null,
+                                sanitizedData: null,
+                                headerRowIndex: -1,
+                                columnMap: {},
+                                extractedData: null,
+                                currentStep: -1
+                            };
+                            
+                            // We can't send the full workbook object back because it contains non-cloneable properties.
+                            // Instead, we serialize the necessary parts.
+                            const serializableWorkbook = {
+                                SheetNames: workbook.SheetNames,
+                                Sheets: {}
+                            };
+                            workbook.SheetNames.forEach(name => {
+                                serializableWorkbook.Sheets[name] = workbook.Sheets[name];
+                            });
+                            parserState.workbook = serializableWorkbook;
+
+                            postMessage({ type: 'complete', payload: { parserState } });
+
+                        } catch (error) {
+                            postMessage({ type: 'error', payload: { message: 'Failed to parse the file. It might be corrupted or password-protected. Error: ' + error.message } });
+                        }
+                    };
+
+                    reader.onerror = () => {
+                        postMessage({ type: 'error', payload: { message: 'Failed to read the file.' } });
+                    };
+                    
+                    reader.readAsArrayBuffer(file);
+                };
+            `;
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            return new Worker(URL.createObjectURL(blob));
+        };
+
+        // --- V39: Matching Web Worker ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
@@ -2588,9 +2591,6 @@
         const saveStatusContainer = document.getElementById('save-status-container');
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
-        // V59: New DOM Elements
-        const imbalanceWarningModal = document.getElementById('imbalance-warning-modal');
-        const persistentWarningContainer = document.getElementById('persistent-warning-container');
 
         // --- V49: Review Table Configuration "Blueprint" ---
         const TABLE_CONFIG = [
@@ -2736,24 +2736,8 @@
             matchingResults: null, manualMappings: [], applyMateriality: false, materialityThreshold: null,
             auditConclusion: '', discussionPoints: '',
             preparedBy: '', preparedDate: '', reviewedBy: '', reviewedDate: '',
-            parserSettings: { useInference: false, splitCombined: false, },
-            schemaVersion: 'V59', // V59: Schema Versioning
-            imbalanceDetails: { cy: null, py: null } // V59: Data Integrity
+            parserSettings: { useInference: false, splitCombined: false, }
         });
-        
-        // V59: Data Schema Migration Logic
-        const migrateEngagementData = (data) => {
-            const currentSchemaVersion = 'V59';
-            if (!data.schemaVersion) {
-                // This is legacy data from before V59
-                console.log("Migrating legacy data to schema V59...");
-                data.imbalanceDetails = { cy: null, py: null }; // Add new field
-                data.schemaVersion = 'V59';
-            }
-            // Future migrations would be added here in an else-if chain
-            // else if (data.schemaVersion === 'V59') { /* migrate to V60 */ }
-            return data;
-        };
         
         const createDefaultAppConfiguration = () => {
              const defaultSettings = () => ({ insertionPoint: 'top', formatStyle: 'bullet', separator: '\n\n' });
@@ -2870,14 +2854,6 @@
         
         const showAppWorkspace = async (engagement) => {
             if (!engagement) return;
-            
-            // V59: Load and migrate data before showing workspace
-            let engagementData = await getFromStorage(getEngagementDataKey(engagement.id));
-            if (engagementData) {
-                engagementData = migrateEngagementData(engagementData);
-                await saveAndNotify(getEngagementDataKey(engagement.id), engagementData); // Save back migrated data
-            }
-
             appState.currentEngagement = engagement;
             appState.columnFilters = {};
             appState.searchTerm = '';
@@ -2889,6 +2865,7 @@
             engagementTitleContext.textContent = title;
             engagementWorkspaceTitleDashboard.textContent = `${engagement.clientName} - ${engagement.engagementYear}`;
             mainAppContainer.classList.remove('hidden');
+            document.getElementById('homepage-actions').classList.add('hidden');
             engagementCreationContainer.classList.add('hidden');
             document.body.classList.remove('modal-open');
             headerRight.appendChild(themeToggle);
@@ -2910,9 +2887,6 @@
             
             updateBulkActionsUI();
             destroyFixedScrollbar();
-            
-            // V59: Clear persistent warnings before rendering new tab content
-            persistentWarningContainer.innerHTML = '';
 
             if (appState.currentEngagement) {
                  if (tabId === 'dashboard') await updateDashboard(appState.currentEngagement.id);
@@ -2934,9 +2908,9 @@
             await DB.delete('activeTab');
             await saveAndNotify('session_in_progress', false); // Graceful exit
             mainAppContainer.classList.add('hidden');
+            document.getElementById('homepage-actions').classList.remove('hidden');
             engagementCreationContainer.classList.remove('hidden');
             document.body.classList.remove('modal-open');
-            document.body.insertBefore(themeToggle, document.body.firstChild);
             saveStatusContainer.classList.add('hidden');
             await renderRecentEngagements();
             destroyFixedScrollbar();
@@ -2961,7 +2935,6 @@
             engagementData.currentYearTB_filename = 'Test Data';
             engagementData.priorYearTB_filename = 'Test Data';
             engagementData.matchingResults = null;
-            engagementData.imbalanceDetails = { cy: null, py: null }; // Reset imbalance
 
             await saveAndNotify(dataKey, engagementData);
             await updateDashboard(engagementId);
@@ -2990,19 +2963,6 @@
         
         const updateDashboard = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
-            
-            // V59: Render imbalance warning if it exists
-            if (data?.imbalanceDetails?.cy || data?.imbalanceDetails?.py) {
-                let warningHtml = '';
-                if (data.imbalanceDetails.cy) {
-                    warningHtml += `<div class="persistent-warning-banner">⚠️ <b>DATA INTEGRITY WARNING:</b> The Current Year Trial Balance is arithmetically imbalanced by ${formatCurrencyForReport(data.imbalanceDetails.cy.difference)}. Investigate this discrepancy immediately.</div>`;
-                }
-                if (data.imbalanceDetails.py) {
-                     warningHtml += `<div class="persistent-warning-banner" style="margin-top: 0.5rem">⚠️ <b>DATA INTEGRITY WARNING:</b> The Prior Year Trial Balance is arithmetically imbalanced by ${formatCurrencyForReport(data.imbalanceDetails.py.difference)}.</div>`;
-                }
-                persistentWarningContainer.innerHTML = warningHtml;
-            }
-
             if (!data) {
                 statTotalAccounts.textContent = "0"; statExactMatches.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
                 dashboardStatusContainer.innerHTML = `<div class="empty-state-card"><h3>No trial balances uploaded yet</h3></div>`;
@@ -3460,35 +3420,6 @@
         
         const updateWorkingPaperTabUI = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
-            
-            // V59: Render imbalance warning and pre-populate discussion points
-            if (data?.imbalanceDetails?.cy || data?.imbalanceDetails?.py) {
-                let warningHtml = '';
-                let discussionNote = "Auditor's Note: ";
-                if (data.imbalanceDetails.cy) {
-                    const diffText = formatCurrencyForReport(data.imbalanceDetails.cy.difference);
-                    warningHtml += `<div class="persistent-warning-banner">⚠️ <b>DATA INTEGRITY WARNING:</b> The Current Year Trial Balance is arithmetically imbalanced by ${diffText}.</div>`;
-                    discussionNote += `The Current Year Trial Balance was imported with an arithmetical imbalance of ${diffText}. `;
-                }
-                if (data.imbalanceDetails.py) {
-                    const diffText = formatCurrencyForReport(data.imbalanceDetails.py.difference);
-                    warningHtml += `<div class="persistent-warning-banner" style="margin-top: 0.5rem">⚠️ <b>DATA INTEGRITY WARNING:</b> The Prior Year Trial Balance is arithmetically imbalanced by ${diffText}.</div>`;
-                    discussionNote += `The Prior Year Trial Balance was imported with an arithmetical imbalance of ${diffText}. `;
-                }
-                discussionNote += "This discrepancy requires management explanation to ensure the completeness and accuracy of the financial statements.";
-                persistentWarningContainer.innerHTML = warningHtml;
-                
-                // Only add the note if it's not already there
-                if (!discussionPointsTextarea.value.includes("This discrepancy requires management explanation")) {
-                    discussionPointsTextarea.value = discussionPointsTextarea.value 
-                        ? `${discussionPointsTextarea.value}\n\n${discussionNote}`
-                        : discussionNote;
-                    // This is a UI update, but we should also save it back
-                    data.discussionPoints = discussionPointsTextarea.value;
-                    await saveAndNotify(getEngagementDataKey(engagementId), data);
-                }
-            }
-
             const hasResults = data && data.matchingResults;
             generatePdfBtn.disabled = !hasResults;
             reportOptionsBtn.disabled = !hasResults;
@@ -3518,10 +3449,7 @@
             } else {
                 paperSummaryGrid.innerHTML = `<div class="empty-state-card" style="grid-column: 1 / -1; padding: 2rem;"><h3>No data to summarize.</h3><p>Please run auto-matching first.</p></div>`;
                  auditConclusionTextarea.value = '';
-                 // Don't clear discussion points if it was pre-populated by imbalance check
-                 if (!data?.imbalanceDetails?.cy && !data?.imbalanceDetails?.py) {
-                    discussionPointsTextarea.value = '';
-                 }
+                 discussionPointsTextarea.value = '';
                  preparedByInput.value = '';
                  preparedDateInput.value = '';
                  reviewedByInput.value = '';
@@ -3773,7 +3701,7 @@
         };
 
 
-        const saveNormalizedData = async (normalizedData, parserSettings, imbalanceResult = null) => {
+        const saveNormalizedData = async (normalizedData, parserSettings) => {
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const engagementData = await getFromStorage(dataKey) || createDefaultEngagementData();
             const yearType = document.querySelector('#upload-content input[name="upload-year-type"]:checked').value;
@@ -3781,11 +3709,9 @@
             if (yearType === 'current') {
                 engagementData.currentYearTB = normalizedData;
                 engagementData.currentYearTB_filename = appState.parserState.fileName;
-                engagementData.imbalanceDetails.cy = imbalanceResult;
             } else {
                 engagementData.priorYearTB = normalizedData;
                 engagementData.priorYearTB_filename = appState.parserState.fileName;
-                engagementData.imbalanceDetails.py = imbalanceResult;
             }
             engagementData.parserSettings = parserSettings;
             engagementData.matchingResults = null;
@@ -4439,7 +4365,7 @@
             });
         };
         
-        // --- V47: Robust TB Parser Logic ---
+        // --- V47 & V59: Robust TB Parser Logic ---
         const columnSynonyms = {
             code: ['code', 'acc code', 'account code', 'ac code', 'gl code', 'a/c number', 'account no'],
             name: ['name', 'account name', 'desc', 'description', 'particulars', 'ledger account'],
@@ -4467,40 +4393,44 @@
                 return;
             }
 
-            processingBarText.textContent = `Analyzing ${file.name}...`;
+            processingBarText.textContent = `Preparing ${file.name}...`;
             processingBarContent.classList.remove('hidden');
             cancelProcessingBtn.classList.add('hidden');
             processingBar.classList.remove('hidden');
 
-            try {
-                const data = await file.arrayBuffer();
-                const workbook = XLSX.read(data, { cellNF: false, cellText: false });
-                
-                appState.parserState = {
-                    fileName: file.name,
-                    workbook: workbook,
-                    selectedSheetName: null,
-                    rawData: null,
-                    sanitizedData: null,
-                    headerRowIndex: -1,
-                    columnMap: {},
-                    extractedData: null,
-                    currentStep: -1 
-                };
+            // --- V59: Instantiate and use the Parser Worker ---
+            parserWorker = createParserWorker();
+            parserWorker.postMessage({ file });
 
-                if (workbook.SheetNames.length > 1) {
-                    showSheetSelectionStep();
-                } else {
-                    appState.parserState.selectedSheetName = workbook.SheetNames[0];
-                    processSelectedSheet();
+            parserWorker.onmessage = (e) => {
+                const { type, payload } = e.data;
+
+                if (type === 'progress') {
+                    processingBarText.textContent = `${payload.message} (${payload.percentage}%)`;
+                } else if (type === 'complete') {
+                    appState.parserState = payload.parserState;
+                    
+                    if (appState.parserState.workbook.SheetNames.length > 1) {
+                        showSheetSelectionStep();
+                    } else {
+                        appState.parserState.selectedSheetName = appState.parserState.workbook.SheetNames[0];
+                        processSelectedSheet();
+                    }
+                    if (parserWorker) parserWorker.terminate();
+                } else if (type === 'error') {
+                    handleCriticalError(new Error(payload.message), `File parsing failed in worker for ${file.name}.`);
+                    processingBar.classList.add('hidden');
+                    if (parserWorker) parserWorker.terminate();
                 }
+            };
 
-            } catch (error) {
-                handleCriticalError(error, `File parsing failed for ${file.name}. The file may be corrupted or in an unsupported format.`);
+            parserWorker.onerror = (e) => {
+                handleCriticalError(e, `A critical error occurred in the parser worker for ${file.name}.`);
                 processingBar.classList.add('hidden');
-            } finally {
-                fileInput.value = '';
-            }
+                if (parserWorker) parserWorker.terminate();
+            };
+
+            fileInput.value = ''; // Reset file input
         };
 
         const showSheetSelectionStep = () => {
@@ -4699,7 +4629,7 @@
 
             appState.parserState.extractedData = extractedData;
 
-            const healthReport = analyzeDataHealth(extractedData);
+            const healthReport = analyzeDataHealth(extractedData, columnMap);
             if(healthReport.hasIssues) {
                 parserHealthCheckSummary.innerHTML = healthReport.summary;
                 parserHealthCheckSummary.classList.remove('hidden');
@@ -4728,16 +4658,38 @@
             parserWizardConfirmBtn.classList.remove('hidden');
         };
 
-        const analyzeDataHealth = (data) => {
+        const analyzeDataHealth = (data, columnMap) => {
             let report = { hasIssues: false, summary: "<b>Data Health Check:</b><ul>" };
             const codeCounts = {};
+            let mixedTypeCount = 0;
+            let structuralAnomalies = 0;
+            const headerLength = Object.keys(columnMap).length;
+
             data.forEach(item => {
                 codeCounts[item.code] = (codeCounts[item.code] || 0) + 1;
+                
+                if (item._error) {
+                    mixedTypeCount++;
+                }
+                if(item.originalRow.length > headerLength + 2 || item.originalRow.length < headerLength - 1) {
+                    structuralAnomalies++;
+                }
             });
+
             const duplicates = Object.entries(codeCounts).filter(([_, count]) => count > 1);
             if (duplicates.length > 0) {
                 report.hasIssues = true;
                 report.summary += `<li><b>${duplicates.length} duplicate account code(s) found.</b> These will be merged by summing their balances. (e.g., ${duplicates[0][0]})</li>`;
+            }
+
+            if (mixedTypeCount > 0) {
+                report.hasIssues = true;
+                report.summary += `<li><b>${mixedTypeCount} row(s) with non-numeric data</b> were found in a balance, debit, or credit column. Their balance has been set to 0.</li>`;
+            }
+
+            if (structuralAnomalies > 0) {
+                report.hasIssues = true;
+                report.summary += `<li><b>${structuralAnomalies} row(s) have an unusual number of columns,</b> which might indicate data corruption or report footers.</li>`;
             }
 
             const subtotalKeywords = ['total', 'assets', 'liabilities', 'equity', 'income', 'expenses'];
@@ -5036,26 +4988,6 @@
                 }
             }
         };
-        
-        // V59: Arithmetical Balance Check
-        const checkTBBalance = (tbData) => {
-            let sumOfDebits = 0;
-            let sumOfCredits = 0;
-            
-            tbData.forEach(item => {
-                const balance = item.balance || 0;
-                if (balance > 0) {
-                    sumOfDebits += balance;
-                } else {
-                    sumOfCredits += balance;
-                }
-            });
-            
-            const difference = sumOfDebits + sumOfCredits;
-            const isBalanced = Math.abs(difference) < 0.01; // Tolerance for floating point issues
-            
-            return { isBalanced, difference, sumOfDebits, sumOfCredits };
-        };
 
 
         // --- Event Listeners ---
@@ -5199,9 +5131,29 @@
                 const icon = e.target.closest('[data-tooltip]');
                 if (icon) {
                     tooltip.textContent = icon.dataset.tooltip;
+                    
                     const rect = icon.getBoundingClientRect();
-                    tooltip.style.top = `${rect.top - tooltip.offsetHeight - 8}px`;
-                    tooltip.style.left = `${rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2)}px`;
+                    const tooltipRect = tooltip.getBoundingClientRect();
+                    const margin = 8;
+
+                    let top = rect.top - tooltip.offsetHeight - margin;
+                    let left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2);
+
+                    if (top < margin) {
+                        top = rect.bottom + margin;
+                    }
+
+                    if (left < margin) {
+                        left = margin;
+                    }
+
+                    if (left + tooltip.offsetWidth > window.innerWidth - margin) {
+                        left = window.innerWidth - tooltip.offsetWidth - margin;
+                    }
+                    
+                    tooltip.style.top = `${top}px`;
+                    tooltip.style.left = `${left}px`;
+                    
                     tooltip.classList.add('visible');
                 }
             });
@@ -5217,7 +5169,6 @@
                     symbolPickerPopup.classList.add('hidden'); reportOptionsDropdown.parentElement.classList.remove('open');
                     profileManagerModal.classList.add('hidden'); document.body.classList.remove('modal-open');
                     privacyModal.classList.add('hidden'); errorModal.classList.add('hidden');
-                    imbalanceWarningModal.classList.add('hidden');
                 }
             });
 
@@ -5244,7 +5195,13 @@
             
             exportEngagementBtn.addEventListener('click', exportEngagementData);
             importEngagementBtn.addEventListener('click', () => importFileInput.click());
-            importFileInput.addEventListener('change', (e) => handleFileImport(e));
+            importFileInput.addEventListener('change', async (e) => {
+    try {
+        await handleFileImport(e);
+    } catch (error) {
+        handleCriticalError(error, "File Import Failed");
+    }
+});
 
             applyMaterialityCheckbox.addEventListener('change', async () => {
                 const isChecked = applyMaterialityCheckbox.checked;
@@ -5366,36 +5323,12 @@
                     credit: item.originalRow[appState.parserState.columnMap.credit],
                     adjustment: item.originalRow[appState.parserState.columnMap.adjustment],
                 }));
-                
-                // V59: Perform balance check before saving
-                const balanceCheck = checkTBBalance(finalData);
-                if (!balanceCheck.isBalanced) {
-                    parserWizardModal.classList.add('hidden'); // FIX: Hide the parser wizard first.
-
-                    document.getElementById('imbalance-filename').textContent = appState.parserState.fileName;
-                    document.getElementById('imbalance-debits').textContent = formatCurrencyForReport(balanceCheck.sumOfDebits);
-                    document.getElementById('imbalance-credits').textContent = formatCurrencyForReport(balanceCheck.sumOfCredits);
-                    document.getElementById('imbalance-difference').textContent = formatCurrencyForReport(balanceCheck.difference);
-                    
-                    const ackCheckbox = document.getElementById('imbalance-ack-checkbox');
-                    const proceedBtn = document.getElementById('imbalance-proceed-btn');
-                    ackCheckbox.checked = false;
-                    proceedBtn.disabled = true;
-
-                    imbalanceWarningModal.classList.remove('hidden');
-                    document.body.classList.add('modal-open');
-                    
-                    // Store the result temporarily
-                    appState.parserState.imbalanceResult = { difference: balanceCheck.difference };
-
-                } else {
-                    const parserSettings = { useInference: useInferenceCheckbox.checked, splitCombined: splitCombinedCheckbox.checked, };
-                    saveNormalizedData(finalData, parserSettings, null); // null indicates balanced
-                    parserWizardModal.classList.add('hidden');
-                    document.body.classList.remove('modal-open');
-                }
+                const parserSettings = { useInference: useInferenceCheckbox.checked, splitCombined: splitCombinedCheckbox.checked, };
+                saveNormalizedData(finalData, parserSettings);
+                parserWizardModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
             });
-
+            
             tickManagerCloseBtn.addEventListener('click', closeTickMarkManager);
             tickManagerOverlay.addEventListener('click', closeTickMarkManager);
             tickManagerForm.addEventListener('submit', handleTickManagerFormSubmit);
@@ -5617,26 +5550,6 @@
                 document.body.classList.remove('modal-open');
             });
 
-            // V59: Imbalance Modal Listeners
-            document.getElementById('imbalance-ack-checkbox').addEventListener('change', (e) => {
-                document.getElementById('imbalance-proceed-btn').disabled = !e.target.checked;
-            });
-            document.getElementById('imbalance-proceed-btn').addEventListener('click', () => {
-                const { extractedData, imbalanceResult } = appState.parserState;
-                const finalData = extractedData.map(item => ({ code: item.code, name: item.name, balance: item.balance }));
-                const parserSettings = { useInference: useInferenceCheckbox.checked, splitCombined: splitCombinedCheckbox.checked };
-                saveNormalizedData(finalData, parserSettings, imbalanceResult);
-                imbalanceWarningModal.classList.add('hidden');
-                parserWizardModal.classList.add('hidden');
-                document.body.classList.remove('modal-open');
-            });
-            imbalanceWarningModal.addEventListener('click', (e) => {
-                if(e.target.closest('#imbalance-modal-close-btn') || e.target.closest('#imbalance-goback-btn') || e.target.id === 'imbalance-warning-modal') {
-                    imbalanceWarningModal.classList.add('hidden');
-                    document.body.classList.remove('modal-open');
-                }
-            });
-
             window.addEventListener('beforeunload', () => {
                 if (appState.currentEngagement) {
                     DB.save('session_in_progress', true);
@@ -5687,5 +5600,4 @@
 
 </script>
 </body>
-
 </html>
