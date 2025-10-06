@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Balance Ticking Tool – User Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #2563EB;
+            --primary-blue-dark: #1D4ED8;
+            --accent-purple: #8B5CF6;
+            --accent-cyan: #06B6D4;
+            --light-gray-bg: #F9FAFB;
+            --medium-gray-bg: #F3F4F6;
+            --border-color: #E5E7EB;
+            --card-bg: #FFFFFF;
+            --text-dark: #111827;
+            --text-medium: #374151;
+            --text-light: #6B7280;
+            --success-green: #10B981;
+            --warning-yellow: #F59E0B;
+        }
+
+        body.dark-mode {
+            --light-gray-bg: #0F172A;
+            --medium-gray-bg: #1E293B;
+            --border-color: #334155;
+            --card-bg: #1E293B;
+            --text-dark: #F1F5F9;
+            --text-medium: #CBD5E1;
+            --text-light: #94A3B8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .back-to-app-btn {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            background-color: var(--card-bg);
+            color: var(--text-medium);
+            border: 1px solid var(--border-color);
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .back-to-app-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+            color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .back-to-app-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s;
+        }
+
+        .back-to-app-btn:hover svg {
+            transform: translateX(-3px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary-blue);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-dark);
+            transition: transform 0.3s;
+        }
+
+        .sun-icon { display: none; }
+        body.dark-mode .sun-icon { display: block; }
+        body.dark-mode .moon-icon { display: none; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: 200% 200%;
+            animation: gradient 8s ease infinite;
+            border-radius: 2rem;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            letter-spacing: -0.02em;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.95);
+            font-weight: 500;
+            animation: fadeIn 0.8s ease-out 0.2s backwards;
+        }
+
+        .intro-banner {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--medium-gray-bg) 100%);
+            border: 2px solid var(--primary-blue);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+            animation: fadeIn 0.8s ease-out 0.4s backwards;
+        }
+
+        .intro-banner h2 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .intro-banner ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .intro-banner li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--text-medium);
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out backwards;
+        }
+
+        .intro-banner li:nth-child(1) { animation-delay: 0.5s; }
+        .intro-banner li:nth-child(2) { animation-delay: 0.6s; }
+        .intro-banner li:nth-child(3) { animation-delay: 0.7s; }
+        .intro-banner li:nth-child(4) { animation-delay: 0.8s; }
+        .intro-banner li:nth-child(5) { animation-delay: 0.9s; }
+        .intro-banner li:nth-child(6) { animation-delay: 1s; }
+
+        .intro-banner li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            color: var(--success-green);
+            font-size: 1.25rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .section-title {
+            color: var(--text-dark);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple));
+            border-radius: 2px;
+        }
+
+        .step-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-blue);
+            padding: 2rem;
+            border-radius: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.05), transparent);
+            transition: left 0.6s;
+        }
+
+        .step-card:hover::before {
+            left: 100%;
+        }
+
+        .step-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+            border-left-width: 8px;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            color: white;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .step-card h3 {
+            display: flex;
+            align-items: center;
+            color: var(--text-dark);
+            margin-bottom: 1.25rem;
+            font-size: 1.375rem;
+            font-weight: 700;
+        }
+
+        .step-card ul {
+            margin-left: 1rem;
+            color: var(--text-medium);
+        }
+
+        .step-card li {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .tips-box {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-left: 4px solid var(--warning-yellow);
+            padding: 1.25rem;
+            border-radius: 1rem;
+            margin: 1.25rem 0;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        body.dark-mode .tips-box {
+            background: linear-gradient(135deg, #78350F, #92400E);
+        }
+
+        .tips-box h4 {
+            color: #92400E;
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        body.dark-mode .tips-box h4 {
+            color: #FDE68A;
+        }
+
+        .tips-box ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            color: #92400E;
+        }
+
+        body.dark-mode .tips-box ul {
+            color: #FDE68A;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(37, 99, 235, 0.2);
+            border-color: var(--primary-blue);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.25rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .feature-card h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .faq-section {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-item {
+            background: var(--medium-gray-bg);
+            border-left: 4px solid var(--primary-blue);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 1.25rem;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
+        }
+
+        .faq-item strong {
+            color: var(--primary-blue);
+            display: block;
+            font-size: 1.05rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .faq-item p {
+            color: var(--text-medium);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .support-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .support-section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .support-section h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+
+        .support-section p {
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            font-size: 1.125rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .support-section a {
+            color: white;
+            font-weight: 700;
+            text-decoration: underline;
+            transition: opacity 0.2s;
+        }
+
+        .support-section a:hover {
+            opacity: 0.8;
+        }
+
+        .decorative-blob {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .blob-1 {
+            background: var(--primary-blue);
+            top: 10%;
+            left: -10%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            background: var(--accent-purple);
+            bottom: 10%;
+            right: -10%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem 3rem;
+            }
+
+            .header {
+                padding: 3rem 1.5rem;
+                border-radius: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 48px;
+                height: 48px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .back-to-app-btn {
+                top: 1rem;
+                left: 1rem;
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+            .back-to-app-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="Index.html" class="back-to-app-btn" aria-label="Back to main application">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        <span>Back to App</span>
+    </a>
+
+    <div class="decorative-blob blob-1"></div>
+    <div class="decorative-blob blob-2"></div>
+
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Opening Balance Ticking Tool</h1>
+                <p>User Guide – Comprehensive Documentation for SA 510 Compliance</p>
+            </div>
+        </div>
+
+        <div class="intro-banner">
+            <h2>What is This Tool For?</h2>
+            <ul>
+                <li><strong>Automate</strong> opening balance verification for audit engagements.</li>
+                <li><strong>Import</strong> trial balances for current and prior years.</li>
+                <li><strong>Match</strong> accounts using intelligent algorithms (code, name, type, variance).</li>
+                <li><strong>Review</strong> results, apply tick marks, and add audit comments.</li>
+                <li><strong>Generate</strong> professional working papers (PDF/Excel) for documentation.</li>
+                <li><strong>All data is private:</strong> Nothing leaves your device!</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Getting Started</h2>
+
+            <div class="step-grid">
+                <div class="step-card">
+                    <h3><span class="step-number">1</span>Launching the App</h3>
+                    <ul>
+                        <li>Open <code>Index.html</code> in any modern browser.</li>
+                        <li>No installation or sign-up needed.</li>
+                        <li>Data is stored locally – you control your privacy.</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">2</span>Creating an Engagement</h3>
+                    <ul>
+                        <li>Enter <strong>Client Name</strong> and <strong>Engagement Year</strong>.</li>
+                        <li>Choose <strong>Calendar Year</strong> or <strong>Financial Year</strong>.</li>
+                        <li>Click <strong>Create Engagement</strong>.</li>
+                        <li>Your engagement is saved and appears in the Recent Engagements list.</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">3</span>Uploading Trial Balances</h3>
+                    <ul>
+                        <li>Go to the <strong>Upload TB</strong> tab.</li>
+                        <li>Select <strong>Current Year</strong> or <strong>Prior Year</strong>.</li>
+                        <li>Click <strong>Browse Files</strong> or drag-and-drop your Excel/CSV file.</li>
+                        <li>The <strong>Parser Wizard</strong> will:
+                            <ul>
+                                <li>Let you pick a sheet if there are multiple.</li>
+                                <li>Guide you to map columns (Account Code, Name, Balance, etc.).</li>
+                                <li>Preview and check data health before importing.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="tips-box">
+                        <h4>💡 Tips:</h4>
+                        <ul>
+                            <li>Supported formats: <code>.xlsx</code>, <code>.xls</code>, <code>.csv</code></li>
+                            <li>You can save mapping profiles for future use.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">4</span>Auto-Matching Balances</h3>
+                    <ul>
+                        <li>Go to <strong>Balance Matching</strong> tab.</li>
+                        <li>(Optional) Set <strong>Materiality Threshold</strong> (e.g., ₹50000).</li>
+                        <li>Click <strong>Auto-Match Balances</strong>.</li>
+                        <li>The tool matches accounts via:
+                            <ul>
+                                <li>Exact code match</li>
+                                <li>Fuzzy name similarity</li>
+                                <li>Account type checks</li>
+                                <li>Manual mapping option</li>
+                                <li>Variance analysis & audit assertion suggestions</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">5</span>Reviewing & Tick Marking</h3>
+                    <ul>
+                        <li>Go to <strong>Review & Tick</strong> tab.</li>
+                        <li>Search/filter accounts by code, name, status, etc.</li>
+                        <li>Use bulk actions to mark reviewed, clear ticks/comments, or apply tick marks.</li>
+                        <li>Add your own tick marks via the Tick Mark Manager.</li>
+                        <li>Enter auditor comments for each account.</li>
+                    </ul>
+                    <div class="tips-box">
+                        <h4>⌨️ Filtering:</h4>
+                        <ul>
+                            <li>Click the filter icon to show advanced filters (by status, variance, etc.)</li>
+                            <li>Use keyboard shortcut: <strong>Ctrl+Alt+F</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">6</span>Working Paper Generation</h3>
+                    <ul>
+                        <li>Go to <strong>Working Paper</strong> tab.</li>
+                        <li>Add <strong>Points for Discussion</strong>, <strong>Audit Conclusion</strong>, and <strong>Sign-off</strong> details.</li>
+                        <li>Click <strong>Generate Report (PDF)</strong> or <strong>Export as Excel</strong>.</li>
+                        <li>Download and share professional working papers instantly.</li>
+                    </ul>
+                </div>
+
+                <div class="step-card">
+                    <h3><span class="step-number">7</span>Backup, Restore & Privacy</h3>
+                    <ul>
+                        <li><strong>Export Engagement:</strong> Download a backup file (.json) of your work for safekeeping.</li>
+                        <li><strong>Import Engagement:</strong> Restore previous work from a backup file.</li>
+                        <li><strong>Privacy:</strong> All data is local (browser IndexedDB). No cloud uploads!</li>
+                        <li><strong>Session Recovery:</strong> If your browser closes unexpectedly, the app offers to restore your last session.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Common Tasks</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <h4>Create Test Data</h4>
+                    <p>In Upload TB tab, use "Create Test Data" for demo or practice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✏️</div>
+                    <h4>Bulk Edit</h4>
+                    <p>Select multiple accounts and apply actions in one go.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✓</div>
+                    <h4>Custom Tick Marks</h4>
+                    <p>Define symbols, descriptions, formatting, and order for tick marks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h4>Import Profiles</h4>
+                    <p>Save and manage column mappings for different clients/file formats.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-section">
+                <div class="faq-item">
+                    <strong>Q: Does my data leave my computer?</strong>
+                    <p>A: No! All work is saved in your browser.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: Can I use this offline?</strong>
+                    <p>A: Yes. Once loaded, all features work fully offline.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: How do I back up my work?</strong>
+                    <p>A: Use "Export Engagement" in Dashboard.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: What files can I upload?</strong>
+                    <p>A: Excel (.xlsx, .xls) and CSV trial balances.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: What if my file has multiple sheets?</strong>
+                    <p>A: The parser will let you pick your sheet.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: How do I recover my session after a crash?</strong>
+                    <p>A: On relaunch, the app offers to restore your work.</p>
+                </div>
+
+                <div class="faq-item">
+                    <strong>Q: How do I customize tick marks?</strong>
+                    <p>A: Use the Tick Mark Manager in Review & Tick tab.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="support-section">
+            <h2>Support</h2>
+            <p>For questions or issues, drop the mail at <a href="mailto:prowoflowautomationtools@gmail.com">prowoflowautomationtools@gmail.com</a>.</p>
+            <p>For bug reports, copy details from error modals and include them in your issue.</p>
+            <p style="margin-top: 2rem; font-size: 1.375rem; font-weight: 700;">
+                Enjoy streamlined, secure, and compliant opening balance ticking!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        const savedTheme = localStorage.getItem('userguide-theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('userguide-theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>
