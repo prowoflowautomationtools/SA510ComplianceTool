@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2348,23 +2347,28 @@
                     const results = [];
                     const manualMappings = engagementData.manualMappings || [];
 
-                    manualMappings.forEach(([cyCode, pyCode]) => {
-                        const cyIndex = unmatchedCY.findIndex(item => item.code === cyCode);
-                        const pyIndex = unmatchedPY.findIndex(item => item.code === pyCode);
-                        if (cyIndex > -1 && pyIndex > -1) {
-                            const cy = unmatchedCY.splice(cyIndex, 1)[0];
-                            const py = unmatchedPY.splice(pyIndex, 1)[0];
-                            const oldAnn = oldAnnotations.get(cy.code) || {};
-                            const status = cy.balance === py.balance ? 'Exact Match' : 'Variance';
-                            const analysis = analyzeVariance(cy, py, status);
-                            results.push({ 
-                                ...cy, status: 'Manual Match', priorYearBalance: py.balance, ...analysis,
-                                tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
-                                auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
-                            });
-                            processedCount += 2;
-                        }
-                    });
+             manualMappings.forEach(([cyCode, pyCode]) => {
+    const cyIndex = unmatchedCY.findIndex(item => item.code === cyCode);
+    const pyIndex = unmatchedPY.findIndex(item => item.code === pyCode);
+    if (cyIndex > -1 && pyIndex > -1) {
+        const cy = unmatchedCY.splice(cyIndex, 1)[0];
+        const py = unmatchedPY.splice(pyIndex, 1)[0];
+        const oldAnn = oldAnnotations.get(cy.code) || {};
+        
+        // V60: Fix variance calculation for manual mappings
+        const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+        const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+        const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
+        const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
+        
+        results.push({ 
+            ...cy, balance: cyBalance, status: 'Manual Match', priorYearBalance: pyBalance, ...analysis,
+            tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
+            auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
+        });
+        processedCount += 2;
+    }
+});
                     
                     let tempUnmatchedCY = [...unmatchedCY];
                     unmatchedCY = [];
