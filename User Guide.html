@@ -334,13 +334,17 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
-        .step-card h3 {
+        .step-card h3, .step-card h4 {
             display: flex;
             align-items: center;
             color: var(--text-dark);
             margin-bottom: 1.25rem;
             font-size: 1.375rem;
             font-weight: 700;
+        }
+        
+        .step-card h4 {
+            font-size: 1.1rem;
         }
 
         .step-card ul {
@@ -384,6 +388,16 @@
             margin: 0;
             padding-left: 1.5rem;
             color: #92400E;
+        }
+        
+        .tips-box a {
+            color: var(--primary-blue-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .tips-box a:hover {
+            text-decoration: underline;
         }
 
         body.dark-mode .tips-box ul {
@@ -484,6 +498,68 @@
             margin: 0;
             line-height: 1.7;
         }
+        
+        /* Styles for new documentation section */
+        #tb-parsing-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        #tb-parsing-details th, #tb-parsing-details td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        #tb-parsing-details th {
+            background-color: var(--medium-gray-bg);
+            font-weight: 600;
+        }
+        #tb-parsing-details td code {
+            background-color: var(--medium-gray-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        #tb-parsing-details pre {
+            background-color: var(--medium-gray-bg);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+        #tb-parsing-details details {
+            margin-top: 1.5rem;
+            background-color: var(--medium-gray-bg);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+        #tb-parsing-details summary {
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--primary-blue);
+            padding: 1rem;
+            display: block;
+        }
+        #tb-parsing-details details[open] summary {
+            border-bottom: 1px solid var(--border-color);
+        }
+        #tb-parsing-details .details-content {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        #tb-parsing-details .note {
+            display: block;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--light-gray-bg);
+            border-left: 4px solid var(--primary-blue);
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
 
         .support-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -603,7 +679,7 @@
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-to-app-btn" aria-label="Back to main application">
+    <a href="Index.html" class="back-to-app-btn" aria-label="Back to main application">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
         </svg>
@@ -649,7 +725,7 @@
                 <div class="step-card">
                     <h3><span class="step-number">1</span>Launching the App</h3>
                     <ul>
-                        <li>Open <code>index.html</code> in any modern browser.</li>
+                        <li>Open <code>Index.html</code> in any modern browser.</li>
                         <li>No installation or sign-up needed.</li>
                         <li>Data is stored locally – you control your privacy.</li>
                     </ul>
@@ -673,17 +749,18 @@
                         <li>Click <strong>Browse Files</strong> or drag-and-drop your Excel/CSV file.</li>
                         <li>The <strong>Parser Wizard</strong> will:
                             <ul>
-                                <li>Let you pick a sheet if there are multiple.</li>
-                                <li>Guide you to map columns (Account Code, Name, Balance, etc.).</li>
+                                <li>Let you pick a sheet if there are multiple sheets.</li>
+                                <li>Ask you to confirm the Auto-detected and Mapped columns (Account Code, Name, Balance, etc.).</li>
                                 <li>Preview and check data health before importing.</li>
                             </ul>
                         </li>
                     </ul>
                     <div class="tips-box">
-                        <h4>💡 Tips:</h4>
+                        <h4>💡 Pro Tip: File Structure is Key!</h4>
                         <ul>
-                            <li>Supported formats: <code>.xlsx</code>, <code>.xls</code>, <code>.csv</code></li>
-                            <li>You can save mapping profiles for future use.</li>
+                            <li>For best results, ensure your Excel/CSV files are structured correctly.</li>
+                            <li>The tool is smart, but clean data leads to the best outcomes.</li>
+                            <li><a href="#tb-parsing-details">Learn more in our detailed guide on TB structure and parsing below.</a></li>
                         </ul>
                     </div>
                 </div>
@@ -769,6 +846,157 @@
                     <h4>Import Profiles</h4>
                     <p>Save and manage column mappings for different clients/file formats.</p>
                 </div>
+            </div>
+        </div>
+
+        <div class="section" id="tb-parsing-details">
+            <h2 class="section-title">Understanding TB File Structure & Parsing</h2>
+            <p>To ensure a smooth import, it's crucial to understand how the tool reads your files. This guide covers column recognition, file structure, and advanced features like Intelligent Balance Inference.</p>
+
+            <div class="step-card" style="border-left-color: var(--accent-cyan);">
+                <h3>Column Header Recognition</h3>
+                <p>The application uses a synonym-based mapping to automatically detect fields. The wizard will try to match your column headers to the standardized names below. You can always override the suggestions in the mapping step.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Standardized Name</th>
+                            <th>Recognized Headers (Synonyms)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Account Code</strong></td>
+                            <td><code>code</code>, <code>acc code</code>, <code>account code</code>, <code>ac code</code>, <code>gl code</code>, <code>a/c number</code>, <code>account no</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Account Name</strong></td>
+                            <td><code>name</code>, <code>account name</code>, <code>desc</code>, <code>description</code>, <code>particulars</code>, <code>ledger account</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Final Closing Balance</strong></td>
+                            <td><code>balance</code>,<code>closing balance</code>,<code>net balance</code>, <code>final balance</code>, <code>final closing balance</code>, <code>net</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Debit</strong></td>
+                            <td><code>debit</code>, <code>dr</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Credit</strong></td>
+                            <td><code>credit</code>, <code>cr</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adjustment</strong></td>
+                            <td><code>adjustment</code>, <code>adjustments</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="step-card" style="border-left-color: var(--accent-cyan);">
+                <h3>Ideal Trial Balance Structure</h3>
+                <p>For optimal performance, especially when using the Intelligent Balance Inference feature, structure your TB files as follows:</p>
+                
+                <h4>Previous Year Closing Trial Balance:</h4>
+                <ul>
+                    <li>Account Code (optional)</li>
+                    <li>Account Name (mandatory)</li>
+                    <li>Debit (mandatory)</li>
+                    <li>Credit (mandatory)</li>
+                    <li>Adjustment (optional)</li>
+                    <li>Final Closing Balance after adjustment (optional)</li>
+                </ul>
+
+                <h4 style="margin-top: 1.5rem;">Opening Trial Balance:</h4>
+                <ul>
+                    <li>Account Code (optional)</li>
+                    <li>Account Name (mandatory)</li>
+                    <li>Debit (mandatory)</li>
+                    <li>Credit (mandatory)</li>
+                    <li>Adjustment (optional – usually absent; if present in closing TB, must be manually added with zero values before uploading in app)</li>
+                    <li>Final Closing Balance (optional – usually absent; if present in closing TB, must be manually added and calculated using Debit - Credit before uploading in app)</li>
+                </ul>
+                <div class="note">
+                    <strong>Note:</strong> Adding the Adjustment and Final Closing Balance columns in the opening TB is required for the app's Intelligent Balance Inference feature to work correctly.
+                </div>
+            </div>
+
+            <div class="step-card" style="border-left-color: var(--accent-purple);">
+                <h3>The Intelligent Balance Inference Feature</h3>
+                <h4>Problem Description</h4>
+                <p>During an audit of a company, I was assigned the audit procedure for verifying opening balances. While performing this procedure, I noticed the following:</p>
+                <ul>
+                    <li>The prior year’s closing trial balance (TB) in Excel included two additional columns — <strong>“Final Closing Balance”</strong> and <strong>“Adjustment”</strong> — which had been added by the previous auditors to prepare the financial statements. The amounts in these columns did not include any signs or debit/credit (Dr/Cr) indicators.</li>
+                    <li>To determine the nature of each final balance, I had to review the "debit-credit and adjustment" formula which was used by the previous auditors to calculate the final balances and infer whether they were debit or credit.</li>
+                    <li>Only the <strong>Debit</strong> and <strong>Credit</strong> columns in the TB correctly reflected the actual nature of the accounts.</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem;">Solution</h4>
+                <p>The <strong>Intelligent Balance Inference</strong> feature was developed to solve this exact problem. When enabled in the Parsing Wizard, it analyzes the relationships between the Debit, Credit, Adjustment, and Final Balance columns to correctly infer the nature of each balance, even if the final amounts are unsigned.</p>
+
+                <details>
+                    <summary>► Advanced: How the Inference Logic Works</summary>
+                    <div class="details-content">
+                        <p>The logic follows a transparent, rule-based process to ensure audit defensibility. Here is a step-by-step breakdown:</p>
+                        <pre>
+INFERENCE LOGIC FLOWCHART
+
+[START]
+   |
+   V
+[Step 1: Determine Base Nature]
+   |--> Is Debit > Credit?  ---(Yes)---> Nature = Debit
+   |--> Is Credit > Debit?  ---(Yes)---> Nature = Credit
+   |
+   V
+[Step 2: Calculate Net Base Balance]
+   |--> |Debit - Credit|
+   |
+   V
+[Step 3: Apply Adjustments]
+   |--> Compare |Net Base +/- Adjustment| with Final Balance
+   |
+   V
+[Step 4: Confirm & Assign Final Nature]
+   |--> If Nature is Credit, final balance becomes negative.
+   |--> If Nature is Debit, final balance remains positive.
+   |
+   V
+[Step 5: Return Correctly Signed Balance]
+   |
+[END]
+                        </pre>
+                        <p>The engine essentially replicates the manual check an auditor would perform, ensuring accuracy and consistency across thousands of rows instantly.</p>
+                    </div>
+                </details>
+
+                <h4 style="margin-top: 1.5rem;">Workflow & Preview</h4>
+                <p>The feature works in stages to give you full control:</p>
+                <ol>
+                    <li><strong>Parsing Wizard:</strong> After you map columns and enable the feature, the "Next: Preview Data" step will show a read-only preview of the inferred balances. This is an advisory step for verification. The preview includes:
+                        <ul>
+                            <li><code>Final_signed_Closing_balance</code>: The correctly signed value.</li>
+                            <li><code>Balance_nature</code>: The inferred "Dr" or "Cr".</li>
+                            <li><code>Inferred_by</code>: A note explaining how the result was derived (e.g., “From debit-credit-adjustment analysis”).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Auto-Match Run:</strong> When you run the auto-matcher, the inference logic is actively applied to an in-memory copy of your data before comparison.</li>
+                    <li><strong>Review Table:</strong> The final, correctly signed balances are displayed in the review table for your audit procedures.</li>
+                </ol>
+            </div>
+
+            <div class="step-card" style="border-left-color: var(--warning-yellow);">
+                <h3>Troubleshooting & Best Practices</h3>
+                <h4>Problem 1A: Mismatches Occur Despite Using Inference</h4>
+                <ul>
+                    <li><strong>Impact:</strong> Inference can be unreliable if it only runs on the current year's TB, as the prior year's closing TB is the true baseline for comparison.</li>
+                    <li><strong>Fix:</strong> The application automatically applies the inference logic to <strong>both</strong> the Prior Year TB and the Current Year TB before matching. This ensures both datasets are standardized. This is why you are required to add the "Adjustment" and "Final Closing Balance" columns to the opening TB if you wish to use this feature.</li>
+                </ul>
+
+                <h4>Problem 1B: My Adjustment Column is Mostly Empty</h4>
+                <ul>
+                    <li><strong>Impact:</strong> Many auditor-provided TBs have sparse adjustment columns, where empty cells mean "no adjustment" rather than a zero value.</li>
+                    <li><strong>Fix:</strong> The parser is designed to handle this. It treats empty or non-numeric cells in the Adjustment column as zero, ensuring that only rows with actual adjustment values are affected by the inference logic.</li>
+                </ul>
             </div>
         </div>
 
