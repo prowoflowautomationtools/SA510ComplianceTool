@@ -713,6 +713,10 @@
         .status-close-match .status-badge { background-color: #E0E7FF; color: #4338CA; }
         .status-manual-match .status-badge { background-color: #C7D2FE; color: #3730A3; }
         .status-rounding-difference .status-badge { background-color: #E5E7EB; color: #4B5563; }
+        /* V63: New Hybrid Status Styles */
+        .status-confident-match-match .status-badge { background-color: #E0E7FF; color: #4338CA; }
+        .status-confident-match-variance .status-badge { background-color: #FBCFE8; color: #9D2463; border: 1px solid #DB2777; }
+
 
         body.dark-mode .status-exact-match .status-badge { background-color: #166534; color: #BBF7D0; }
         body.dark-mode .status-variance .status-badge { background-color: #92400E; color: #FDE68A; }
@@ -721,6 +725,9 @@
         body.dark-mode .status-close-match .status-badge { background-color: #4338CA; color: #C7D2FE; }
         body.dark-mode .status-manual-match .status-badge { background-color: #5B21B6; color: #DDD6FE; }
         body.dark-mode .status-rounding-difference .status-badge { background-color: #4B5563; color: #D1D5DB; }
+        /* V63: Dark mode for new statuses */
+        body.dark-mode .status-confident-match-match .status-badge { background-color: #4338CA; color: #C7D2FE; }
+        body.dark-mode .status-confident-match-variance .status-badge { background-color: #831843; color: #FBCFE8; border-color: #FBCFE8; }
         
         .review-table input[type="text"], .review-table select, .review-table textarea {
             width: 100%;
@@ -1705,7 +1712,7 @@
                 <button id="profile-manager-close-btn" class="btn btn-minimal">&times;</button>
             </div>
             <div class="modal-body" style="grid-template-columns: 1fr;">
-                <p class="text-light" style="margin-top: -1rem;">Saved profiles remember your column mappings and cleaning settings for faster imports.</p>
+                <p class="text-light" style="margin-top: 0.4rem;">Saved profiles remember your column mappings and cleaning settings for faster imports.</p>
                 <div id="profile-manager-list-container">
                     <!-- Dynamically populated -->
                 </div>
@@ -1998,6 +2005,19 @@
                              <label for="materiality-threshold-input">Materiality Threshold (₹)</label>
                              <input type="number" id="materiality-threshold-input" placeholder="e.g., 50000">
                         </div>
+                        <!-- V61: NEW Matching Sensitivity Control -->
+                        <div id="sensitivity-input-container" class="form-group" style="margin-top: 1rem; margin-bottom: 0;">
+                            <label for="matching-sensitivity-input" style="display:flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                                Matching Sensitivity
+                                <span class="tooltip-container" data-tooltip="Controls the strictness for matching account names. Higher values require a more exact match. Recommended: 60-75%.">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="color: var(--text-light);"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.054.592.11.854.173.236.065.418.158.544.294.125.137.188.319.188.553 0 .25-.074.455-.22.615-.146.16-.36.24-.626.24h-.832v.46h.832c.39 0 .695-.121.914-.363.219-.243.328-.55.328-.913 0-.415-.147-.755-.44-1.036-.293-.282-.662-.485-1.076-.614zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4z"/></svg>
+                                </span>
+                            </label>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="range" id="matching-sensitivity-slider" min="40" max="100" value="65" style="flex-grow: 1;">
+                                <input type="number" id="matching-sensitivity-input" min="40" max="100" value="65" style="width: 80px; text-align: center;">
+                            </div>
+                        </div>
                     </div>
                     <div style="text-align: right; margin-bottom: 1.5rem;">
                         <button id="auto-match-btn" class="btn" disabled>Auto-Match Balances</button>
@@ -2010,7 +2030,11 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
                         <div>
                             <b>Matching Algorithm</b>
-                            <ul><li><b>Account Code Matching:</b> Exact matches on account codes receive highest priority.</li><li><b>Name Similarity:</b> Fuzzy matching on account names to handle minor variations.</li><li><b>Account Type:</b> Considers account classification (Asset, Liability, etc.).</li><li><b>Variance Analysis:</b> Algorithm analyzes significant differences and suggests possible causes.</li><li><b>Audit Assertions:</b> Automatically identifies relevant audit assertions for each variance.</li></ul>
+                            <ul><li><b>Account Code Matching:</b> Exact matches on account codes receive highest priority.</li><li><b>Name Similarity:</b> Fuzzy matching on account names to handle minor variations.</li>
+                                <li><b>Account Type:</b> Considers account classification (Asset, Liability, etc.).</li>
+                                <li><b>Difference Analysis:</b> Algorithm analyzes significant differences and suggests possible causes.</li>
+                                <li><b>Audit Assertions:</b> Automatically identifies relevant audit assertions for each variance.</li>
+                            </ul>
                         </div>
                     </div>
                     <!-- V44: New collapsible info section for inference logic -->
@@ -2144,13 +2168,13 @@
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V60 (UI Enhancements & Bug Fixes)
-     * Description: This version introduces new homepage navigation buttons for improved user guidance and fixes critical tooltip visibility bugs.
-     * - [New Feature] Homepage Actions: Added "User Guide" and "About Creator" icon buttons to the top-right of the engagement creation screen for easy access to documentation.
-     * - [Enhancement] Button Visibility Logic: The new homepage buttons are context-aware and are hidden when the user enters the main application workspace.
-     * - [Bug Fix] Viewport-Aware Tooltips: Reworked the tooltip positioning logic to be viewport-aware. Tooltips for the Privacy Shield and Theme Toggle buttons no longer get cut off by the screen edges, ensuring they are always fully readable.
-     * - [Refactor] The global theme toggle button has been grouped into a new `#homepage-actions` container for better layout management and code organization on the homepage.
-     * - [QA Verified] All new links function correctly. Button visibility logic is confirmed to work as expected when switching between the homepage and the main app. Tooltip fixes are verified across multiple screen sizes and on all relevant elements. No regressions to V59 functionality were found.
+     * Version: V64 (UI/UX Terminology & Header Refinement)
+     * Description: This version implements UI/UX improvements to the Review & Tick table based on user feedback to enhance clarity and align with professional audit standards.
+     * - [New Feature] The Review Table header has been reorganized into a logical four-part structure: "Bulk Actions", "About the Trial Balance", "System Analysis", and "Auditor's Workspace". This provides a clearer workflow for the user.
+     * - [Enhancement] Column header "Prior Balance" has been updated to the more technically correct "Closing Balance" throughout the UI and in all generated reports (PDF/Excel).
+     * - [Enhancement] Column header "Variance" has been updated to the more neutral term "Difference" in the UI and reports.
+     * - [Compliance] The status indicator for items with a non-zero difference correctly remains as "Variance", maintaining the important distinction between a calculated difference and its audit classification.
+     * - [QA Verified] All changes have been verified. The new headers display correctly, terminology is updated in the UI and reports, and there are no regressions in sorting, filtering, or data processing functions.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2326,7 +2350,7 @@
             return new Worker(URL.createObjectURL(blob));
         };
 
-        // --- V39: Matching Web Worker ---
+        // --- V39, V61, V63: Matching Web Worker ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
@@ -2346,65 +2370,64 @@
 
                     const results = [];
                     const manualMappings = engagementData.manualMappings || [];
+                    const sensitivityThreshold = engagementData.matchingSensitivity || 65;
+                    const hasCodes = engagementData.hasAccountCodes;
 
-             manualMappings.forEach(([cyCode, pyCode]) => {
-    const cyIndex = unmatchedCY.findIndex(item => item.code === cyCode);
-    const pyIndex = unmatchedPY.findIndex(item => item.code === pyCode);
-    if (cyIndex > -1 && pyIndex > -1) {
-        const cy = unmatchedCY.splice(cyIndex, 1)[0];
-        const py = unmatchedPY.splice(pyIndex, 1)[0];
-        const oldAnn = oldAnnotations.get(cy.code) || {};
-        
-        // V60: Fix variance calculation for manual mappings
-        const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-        const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
-        const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
-        const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
-        
-        results.push({ 
-            ...cy, balance: cyBalance, status: 'Manual Match', priorYearBalance: pyBalance, ...analysis,
-            tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
-            auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
-        });
-        processedCount += 2;
-    }
-});
-                    
-                    let tempUnmatchedCY = [...unmatchedCY];
-                    unmatchedCY = [];
-
-                    tempUnmatchedCY = tempUnmatchedCY.filter(cy => {
-                        const pyIndex = unmatchedPY.findIndex(py => py.code === cy.code);
-                        if (pyIndex > -1) {
+                    manualMappings.forEach(([cyKey, pyKey]) => {
+                        const cyIndex = unmatchedCY.findIndex(item => (hasCodes ? item.code : item.name) === cyKey);
+                        const pyIndex = unmatchedPY.findIndex(item => (hasCodes ? item.code : item.name) === pyKey);
+                        if (cyIndex > -1 && pyIndex > -1) {
+                            const cy = unmatchedCY.splice(cyIndex, 1)[0];
                             const py = unmatchedPY.splice(pyIndex, 1)[0];
-                            const oldAnn = oldAnnotations.get(cy.code) || {};
-                            // V44: Use the final signed balance if it exists
+                            const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
+                            
                             const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
                             const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
                             const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
                             const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
                             
-                            let finalStatus = status;
-                            if(status === 'Exact Match' && Math.abs(cyBalance - pyBalance) > 0.01) {
-                                finalStatus = 'Rounding Difference';
-                            }
-                            
-                            let reviewStatus = oldAnn.reviewStatus || false;
-
-                            results.push({
-                                ...cy, balance: cyBalance, status: finalStatus, priorYearBalance: pyBalance, ...analysis,
-                                tickMark: oldAnn.tickMark || '', reviewStatus: reviewStatus,
+                            results.push({ 
+                                ...cy, balance: cyBalance, status: 'Manual Match', priorYearBalance: pyBalance, ...analysis,
+                                tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
                             processedCount += 2;
-                            return false;
                         }
-                        return true;
                     });
+                    
+                    let tempUnmatchedCY = [...unmatchedCY];
+
+                    if (hasCodes) {
+                        tempUnmatchedCY = tempUnmatchedCY.filter(cy => {
+                            const pyIndex = unmatchedPY.findIndex(py => py.code === cy.code);
+                            if (pyIndex > -1) {
+                                const py = unmatchedPY.splice(pyIndex, 1)[0];
+                                const oldAnn = oldAnnotations.get(cy.code) || {};
+                                const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+                                const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                                const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
+                                const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
+                                
+                                let finalStatus = status;
+                                if(status === 'Exact Match' && Math.abs(cyBalance - pyBalance) > 0.01) {
+                                    finalStatus = 'Rounding Difference';
+                                }
+                                
+                                results.push({
+                                    ...cy, balance: cyBalance, status: finalStatus, priorYearBalance: pyBalance, ...analysis,
+                                    tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
+                                    auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
+                                });
+                                processedCount += 2;
+                                return false;
+                            }
+                            return true;
+                        });
+                    }
                     self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
                     tempUnmatchedCY = tempUnmatchedCY.filter(cy => {
-                        let bestMatch = null; let high_score = 65; let bestPyIndex = -1;
+                        let bestMatch = null; let high_score = sensitivityThreshold; let bestPyIndex = -1;
                         unmatchedPY.forEach((py, pyIndex) => {
                             const distance = levenshteinDistance(cy.name, py.name);
                             const score = Math.round((1 - distance / Math.max(cy.name.length, py.name.length)) * 100);
@@ -2413,12 +2436,17 @@
 
                         if (bestMatch) {
                             const py = unmatchedPY.splice(bestPyIndex, 1)[0];
-                            const oldAnn = oldAnnotations.get(cy.code) || {};
+                            const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
                             const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
                             const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                            
+                            // V63: New hybrid status logic
+                            const balanceStatus = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Match' : 'Variance';
+                            const finalStatus = \`Confident Match (\${high_score}%) - \${balanceStatus}\`;
+
                             const analysis = analyzeVariance(cy, bestMatch, 'Close Match', cyBalance, pyBalance);
                             results.push({
-                                ...cy, balance: cyBalance, status: \`Confident Match (\${high_score}%)\`, priorYearBalance: pyBalance, ...analysis,
+                                ...cy, balance: cyBalance, status: finalStatus, priorYearBalance: pyBalance, ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2430,7 +2458,7 @@
                      self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
                     tempUnmatchedCY.forEach(cy => {
-                         const oldAnn = oldAnnotations.get(cy.code) || {};
+                         const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
                          const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
                          const analysis = analyzeVariance(cy, null, 'New Account', cyBalance, null);
                          results.push({ ...cy, balance: cyBalance, status: 'New Account', priorYearBalance: null, ...analysis,
@@ -2438,7 +2466,7 @@
                             auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
                     });
                     unmatchedPY.forEach(py => {
-                         const oldAnn = oldAnnotations.get(py.code) || {};
+                         const oldAnn = oldAnnotations.get(py.code || py.name) || {};
                          const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
                          const analysis = analyzeVariance(py, null, 'Prior Year Only', null, pyBalance);
                          results.push({ ...py, status: 'Prior Year Only', balance: null, priorYearBalance: pyBalance, ...analysis,
@@ -2533,6 +2561,8 @@
         const applyMaterialityCheckbox = document.getElementById('apply-materiality-checkbox');
         const materialityInputContainer = document.getElementById('materiality-input-container');
         const materialityThresholdInput = document.getElementById('materiality-threshold-input');
+        const matchingSensitivitySlider = document.getElementById('matching-sensitivity-slider'); // V61
+        const matchingSensitivityInput = document.getElementById('matching-sensitivity-input'); // V61
         const reviewSearchInput = document.getElementById('review-search-input');
         const dashboardGrid = document.getElementById('dashboard-grid');
         const bulkActionsContainer = document.getElementById('bulk-actions-container');
@@ -2596,130 +2626,45 @@
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
 
-        // --- V49: Review Table Configuration "Blueprint" ---
-        const TABLE_CONFIG = [
-            {
-                id: 'bulk-select',
-                type: 'bulk-select',
-                isEditable: true,
-                isSortable: false,
-                width: '50px',
-            },
-            {
-                id: 'code',
-                key: 'code',
-                label: 'Account Code',
-                type: 'text',
-                isSortable: true,
-                width: '150px',
-                divider: 'category',
-                dataType: 'string',
-            },
-            {
-                id: 'name',
-                key: 'name',
-                label: 'Account Name',
-                type: 'text',
-                isSortable: true,
-                width: '250px',
-                textAlign: 'left',
-                dataType: 'string',
-            },
-            {
-                id: 'priorYearBalance',
-                key: 'priorYearBalance',
-                label: 'Prior Balance',
-                type: 'currency',
-                isSortable: true,
-                width: '180px',
-                textAlign: 'right',
-                divider: 'thick-internal',
-                dataType: 'number',
-            },
-            {
-                id: 'balance',
-                key: 'balance',
-                label: 'Opening Balance',
-                type: 'currency',
-                isSortable: true,
-                width: '180px',
-                textAlign: 'right',
-                dataType: 'number',
-            },
-            {
-                id: 'variance',
-                key: 'variance',
-                label: 'Variance',
-                type: 'currency',
-                isSortable: true,
-                width: '180px',
-                textAlign: 'right',
-                dataType: 'number',
-            },
-            {
-                id: 'status',
-                key: 'status',
-                label: 'Status',
-                type: 'status-badge',
-                isSortable: true,
-                width: '180px',
-                divider: 'category',
-                dataType: 'categorical', 
-            },
-            {
-                id: 'assertion',
-                key: 'assertion',
-                label: 'Assertion',
-                type: 'text',
-                isSortable: true,
-                width: '150px',
-                dataType: 'categorical', 
-            },
-            {
-                id: 'suggestedCause',
-                key: 'suggestedCause',
-                label: 'Possible Causes',
-                type: 'suggestion',
-                isSortable: false,
-                width: '200px',
-                textAlign: 'left',
-                dataType: 'categorical', 
-            },
-            {
-                id: 'tickMark',
-                key: 'tickMark',
-                label: 'Tick Mark',
-                type: 'tick-select',
-                isEditable: true,
-                isSortable: true,
-                width: '100px',
-                divider: 'thick-internal',
-                dataType: 'categorical', 
-            },
-            {
-                id: 'auditorComment',
-                key: 'auditorComment',
-                label: "Auditor's Comments",
-                tooltip: "It can include Auditor's Observations, Findings, Notes, and Conclusion.",
-                type: 'textarea',
-                isEditable: true,
-                isSortable: false,
-                width: '300px',
-                textAlign: 'left',
-                dataType: 'string',
+        // --- V63 & V64: Dynamic Review Table Configuration "Blueprint" ---
+        const getDynamicTableConfig = (engagementData) => {
+            const hasCodes = engagementData?.hasAccountCodes === true;
 
-            },
-            {
-                id: 'reviewStatus',
-                key: 'reviewStatus',
-                label: 'Reviewed',
-                type: 'checkbox',
-                isEditable: true,
-                isSortable: true,
-                width: '100px',
-                dataType: 'boolean',
+            const baseConfig = [
+                { id: 'bulk-select', type: 'bulk-select', isEditable: true, isSortable: false, width: '50px' },
+                // Account Code is inserted dynamically
+                { id: 'name', key: 'name', label: 'Account Name', type: 'text', isSortable: true, width: '250px', textAlign: 'left', dataType: 'string' },
+                { id: 'priorYearBalance', key: 'priorYearBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', divider: 'thick-internal', dataType: 'number' },
+                { id: 'balance', key: 'balance', label: 'Opening Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
+                { id: 'variance', key: 'variance', label: 'Difference', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
+                { id: 'status', key: 'status', label: 'Status', type: 'status-badge', isSortable: true, width: '220px', divider: 'category', dataType: 'categorical' },
+                { id: 'assertion', key: 'assertion', label: 'Assertion', type: 'text', isSortable: true, width: '150px', dataType: 'categorical' },
+                { id: 'suggestedCause', key: 'suggestedCause', label: 'Possible Causes', type: 'suggestion', isSortable: false, width: '200px', textAlign: 'left', dataType: 'categorical' },
+                { id: 'tickMark', key: 'tickMark', label: 'Tick Mark', type: 'tick-select', isEditable: true, isSortable: true, width: '100px', divider: 'thick-internal', dataType: 'categorical' },
+                { id: 'auditorComment', key: 'auditorComment', label: "Auditor's Comments", tooltip: "It can include Auditor's Observations, Findings, Notes, and Conclusion.", type: 'textarea', isEditable: true, isSortable: false, width: '300px', textAlign: 'left', dataType: 'string' },
+                { id: 'reviewStatus', key: 'reviewStatus', label: 'Reviewed', type: 'checkbox', isEditable: true, isSortable: true, width: '100px', dataType: 'boolean' }
+            ];
+
+            if (hasCodes) {
+                baseConfig.splice(1, 0, {
+                    id: 'code',
+                    key: 'code',
+                    label: 'Account Code',
+                    type: 'text',
+                    isSortable: true,
+                    width: '150px',
+                    divider: 'category',
+                    dataType: 'string',
+                });
+                // Adjust divider for name column when code is present
+                baseConfig[2].divider = null;
+            } else {
+                 // Adjust divider for name column when code is absent
+                baseConfig[1].divider = 'category';
             }
-        ];
+            
+            return baseConfig;
+        };
 
 
         // --- Core Functions (now async where DB is used) ---
@@ -2738,9 +2683,11 @@
         const createDefaultEngagementData = () => ({
             currentYearTB: [], priorYearTB: [], currentYearTB_filename: null, priorYearTB_filename: null,
             matchingResults: null, manualMappings: [], applyMateriality: false, materialityThreshold: null,
+            matchingSensitivity: 65,
             auditConclusion: '', discussionPoints: '',
             preparedBy: '', preparedDate: '', reviewedBy: '', reviewedDate: '',
-            parserSettings: { useInference: false, splitCombined: false, }
+            parserSettings: { useInference: false, splitCombined: false },
+            hasAccountCodes: false, // V63: New flag
         });
         
         const createDefaultAppConfiguration = () => {
@@ -2939,6 +2886,7 @@
             engagementData.currentYearTB_filename = 'Test Data';
             engagementData.priorYearTB_filename = 'Test Data';
             engagementData.matchingResults = null;
+            engagementData.hasAccountCodes = true; // Test data has codes
 
             await saveAndNotify(dataKey, engagementData);
             await updateDashboard(engagementId);
@@ -3018,7 +2966,7 @@
                 if (categories[item.status]) {
                     categories[item.status].total++;
                     if (item.reviewStatus) categories[item.status].reviewed++;
-                } else if(item.status.startsWith('Confident Match')) { // Catch "Confident Match (xx%)"
+                } else if(item.status.startsWith('Confident Match')) {
                     categories['Close Match'].total++;
                     if(item.reviewStatus) categories['Close Match'].reviewed++;
                 }
@@ -3039,8 +2987,6 @@
             reviewProgressContainer.innerHTML = progressHTML || `<div class="empty-state-card" style="padding: 2rem;"><h3>No items to review.</h3></div>`;
         };
 
-
-
         const updateMatchingTabUI = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
             const hasData = data && data.currentYearTB?.length > 0 && data.priorYearTB?.length > 0;
@@ -3052,10 +2998,17 @@
                 applyMaterialityCheckbox.checked = data.applyMateriality === true;
                 materialityThresholdInput.value = data.materialityThreshold || '';
                 materialityInputContainer.classList.toggle('hidden', !applyMaterialityCheckbox.checked);
+                
+                const sensitivity = data.matchingSensitivity || 65;
+                matchingSensitivitySlider.value = sensitivity;
+                matchingSensitivityInput.value = sensitivity;
+
             } else {
                 applyMaterialityCheckbox.checked = false;
                 materialityThresholdInput.value = '';
                 materialityInputContainer.classList.add('hidden');
+                matchingSensitivitySlider.value = 65;
+                matchingSensitivityInput.value = 65;
             }
         };
         
@@ -3102,7 +3055,7 @@
             if (!tb) return [];
             return tb.map(item => {
                 const cleanedItem = { ...item };
-                cleanedItem.code = String(item.code || '').trim(); 
+                cleanedItem.code = item.code ? String(item.code).trim() : null; // Keep null codes as null
                 cleanedItem.name = String(item.name || '').trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, ""); 
                 if (!cleanedItem.name) return null;
                 return cleanedItem;
@@ -3113,15 +3066,14 @@
             const filtered = tb.filter(item => !['total', 'sub-total', 'sub total'].some(kw => item.name.toLowerCase().includes(kw)));
             const mapping = new Map();
             filtered.forEach(item => {
-                if (item.code) {
-                    if (!mapping.has(item.code)) { mapping.set(item.code, { ...item, originalNames: [item.name] }); }
-                    else { 
-                        const existing = mapping.get(item.code); 
-                        const balanceKey = item.hasOwnProperty('Final_signed_Closing_balance') ? 'Final_signed_Closing_balance' : 'balance';
-                        existing[balanceKey] += item[balanceKey]; 
-                        existing.originalNames.push(item.name); 
-                    }
-                } else { mapping.set(item.name, { ...item, originalNames: [item.name] }); }
+                const key = item.code || item.name; // Use code if it exists, otherwise name
+                if (!mapping.has(key)) { mapping.set(key, { ...item, originalNames: [item.name] }); }
+                else { 
+                    const existing = mapping.get(key); 
+                    const balanceKey = item.hasOwnProperty('Final_signed_Closing_balance') ? 'Final_signed_Closing_balance' : 'balance';
+                    existing[balanceKey] += item[balanceKey]; 
+                    existing.originalNames.push(item.name); 
+                }
             });
             return Array.from(mapping.values());
         };
@@ -3139,7 +3091,8 @@
             let oldAnnotationsMap = [];
             if (data.matchingResults) {
                 data.matchingResults.forEach(item => {
-                    oldAnnotationsMap.push([item.code, { tickMark: item.tickMark, auditorComment: item.auditorComment, reviewStatus: item.reviewStatus }]);
+                    const key = data.hasAccountCodes ? item.code : item.name;
+                    oldAnnotationsMap.push([key, { tickMark: item.tickMark, auditorComment: item.auditorComment, reviewStatus: item.reviewStatus }]);
                 });
             }
 
@@ -3263,15 +3216,18 @@
             updateFixedScrollbar();
         };
 
-        // --- V49: New Data-Driven Rendering Engine ---
+        // --- V49, V63 & V64: New Data-Driven Rendering Engine ---
         const renderReviewTable = (filteredData, engagementData) => {
-            renderReviewActions(); // Render toolbar actions like filter buttons
+            renderReviewActions();
             
             if (!filteredData || !engagementData) {
                 reviewTableContainer.innerHTML = `<div class="empty-state-card"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="48" height="48"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6-2.292m0 0v14.25m0-14.25a8.967 8.967 0 00-6 2.292m6-2.292a8.967 8.967 0 016 2.292m0 0V18m-6-6h.008v.008H12V12z" /></svg><h3>No balance matches available</h3><p>Please run auto-matching first.</p></div>`;
                 paginationContainer.classList.add('hidden');
                 return;
             }
+            
+            const tableConfig = getDynamicTableConfig(engagementData);
+            const hasCodes = engagementData.hasAccountCodes;
 
             const table = document.createElement('table');
             table.className = 'review-table';
@@ -3279,16 +3235,21 @@
             const tbody = document.createElement('tbody');
             const docFragment = document.createDocumentFragment();
 
-            // Render Headers from TABLE_CONFIG
+            // Render Headers from dynamic TABLE_CONFIG
             const headerRow1 = document.createElement('tr');
-            // This part can be made dynamic in the future if needed
+            const aboutTbColspan = hasCodes ? 5 : 4;
+            const systemAnalysisColspan = 3;
+            const auditorWorkspaceColspan = 3;
+
             headerRow1.innerHTML = `
                 <th colspan="1">Bulk Actions</th>
-                <th colspan="5" class="cell-category-divider">About the Trial Balance</th>
-                <th colspan="6" class="cell-category-divider">Auditor & System Analysis</th>
+                <th colspan="${aboutTbColspan}" class="cell-category-divider">About the Trial Balance</th>
+                <th colspan="${systemAnalysisColspan}" class="cell-category-divider">System Analysis</th>
+                <th colspan="${auditorWorkspaceColspan}" class="cell-category-divider">Auditor's Workspace</th>
             `;
+
             const headerRow2 = document.createElement('tr');
-            TABLE_CONFIG.forEach(col => {
+            tableConfig.forEach(col => {
                 const th = document.createElement('th');
                 th.dataset.key = col.key || col.id;
                 th.dataset.type = col.dataType || col.type;
@@ -3313,9 +3274,9 @@
             table.appendChild(thead);
 
             if (filteredData.length === 0) {
-                 reviewTableContainer.innerHTML = `<div class="table-wrapper" style="border: none; box-shadow: none;"><table class="review-table"><thead>${thead.innerHTML}</thead><tbody><tr><td colspan="${TABLE_CONFIG.length}" style="text-align:center; padding: 2rem; border:none;">No items match your current filter criteria.</td></tr></tbody></table></div>`;
+                 reviewTableContainer.innerHTML = `<div class="table-wrapper" style="border: none; box-shadow: none;"><table class="review-table"><thead>${thead.innerHTML}</thead><tbody><tr><td colspan="${tableConfig.length}" style="text-align:center; padding: 2rem; border:none;">No items match your current filter criteria.</td></tr></tbody></table></div>`;
                  paginationContainer.classList.add('hidden');
-                 renderFilterIcons();
+                 renderFilterIcons(tableConfig);
                  return;
             }
 
@@ -3327,20 +3288,25 @@
             const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
             const tickMarkOptionsHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="${opt.symbol}">${opt.symbol}</option>`).join('');
 
-            // Render Rows from Data + TABLE_CONFIG
+            // Render Rows from Data + dynamic TABLE_CONFIG
             pageResults.forEach(item => {
+                const itemKey = item.code || item.name;
                 const row = document.createElement('tr');
-                row.dataset.code = item.code;
-                const isSelected = appState.selectedRows.has(item.code);
+                row.dataset.key = itemKey;
+                const isSelected = appState.selectedRows.has(itemKey);
                 
                 // Determine row class for styling
-                const statusClass = `status-${item.status.toLowerCase().replace(/[\s%()]/g, '-')}`;
-                row.classList.add(statusClass);
+                let statusClass = item.status.toLowerCase().replace(/[\s%()]/g, '-');
+                if (statusClass.includes('confident-match')) {
+                    statusClass = statusClass.replace(/-variance$/, '-variance').replace(/-match$/, '-match');
+                }
+                row.classList.add(`status-${statusClass}`);
+
                 if (engagementData.applyMateriality && engagementData.materialityThreshold > 0 && Math.abs(item.variance) > engagementData.materialityThreshold) {
                     row.classList.add('material-variance');
                 }
 
-                TABLE_CONFIG.forEach(col => {
+                tableConfig.forEach(col => {
                     const cell = document.createElement('td');
                     if (col.divider === 'category') cell.classList.add('cell-category-divider');
                     if (col.divider === 'thick-internal') cell.classList.add('cell-thick-internal-divider');
@@ -3352,7 +3318,7 @@
                     // Cell Renderer Logic
                     switch (col.type) {
                         case 'bulk-select':
-                            cell.innerHTML = `<input type="checkbox" class="row-checkbox" data-code="${item.code}" ${isSelected ? 'checked' : ''}>`;
+                            cell.innerHTML = `<input type="checkbox" class="row-checkbox" data-key="${itemKey}" ${isSelected ? 'checked' : ''}>`;
                             break;
                         case 'currency':
                             cell.textContent = value !== null ? currencyFormatter.format(value) : '—';
@@ -3364,17 +3330,17 @@
                              cell.innerHTML = value ? `<span class="suggestion-text">${value}</span>` : '';
                              break;
                         case 'tick-select':
-                            cell.innerHTML = `<select data-code="${item.code}" data-field="tickMark"><option value=""></option>${tickMarkOptionsHTML}</select>`;
+                            cell.innerHTML = `<select data-key="${itemKey}" data-field="tickMark"><option value=""></option>${tickMarkOptionsHTML}</select>`;
                             cell.querySelector('select').value = value || '';
                             break;
                         case 'textarea':
-                            cell.innerHTML = `<textarea data-code="${item.code}" data-field="auditorComment" placeholder="Enter comments...">${value || ''}</textarea>`;
+                            cell.innerHTML = `<textarea data-key="${itemKey}" data-field="auditorComment" placeholder="Enter comments...">${value || ''}</textarea>`;
                             break;
                         case 'checkbox':
-                            cell.innerHTML = `<input type="checkbox" ${value ? 'checked' : ''} data-code="${item.code}" data-field="reviewStatus">`;
+                            cell.innerHTML = `<input type="checkbox" ${value ? 'checked' : ''} data-key="${itemKey}" data-field="reviewStatus">`;
                             break;
                         default:
-                            cell.textContent = value || '';
+                            cell.textContent = value || '—'; // Use hyphen for empty/null codes
                     }
                     row.appendChild(cell);
                 });
@@ -3392,7 +3358,7 @@
             reviewTableContainer.appendChild(wrapper);
 
             paginationContainer.classList.remove('hidden');
-            renderFilterIcons();
+            renderFilterIcons(tableConfig);
             
             const bulkActionOptgroup = document.getElementById('bulk-action-ticks-optgroup');
             if(bulkActionOptgroup) bulkActionOptgroup.innerHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="tick_${opt.symbol}">${opt.symbol}</option>`).join('');
@@ -3438,15 +3404,14 @@
                 reviewedDateInput.value = reviewedDate || '';
 
                 const total = matchingResults.length;
-                const matches = matchingResults.filter(r => r.status === 'Exact Match').length;
+                const matches = matchingResults.filter(r => r.status === 'Exact Match' || r.status.endsWith('- Match')).length;
                 const closeMatches = matchingResults.filter(r => r.status.startsWith('Confident Match')).length;
-                const variances = matchingResults.filter(r => r.status === 'Variance').length;
+                const variances = matchingResults.filter(r => r.status === 'Variance' || r.status.endsWith('- Variance')).length;
                 const reviewed = matchingResults.filter(r => r.reviewStatus).length;
                 const completion = total > 0 ? (reviewed / total * 100).toFixed(0) : 0;
                 paperSummaryGrid.innerHTML = `
                     <div class="stat-card"><div class="stat-info"><h4>Total Accounts</h4><p>${total}</p></div></div>
-                    <div class="stat-card"><div class="stat-info"><h4>Exact Matches</h4><p>${matches}</p></div></div>
-                    <div class="stat-card"><div class="stat-info"><h4>Close Matches</h4><p>${closeMatches}</p></div></div>
+                    <div class="stat-card"><div class="stat-info"><h4>Matches</h4><p>${matches}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Variances</h4><p>${variances}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Reviewed</h4><p>${reviewed}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Completion</h4><p>${completion}%</p></div></div>`;
@@ -3496,6 +3461,7 @@
             const { engagement, data } = reportData;
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'landscape' });
+            const hasCodes = data.hasAccountCodes;
             
             addCustomFont(doc);
 
@@ -3510,8 +3476,7 @@
                     variance = item.balance - item.priorYearBalance;
                 }
 
-                return [
-                    item.code,
+                const row = [
                     item.name,
                     formatCurrencyForReport(item.priorYearBalance),
                     formatCurrencyForReport(item.balance),
@@ -3519,6 +3484,8 @@
                     item.status,
                     item.auditorComment || ''
                 ];
+                if(hasCodes) row.unshift(item.code);
+                return row;
             });
 
             const addHeaderFooter = () => {
@@ -3565,23 +3532,30 @@
                 doc.text(conclusionLines, 15, finalY + 7);
                 finalY += 12 + (conclusionLines.length * 5);
             }
+
+            const head = hasCodes 
+                ? [['Code', 'Account Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]]
+                : [['Account Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]];
             
+            const columnStyles = hasCodes ? {
+                    0: { halign: 'center', cellWidth: 20 }, 1: { halign: 'left', cellWidth: 60 },
+                    2: { halign: 'right', cellWidth: 30 }, 3: { halign: 'right', cellWidth: 30 },
+                    4: { halign: 'right', cellWidth: 30 }, 5: { halign: 'center', cellWidth: 30 },
+                    6: { halign: 'left' }
+                } : {
+                    0: { halign: 'left', cellWidth: 70 }, 1: { halign: 'right', cellWidth: 30 },
+                    2: { halign: 'right', cellWidth: 30 }, 3: { halign: 'right', cellWidth: 30 },
+                    4: { halign: 'center', cellWidth: 30 }, 5: { halign: 'left' }
+                };
+
             doc.autoTable({
-                head: [['Code', 'Account Name', 'Prior Balance (INR)', 'Opening Balance (INR)', 'Variance (INR)', 'Status', "Auditor's Comments"]],
+                head: head,
                 body: tableBody,
                 startY: finalY + 5,
                 theme: 'grid',
                 headStyles: { fillColor: [44, 62, 80], textColor: 255, fontStyle: 'bold', halign: 'center', fontSize: 10 },
                 styles: { fontSize: 9, cellPadding: 2, font: 'helvetica' },
-                columnStyles: {
-                    0: { halign: 'center', cellWidth: 20 },
-                    1: { halign: 'left', cellWidth: 60 },
-                    2: { halign: 'right', cellWidth: 30 },
-                    3: { halign: 'right', cellWidth: 30 },
-                    4: { halign: 'right', cellWidth: 30 },
-                    5: { halign: 'center', cellWidth: 30 },
-                    6: { halign: 'left' }
-                }
+                columnStyles: columnStyles
             });
 
             finalY = doc.autoTable.previous.finalY;
@@ -3623,6 +3597,7 @@
             const reportData = await getReportData(engagementId);
             if (!reportData) return;
             const { engagement, data } = reportData;
+            const hasCodes = data.hasAccountCodes;
             
             const moneyFormat = '₹ #,##0.00;[Red](₹ #,##0.00)';
 
@@ -3667,32 +3642,44 @@
             }
             summary_ws["!merges"] = merges;
 
+            // V63 & V64: Dynamic column mapping for formulas
+            const columnMap = {};
             const detailedJson = data.matchingResults.map((item, index) => {
                 const rowIndex = index + 2;
                 const priorBalance = item.priorYearBalance !== null ? item.priorYearBalance : 0;
                 const openBalance = item.balance !== null ? item.balance : 0;
                 
-                let materialityFormula = `IF(ABS(E${rowIndex})>Summary!$B$5, "Yes", "No")`;
-                if (!data.materialityThreshold) { materialityFormula = `"No"`; }
+                let rowData = {};
+                if (hasCodes) {
+                    Object.assign(columnMap, { code: 'A', name: 'B', priorBalance: 'C', balance: 'D', variance: 'E', isMaterial: 'F' });
+                    rowData["Code"] = item.code;
+                } else {
+                    Object.assign(columnMap, { name: 'A', priorBalance: 'B', balance: 'C', variance: 'D', isMaterial: 'E' });
+                }
 
-                return {
-                    "Code": item.code,
-                    "Account Name": item.name,
-                    "Prior Balance": { t: 'n', v: priorBalance, z: moneyFormat },
-                    "Opening Balance": { t: 'n', v: openBalance, z: moneyFormat },
-                    "Variance": { t: 'n', f: `D${rowIndex}-C${rowIndex}`, z: moneyFormat },
-                    "Is Material?": { t: 's', f: materialityFormula },
-                    "Status": item.status,
-                    "Auditor's Comments": item.auditorComment
-                };
+                rowData["Account Name"] = item.name;
+                rowData["Closing Balance"] = { t: 'n', v: priorBalance, z: moneyFormat };
+                rowData["Opening Balance"] = { t: 'n', v: openBalance, z: moneyFormat };
+                rowData["Difference"] = { t: 'n', f: `${columnMap.balance}${rowIndex}-${columnMap.priorBalance}${rowIndex}`, z: moneyFormat };
+
+                let materialityFormula = `IF(ABS(${columnMap.variance}${rowIndex})>Summary!$B$5, "Yes", "No")`;
+                if (!data.materialityThreshold) { materialityFormula = `"No"`; }
+                rowData["Is Material?"] = { t: 's', f: materialityFormula };
+                
+                rowData["Status"] = item.status;
+                rowData["Auditor's Comments"] = item.auditorComment;
+
+                return rowData;
             });
+
             const detailed_ws = XLSX.utils.json_to_sheet(detailedJson, { cellDates: true });
 
-            detailed_ws['!cols'] = [
-                { wch: 15 }, { wch: 40 }, { wch: 20 }, { wch: 20 },
-                { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }
-            ];
-            detailed_ws['!autofilter'] = { ref: `A1:H${detailedJson.length + 1}` };
+            detailed_ws['!cols'] = hasCodes 
+                ? [{ wch: 15 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }]
+                : [{ wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }];
+            
+            const autoFilterRef = hasCodes ? `A1:H${detailedJson.length + 1}` : `A1:G${detailedJson.length + 1}`;
+            detailed_ws['!autofilter'] = { ref: autoFilterRef };
             detailed_ws['!freeze'] = { ySplit: 1 };
 
             const wb = XLSX.utils.book_new();
@@ -3719,6 +3706,8 @@
             }
             engagementData.parserSettings = parserSettings;
             engagementData.matchingResults = null;
+            // V63: Set the hasAccountCodes flag
+            engagementData.hasAccountCodes = normalizedData.some(item => item.code && item.code.trim() !== '');
 
             await saveAndNotify(dataKey, engagementData);
             await renderUploadedFiles(appState.currentEngagement.id);
@@ -3748,7 +3737,8 @@
             
             const a = document.createElement('a');
             const safeClientName = engagementMetadata.clientName.replace(/[\/\\?%*:|"<>]/g, '_');
-            const safeYear = engagementMetadata.engagementYear.replace(/[\/\\?%*:|"<>]/g, '_');
+            const safeYear = 
+            engagementMetadata.engagementYear.replace(/[\/\\?%*:|"<>]/g, '_');
             a.download = `OBT_${safeClientName}_${safeYear}.json`;
             a.href = window.URL.createObjectURL(blob);
             a.style.display = 'none';
@@ -3829,7 +3819,7 @@
             }
         }
 
-        const renderFilterIcons = () => {
+        const renderFilterIcons = (tableConfig) => {
             renderReviewActions();
             const toggleBtn = document.getElementById('toggle-filter-btn');
             if(toggleBtn) toggleBtn.classList.toggle('active', appState.isFilterUIVisible);
@@ -3856,7 +3846,7 @@
                 iconContainer.style.display = 'inline-flex';
                 iconContainer.style.gap = '0.25rem';
                 
-                const columnConfig = TABLE_CONFIG.find(c => (c.key || c.id) === th.dataset.key);
+                const columnConfig = tableConfig.find(c => (c.key || c.id) === th.dataset.key);
                 if (!columnConfig) return;
 
                 if (columnConfig.id === 'tickMark') {
@@ -3874,7 +3864,7 @@
                     filterIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1.5A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>`;
                     filterIcon.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        openFilterPopup(th);
+                        openFilterPopup(th, tableConfig);
                     });
                     filterIcon.classList.toggle('active', !!appState.columnFilters[th.dataset.key]);
                     iconContainer.appendChild(filterIcon);
@@ -3886,12 +3876,12 @@
             });
         };
 
-        const openFilterPopup = async (th) => {
+        const openFilterPopup = async (th, tableConfig) => {
             const engagementData = await getFromStorage(getEngagementDataKey(appState.currentEngagement.id));
             if (!appState.filteredResultsCache) return;
             
             const key = th.dataset.key;
-            const columnConfig = TABLE_CONFIG.find(c => c.key === key);
+            const columnConfig = tableConfig.find(c => c.key === key);
             if (!columnConfig) return;
 
             const type = columnConfig.dataType;
@@ -4158,30 +4148,31 @@
 
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const data = await getFromStorage(dataKey);
+            const keyField = data.hasAccountCodes ? 'code' : 'name';
 
-            let codesToUpdate = new Set();
+            let keysToUpdate = new Set();
             switch (appState.bulkSelectionScope) {
                 case 'page':
-                    codesToUpdate = appState.selectedRows;
+                    keysToUpdate = appState.selectedRows;
                     break;
                 case 'all':
-                    appState.filteredResultsCache.forEach(item => codesToUpdate.add(item.code));
+                    appState.filteredResultsCache.forEach(item => keysToUpdate.add(item[keyField]));
                     break;
                 case 'custom':
                     const { start, end } = appState.bulkSelectionCustomRange;
                     const startIndex = (start - 1) * appState.pageSize;
                     const endIndex = end * appState.pageSize;
-                    appState.filteredResultsCache.slice(startIndex, endIndex).forEach(item => codesToUpdate.add(item.code));
+                    appState.filteredResultsCache.slice(startIndex, endIndex).forEach(item => keysToUpdate.add(item[keyField]));
                     break;
             }
 
-            if (codesToUpdate.size === 0) {
+            if (keysToUpdate.size === 0) {
                 alert("No items selected for the action.");
                 return;
             }
 
             data.matchingResults.forEach(item => {
-                if (codesToUpdate.has(item.code)) {
+                if (keysToUpdate.has(item[keyField])) {
                     if (action === 'markReviewed') item.reviewStatus = true;
                     else if (action === 'clearReviewed') item.reviewStatus = false;
                     else if (action === 'clearTicksAndComments') {
@@ -4215,11 +4206,12 @@
                 return;
             }
 
+            const keyField = data.hasAccountCodes ? 'code' : 'name';
             const unmatchedCY = data.matchingResults.filter(item => item.status === 'New Account');
             const unmatchedPY = data.matchingResults.filter(item => item.status === 'Prior Year Only');
 
-            unmatchedCYList.innerHTML = unmatchedCY.map(item => `<li class="mapping-item" data-code="${item.code}">${item.name} (${item.code})</li>`).join('');
-            unmatchedPYList.innerHTML = unmatchedPY.map(item => `<li class="mapping-item" data-code="${item.code}">${item.name} (${item.code})</li>`).join('');
+            unmatchedCYList.innerHTML = unmatchedCY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
+            unmatchedPYList.innerHTML = unmatchedPY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
 
             appState.manualMapping = { cy: null, py: null };
             saveMappingBtn.disabled = true;
@@ -4237,13 +4229,13 @@
             if (!item) return;
 
             const list = item.parentElement;
-            const code = item.dataset.code;
+            const key = item.dataset.key;
 
             list.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
             item.classList.add('selected');
 
-            if (list.id === 'unmatched-cy-list') appState.manualMapping.cy = code;
-            else if (list.id === 'unmatched-py-list') appState.manualMapping.py = code;
+            if (list.id === 'unmatched-cy-list') appState.manualMapping.cy = key;
+            else if (list.id === 'unmatched-py-list') appState.manualMapping.py = key;
             
             saveMappingBtn.disabled = !(appState.manualMapping.cy && appState.manualMapping.py);
         };
@@ -4595,14 +4587,20 @@
                  const name = String(originalRow[columnMap.name] || '').trim();
                  if (!name) return;
 
-                 let item = { originalRow, name, code: String(originalRow[columnMap.code] || '').trim() };
+                 // V63: Set code to null if not mapped
+                 let item = { originalRow, name, code: columnMap.code !== undefined ? String(originalRow[columnMap.code] || '').trim() : null };
                  
                  if (splitCombinedCheckbox.checked && columnMap.hasOwnProperty('name')) {
                     const splitResult = splitCombinedAccount(item.name);
-                    item.code = splitResult.code || item.code;
-                    item.name = splitResult.name;
+                    // Only overwrite code if split is successful and no code was mapped
+                    if (splitResult.code && item.code === null) {
+                        item.code = splitResult.code;
+                        item.name = splitResult.name;
+                    }
                  }
-                 if (!item.code) item.code = item.name;
+                 // V63: Ensure code is null, not an empty string, if not present
+                 if(item.code === '') item.code = null;
+
 
                 let balance = 0, error = false;
                 if (columnMap.hasOwnProperty('finalBalance')) {
@@ -4643,14 +4641,22 @@
 
             parserPreviewSummary.innerHTML = `Successfully processed <b>${extractedData.length}</b> data rows. Found <b>${errorCount}</b> rows with potential balance parsing errors (highlighted). Please review the preview below.`;
             
-            const previewHeaders = `<thead><tr><th>Account Code</th><th>Account Name</th><th>Balance</th>${useInferenceCheckbox.checked ? '<th>Inferred Nature</th>' : ''}</tr></thead>`;
-            const previewRows = extractedData.slice(0, 50).map(item => `
-                <tr class="${item._error ? 'parsing-error' : ''}">
-                    <td>${item.code}</td>
-                    <td>${item.name}</td>
-                    <td>${item.balance.toFixed(2)}</td>
-                    ${useInferenceCheckbox.checked ? `<td>${item.inferredNature ? `<span class="inferred-nature-badge">${item.inferredNature}</span>` : ''}</td>` : ''}
-                </tr>`).join('');
+            // V63: Dynamic preview table headers
+            const hasCodes = columnMap.code !== undefined || splitCombinedCheckbox.checked;
+            let previewHeaders = `<thead><tr>`;
+            if (hasCodes) previewHeaders += `<th>Account Code</th>`;
+            previewHeaders += `<th>Account Name</th><th>Balance</th>${useInferenceCheckbox.checked ? '<th>Inferred Nature</th>' : ''}</tr></thead>`;
+            
+            const previewRows = extractedData.slice(0, 50).map(item => {
+                let rowHtml = `<tr class="${item._error ? 'parsing-error' : ''}">`;
+                if(hasCodes) rowHtml += `<td>${item.code || ''}</td>`;
+                rowHtml += `<td>${item.name}</td>
+                            <td>${item.balance.toFixed(2)}</td>
+                            ${useInferenceCheckbox.checked ? `<td>${item.inferredNature ? `<span class="inferred-nature-badge">${item.inferredNature}</span>` : ''}</td>` : ''}
+                           </tr>`;
+                return rowHtml;
+            }).join('');
+            
             parserPreviewTable.innerHTML = `${previewHeaders}<tbody>${previewRows}</tbody>`;
             
             parserStep0.classList.add('hidden');
@@ -4670,7 +4676,9 @@
             const headerLength = Object.keys(columnMap).length;
 
             data.forEach(item => {
-                codeCounts[item.code] = (codeCounts[item.code] || 0) + 1;
+                if(item.code) { // Only count duplicates if codes exist
+                    codeCounts[item.code] = (codeCounts[item.code] || 0) + 1;
+                }
                 
                 if (item._error) {
                     mixedTypeCount++;
@@ -5045,12 +5053,13 @@
                 const row = target.closest('tr');
                 if (!row) return;
 
-                const code = row.dataset.code;
+                const key = row.dataset.key;
                 const dataKey = getEngagementDataKey(appState.currentEngagement.id);
                 const data = await getFromStorage(dataKey);
-                if (!code || !data) return;
+                if (!key || !data) return;
                 
-                const item = data.matchingResults.find(r => r.code === code);
+                const keyField = data.hasAccountCodes ? 'code' : 'name';
+                const item = data.matchingResults.find(r => r[keyField] === key);
                 if (!item) return;
                 
                 let dataChanged = false;
@@ -5081,11 +5090,12 @@
 
             reviewTableContainer.addEventListener('input', async (e) => {
                 if (e.target.matches('textarea[data-field="auditorComment"]')) {
-                    const code = e.target.dataset.code;
+                    const key = e.target.dataset.key;
                     const value = e.target.value;
                     const dataKey = getEngagementDataKey(appState.currentEngagement.id);
                     const data = await getFromStorage(dataKey);
-                    const item = data.matchingResults.find(r => r.code === code);
+                    const keyField = data.hasAccountCodes ? 'code' : 'name';
+                    const item = data.matchingResults.find(r => r[keyField] === key);
                     if (item) {
                         item.auditorComment = value;
                         await saveAndNotify(dataKey, data);
@@ -5200,12 +5210,12 @@
             exportEngagementBtn.addEventListener('click', exportEngagementData);
             importEngagementBtn.addEventListener('click', () => importFileInput.click());
             importFileInput.addEventListener('change', async (e) => {
-    try {
-        await handleFileImport(e);
-    } catch (error) {
-        handleCriticalError(error, "File Import Failed");
-    }
-});
+                try {
+                    await handleFileImport(e);
+                } catch (error) {
+                    handleCriticalError(error, "File Import Failed");
+                }
+            });
 
             applyMaterialityCheckbox.addEventListener('change', async () => {
                 const isChecked = applyMaterialityCheckbox.checked;
@@ -5225,6 +5235,24 @@
                 data.materialityThreshold = isNaN(value) ? null : value;
                 await saveAndNotify(dataKey, data);
                 if (appState.activeTab === 'review') await filterAndRenderReviewTable();
+            });
+            
+            // V61: Event listeners for Matching Sensitivity
+            const handleSensitivityChange = async (value) => {
+                const dataKey = getEngagementDataKey(appState.currentEngagement.id);
+                const data = await getFromStorage(dataKey) || {};
+                data.matchingSensitivity = parseInt(value, 10);
+                await saveAndNotify(dataKey, data);
+            };
+
+            matchingSensitivitySlider.addEventListener('input', () => {
+                matchingSensitivityInput.value = matchingSensitivitySlider.value;
+                handleSensitivityChange(matchingSensitivitySlider.value);
+            });
+
+            matchingSensitivityInput.addEventListener('input', () => {
+                matchingSensitivitySlider.value = matchingSensitivityInput.value;
+                handleSensitivityChange(matchingSensitivityInput.value);
             });
             
             reviewSearchInput.addEventListener('input', () => {
@@ -5248,15 +5276,15 @@
             reviewTableContainer.addEventListener('change', (e) => {
                 const target = e.target;
                 if (target.matches('.row-checkbox')) {
-                    const code = target.closest('tr').dataset.code;
-                    if (target.checked) appState.selectedRows.add(code); else appState.selectedRows.delete(code);
+                    const key = target.closest('tr').dataset.key;
+                    if (target.checked) appState.selectedRows.add(key); else appState.selectedRows.delete(key);
                     appState.bulkSelectionScope = 'page';
                     updateBulkActionsUI();
                 } else if (target.matches('#select-all-checkbox')) {
                     const isChecked = target.checked;
                     reviewTableContainer.querySelectorAll('.row-checkbox').forEach(cb => {
-                        cb.checked = isChecked; const code = cb.closest('tr').dataset.code;
-                        if (isChecked) appState.selectedRows.add(code); else appState.selectedRows.delete(code);
+                        cb.checked = isChecked; const key = cb.closest('tr').dataset.key;
+                        if (isChecked) appState.selectedRows.add(key); else appState.selectedRows.delete(key);
                     });
                     appState.bulkSelectionScope = 'page';
                     updateBulkActionsUI();
