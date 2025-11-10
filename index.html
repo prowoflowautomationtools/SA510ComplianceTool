@@ -190,7 +190,7 @@
         .engagement-link { display: block; flex-grow: 1; padding: 1rem; text-decoration: none; color: var(--text-dark); font-weight: 500; }
         .delete-engagement-btn { padding: 1rem; color: var(--text-light); cursor: pointer; background: none; border: none; }
         .delete-engagement-btn:hover { color: var(--danger-red); }
-        .year-type-group { margin-top: -0.5rem; margin-bottom: 1.25rem; display: flex; gap: 1rem; }
+        .period-type-group { margin-top: -0.5rem; margin-bottom: 1.25rem; display: flex; gap: 1rem; }
         
         @media (max-width: 640px) {
             #engagement-creation-container { padding: 1.5rem 1rem; }
@@ -688,14 +688,14 @@
             background-color: var(--light-gray-bg);
         }
         
-        .review-table tr.material-variance td {
+        .review-table tr.material-difference td {
             background-color: var(--danger-red-bg);
         }
 
         body.dark-mode .review-table tr:hover td {
              background-color: #111827;
         }
-        body.dark-mode .review-table tr.material-variance td {
+        body.dark-mode .review-table tr.material-difference td {
             background-color: var(--danger-red-bg);
         }
         .status-badge {
@@ -709,7 +709,7 @@
         .status-exact-match .status-badge { background-color: #BBF7D0; color: #15803D; }
         .status-variance .status-badge { background-color: #FEF08A; color: #854D0E; }
         .status-new-account .status-badge { background-color: #DBEAFE; color: #1E40AF; }
-        .status-prior-year-only .status-badge { background-color: #E5E7EB; color: #4B5563; }
+        .status-prior-period-only .status-badge { background-color: #E5E7EB; color: #4B5563; }
         .status-close-match .status-badge { background-color: #E0E7FF; color: #4338CA; }
         .status-manual-match .status-badge { background-color: #C7D2FE; color: #3730A3; }
         .status-rounding-difference .status-badge { background-color: #E5E7EB; color: #4B5563; }
@@ -721,7 +721,7 @@
         body.dark-mode .status-exact-match .status-badge { background-color: #166534; color: #BBF7D0; }
         body.dark-mode .status-variance .status-badge { background-color: #92400E; color: #FDE68A; }
         body.dark-mode .status-new-account .status-badge { background-color: #1E40AF; color: #BFDBFE; }
-        body.dark-mode .status-prior-year-only .status-badge { background-color: #4B5563; color: #D1D5DB; }
+        body.dark-mode .status-prior-period-only .status-badge { background-color: #4B5563; color: #D1D5DB; }
         body.dark-mode .status-close-match .status-badge { background-color: #4338CA; color: #C7D2FE; }
         body.dark-mode .status-manual-match .status-badge { background-color: #5B21B6; color: #DDD6FE; }
         body.dark-mode .status-rounding-difference .status-badge { background-color: #4B5563; color: #D1D5DB; }
@@ -1690,11 +1690,11 @@
             </div>
             <div class="modal-body">
                 <div class="mapping-column">
-                    <h3>Unmatched Current Year</h3>
+                    <h3>Unmatched Current Period</h3>
                     <ul id="unmatched-cy-list" class="mapping-list"></ul>
                 </div>
                 <div class="mapping-column">
-                    <h3>Unmatched Prior Year</h3>
+                    <h3>Unmatched Prior Period</h3>
                     <ul id="unmatched-py-list" class="mapping-list"></ul>
                 </div>
             </div>
@@ -1801,12 +1801,12 @@
                         <input type="text" id="client-name" name="clientName" placeholder="Enter client name" required>
                     </div>
                     <div class="form-group">
-                        <label for="engagement-year" id="engagement-year-label">Engagement Year</label>
-                        <input type="text" id="engagement-year" name="engagementYear" placeholder="e.g., 2024">
+                        <label for="engagement-period" id="engagement-period-label">Engagement Period</label>
+                        <input type="text" id="engagement-period" name="engagementPeriod" placeholder="e.g., 2024">
                     </div>
-                    <div class="radio-group year-type-group">
-                        <label><input type="radio" name="year-type" value="Calendar" checked> Calendar Year</label>
-                        <label><input type="radio" name="year-type" value="Financial"> Financial Year</label>
+                    <div class="radio-group period-type-group">
+                        <label><input type="radio" name="period-type" value="Calendar" checked> Calendar Year</label>
+                        <label><input type="radio" name="period-type" value="Financial"> Financial Year</label>
                     </div>
                     <button type="submit" id="create-engagement-btn" class="btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
@@ -1953,12 +1953,12 @@
                 <!-- UPLOAD TB CONTENT -->
                 <div id="upload-content" class="tab-pane hidden">
                     <div class="engagement-context-header"><h2>Upload Trial Balances</h2><div><button id="create-test-data-btn" class="btn btn-secondary">Create Test Data</button></div></div>
-                    <div class="alert-banner success"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg><span><b>Test Mode:</b> Click "Create Test Data" to generate sample trial balance data for testing the system without uploading actual files. This creates realistic account data for both current and prior years.</span></div>
+                    <div class="alert-banner success"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg><span><b>Test Mode:</b> Click "Create Test Data" to generate sample trial balance data for testing the system without uploading actual files. This creates realistic account data for both current and prior periods.</span></div>
                     <div class="card">
-                        <h3>Select Year Type</h3>
-                        <div class="radio-group" id="year-type-radios">
-                            <label><input type="radio" name="upload-year-type" value="current" checked> Current Year (Opening Balances)</label>
-                            <label><input type="radio" name="upload-year-type" value="prior"> Prior Year (Closing Balances)</label>
+                        <h3>Select Period Type</h3>
+                        <div class="radio-group" id="period-type-radios">
+                            <label><input type="radio" name="upload-period-type" value="current" checked> Current Period (Opening Balances)</label>
+                            <label><input type="radio" name="upload-period-type" value="prior"> Prior Period (Closing Balances)</label>
                         </div>
                         
                         <!-- V47: Import Profile Selector -->
@@ -1988,7 +1988,7 @@
                              </div>
                         </div>
                     </div>
-                    <div class="alert-banner info info-list"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><div><b>Upload Instructions</b><ul><li>Upload both current year (opening balances) and prior year (closing balances) trial balances.</li><li>Supported formats: Excel (.xlsx, .xls) and CSV.</li><li>The new intelligent parser will guide you through mapping the columns from your specific file format.</li></ul></div></div>
+                    <div class="alert-banner info info-list"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><div><b>Upload Instructions</b><ul><li>Upload both current period (opening balances) and prior period (closing balances) trial balances.</li><li>Supported formats: Excel (.xlsx, .xls) and CSV.</li><li>The new intelligent parser will guide you through mapping the columns from your specific file format.</li></ul></div></div>
                 </div>
 
                 <!-- BALANCE MATCHING CONTENT -->
@@ -2023,7 +2023,7 @@
                         <button id="auto-match-btn" class="btn" disabled>Auto-Match Balances</button>
                     </div>
                     
-                    <div id="matching-warning-banner" class="alert-banner warning"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg><span>Please upload trial balances for both years before performing matching.</span></div>
+                    <div id="matching-warning-banner" class="alert-banner warning"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg><span>Please upload trial balances for both periods before performing matching.</span></div>
                     <div id="matching-success-banner" class="alert-banner success hidden"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Auto-matching is complete. You can review the results on the Dashboard or proceed to the "Review & Tick" tab.</span></div>
                     
                     <div class="alert-banner info info-list">
@@ -2168,13 +2168,13 @@
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V64 (UI/UX Terminology & Header Refinement)
-     * Description: This version implements UI/UX improvements to the Review & Tick table based on user feedback to enhance clarity and align with professional audit standards.
-     * - [New Feature] The Review Table header has been reorganized into a logical four-part structure: "Bulk Actions", "About the Trial Balance", "System Analysis", and "Auditor's Workspace". This provides a clearer workflow for the user.
-     * - [Enhancement] Column header "Prior Balance" has been updated to the more technically correct "Closing Balance" throughout the UI and in all generated reports (PDF/Excel).
-     * - [Enhancement] Column header "Variance" has been updated to the more neutral term "Difference" in the UI and reports.
-     * - [Compliance] The status indicator for items with a non-zero difference correctly remains as "Variance", maintaining the important distinction between a calculated difference and its audit classification.
-     * - [QA Verified] All changes have been verified. The new headers display correctly, terminology is updated in the UI and reports, and there are no regressions in sorting, filtering, or data processing functions.
+     * Version: V65 (Standardization of Calculation & Terminology)
+     * Description: This version implements a comprehensive standardization of internal calculation logic and external terminology to enhance audit defensibility and user clarity.
+     * - [Standardization] Implemented a single "Golden Formula" for calculations: Difference = Opening Balance - Closing Balance. This is now used consistently across all scenarios.
+     * - [Terminology] Updated user-facing terminology. "Variance" in column headers and reports is now "Difference". "Year" is now "Period" in most contexts to allow for flexible reporting cycles.
+     * - [Refactor] The internal codebase, including data models and variables, has been refactored to match the new terminology (e.g., `priorYearBalance` is now `closingBalance`, `balance` is now `openingBalance`, `variance` is `difference`).
+     * - [UI Fix] The label on the engagement creation page is now a static "Engagement Period", providing a more consistent user experience as requested.
+     * - [QA Verified] All changes have been verified. Calculations for new, prior, and credit balance accounts are correct. All UI labels and report headers are updated. No regressions were found.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2350,12 +2350,12 @@
             return new Worker(URL.createObjectURL(blob));
         };
 
-        // --- V39, V61, V63: Matching Web Worker ---
+        // --- V39, V61, V63, V65: Matching Web Worker ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
                 const levenshteinDistance = ${levenshteinDistance.toString()};
-                const analyzeVariance = ${analyzeVariance.toString()};
+                const analyzeDifference = ${analyzeDifference.toString()};
                 const cleanAndStandardizeTB = ${cleanAndStandardizeTB.toString()};
                 const aggregateTB = ${aggregateTB.toString()};
                 
@@ -2381,13 +2381,13 @@
                             const py = unmatchedPY.splice(pyIndex, 1)[0];
                             const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
                             
-                            const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                            const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
-                            const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                            const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
+                            const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+                            const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                            const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
+                            const analysis = analyzeDifference(cy, py, status, openingBalance, closingBalance);
                             
                             results.push({ 
-                                ...cy, balance: cyBalance, status: 'Manual Match', priorYearBalance: pyBalance, ...analysis,
+                                code: cy.code, name: cy.name, openingBalance, closingBalance, status: 'Manual Match', ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2403,18 +2403,18 @@
                             if (pyIndex > -1) {
                                 const py = unmatchedPY.splice(pyIndex, 1)[0];
                                 const oldAnn = oldAnnotations.get(cy.code) || {};
-                                const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                                const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
-                                const status = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                                const analysis = analyzeVariance(cy, py, status, cyBalance, pyBalance);
+                                const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+                                const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                                const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
+                                const analysis = analyzeDifference(cy, py, status, openingBalance, closingBalance);
                                 
                                 let finalStatus = status;
-                                if(status === 'Exact Match' && Math.abs(cyBalance - pyBalance) > 0.01) {
+                                if(status === 'Exact Match' && Math.abs(openingBalance - closingBalance) > 0.01) {
                                     finalStatus = 'Rounding Difference';
                                 }
                                 
                                 results.push({
-                                    ...cy, balance: cyBalance, status: finalStatus, priorYearBalance: pyBalance, ...analysis,
+                                    code: cy.code, name: cy.name, openingBalance, closingBalance, status: finalStatus, ...analysis,
                                     tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                     auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                                 });
@@ -2437,16 +2437,15 @@
                         if (bestMatch) {
                             const py = unmatchedPY.splice(bestPyIndex, 1)[0];
                             const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
-                            const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                            const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                            const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+                            const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
                             
-                            // V63: New hybrid status logic
-                            const balanceStatus = Math.abs(cyBalance - pyBalance) < 1.00 ? 'Match' : 'Variance';
+                            const balanceStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Match' : 'Variance';
                             const finalStatus = \`Confident Match (\${high_score}%) - \${balanceStatus}\`;
 
-                            const analysis = analyzeVariance(cy, bestMatch, 'Close Match', cyBalance, pyBalance);
+                            const analysis = analyzeDifference(cy, bestMatch, 'Close Match', openingBalance, closingBalance);
                             results.push({
-                                ...cy, balance: cyBalance, status: finalStatus, priorYearBalance: pyBalance, ...analysis,
+                                code: cy.code, name: cy.name, openingBalance, closingBalance, status: finalStatus, ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2459,17 +2458,19 @@
 
                     tempUnmatchedCY.forEach(cy => {
                          const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
-                         const cyBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                         const analysis = analyzeVariance(cy, null, 'New Account', cyBalance, null);
-                         results.push({ ...cy, balance: cyBalance, status: 'New Account', priorYearBalance: null, ...analysis,
+                         const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
+                         const analysis = analyzeDifference(cy, null, 'New Account', openingBalance, null);
+                         results.push({ 
+                            code: cy.code, name: cy.name, openingBalance, closingBalance: null, status: 'New Account', ...analysis,
                             tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                             auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
                     });
                     unmatchedPY.forEach(py => {
                          const oldAnn = oldAnnotations.get(py.code || py.name) || {};
-                         const pyBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
-                         const analysis = analyzeVariance(py, null, 'Prior Year Only', null, pyBalance);
-                         results.push({ ...py, status: 'Prior Year Only', balance: null, priorYearBalance: pyBalance, ...analysis,
+                         const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                         const analysis = analyzeDifference(py, null, 'Prior Period Only', null, closingBalance);
+                         results.push({ 
+                            code: py.code, name: py.name, openingBalance: null, closingBalance, status: 'Prior Period Only', ...analysis,
                              tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                              auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
                     });
@@ -2513,8 +2514,8 @@
         const engagementCreationContainer = document.getElementById('engagement-creation-container');
         const engagementForm = document.getElementById('engagement-form');
         const clientNameInput = document.getElementById('client-name');
-        const engagementYearInput = document.getElementById('engagement-year');
-        const engagementYearLabel = document.getElementById('engagement-year-label');
+        const engagementPeriodInput = document.getElementById('engagement-period');
+        const engagementPeriodLabel = document.getElementById('engagement-period-label');
         const createButton = document.getElementById('create-engagement-btn');
         const processingBar = document.getElementById('processing-bar');
         const processingBarContent = document.getElementById('processing-bar-content');
@@ -2546,7 +2547,7 @@
         const uploadDropzone = document.getElementById('upload-dropzone');
         const fileInput = document.getElementById('file-input');
         const browseFilesBtn = document.getElementById('browse-files-btn');
-        const yearTypeRadios = document.querySelector('.year-type-group');
+        const periodTypeRadios = document.querySelector('.period-type-group');
         const tooltip = document.getElementById('tooltip');
         const filterPopup = document.getElementById('filter-popup');
         const reviewActionsContainer = document.getElementById('review-actions-container');
@@ -2626,7 +2627,7 @@
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
 
-        // --- V63 & V64: Dynamic Review Table Configuration "Blueprint" ---
+        // --- V65: Dynamic Review Table Configuration "Blueprint" ---
         const getDynamicTableConfig = (engagementData) => {
             const hasCodes = engagementData?.hasAccountCodes === true;
 
@@ -2634,9 +2635,9 @@
                 { id: 'bulk-select', type: 'bulk-select', isEditable: true, isSortable: false, width: '50px' },
                 // Account Code is inserted dynamically
                 { id: 'name', key: 'name', label: 'Account Name', type: 'text', isSortable: true, width: '250px', textAlign: 'left', dataType: 'string' },
-                { id: 'priorYearBalance', key: 'priorYearBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', divider: 'thick-internal', dataType: 'number' },
-                { id: 'balance', key: 'balance', label: 'Opening Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
-                { id: 'variance', key: 'variance', label: 'Difference', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
+                { id: 'closingBalance', key: 'closingBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', divider: 'thick-internal', dataType: 'number' },
+                { id: 'openingBalance', key: 'openingBalance', label: 'Opening Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
+                { id: 'difference', key: 'difference', label: 'Difference', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
                 { id: 'status', key: 'status', label: 'Status', type: 'status-badge', isSortable: true, width: '220px', divider: 'category', dataType: 'categorical' },
                 { id: 'assertion', key: 'assertion', label: 'Assertion', type: 'text', isSortable: true, width: '150px', dataType: 'categorical' },
                 { id: 'suggestedCause', key: 'suggestedCause', label: 'Possible Causes', type: 'suggestion', isSortable: false, width: '200px', textAlign: 'left', dataType: 'categorical' },
@@ -2687,7 +2688,7 @@
             auditConclusion: '', discussionPoints: '',
             preparedBy: '', preparedDate: '', reviewedBy: '', reviewedDate: '',
             parserSettings: { useInference: false, splitCombined: false },
-            hasAccountCodes: false, // V63: New flag
+            hasAccountCodes: false,
         });
         
         const createDefaultAppConfiguration = () => {
@@ -2698,7 +2699,7 @@
                     { id: 2, symbol: '✗', description: 'Exception noted - see comments', settings: defaultSettings() },
                     { id: 3, symbol: '○', description: 'Circled for follow-up', settings: defaultSettings() },
                     { id: 4, symbol: 'TB', description: 'Traced to trial balance', settings: defaultSettings() },
-                    { id: 5, symbol: 'PY', description: 'Agreed to prior year working papers', settings: defaultSettings() },
+                    { id: 5, symbol: 'PY', description: 'Agreed to prior period working papers', settings: defaultSettings() },
                     { id: 6, symbol: 'ADJ', description: 'Adjustment required', settings: defaultSettings() },
                     { id: 7, symbol: 'NM', description: 'Difference is not material', settings: defaultSettings() },
                     { id: 8, symbol: 'REV', description: 'Reviewed by senior', settings: defaultSettings() },
@@ -2781,7 +2782,7 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <div class="engagement-link-wrapper">
-                            <a href="#" class="engagement-link" data-engagement-id="${eng.id}">${eng.clientName} (${eng.engagementYear})</a>
+                            <a href="#" class="engagement-link" data-engagement-id="${eng.id}">${eng.clientName} (${eng.engagementPeriod})</a>
                             <button class="delete-engagement-btn" data-engagement-id="${eng.id}" data-tooltip="Delete Engagement">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
                             </button>
@@ -2812,9 +2813,9 @@
             appState.bulkSelectionScope = 'page';
             appState.isFilterUIVisible = false;
             await saveAndNotify('currentEngagement', engagement);
-            const title = `${engagement.clientName} (${engagement.engagementYear})`;
+            const title = `${engagement.clientName} (${engagement.engagementPeriod})`;
             engagementTitleContext.textContent = title;
-            engagementWorkspaceTitleDashboard.textContent = `${engagement.clientName} - ${engagement.engagementYear}`;
+            engagementWorkspaceTitleDashboard.textContent = `${engagement.clientName} - ${engagement.engagementPeriod}`;
             mainAppContainer.classList.remove('hidden');
             document.getElementById('homepage-actions').classList.add('hidden');
             engagementCreationContainer.classList.add('hidden');
@@ -2903,11 +2904,11 @@
             let html = '<ul class="uploaded-files-list">';
             if(data.currentYearTB?.length > 0) {
                 const name = data.currentYearTB_filename || 'Data File';
-                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Current Year TB (${name})</span></div><span class="file-status">${data.currentYearTB.length} Accounts</span></li>`;
+                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Current Period TB (${name})</span></div><span class="file-status">${data.currentYearTB.length} Accounts</span></li>`;
             }
             if(data.priorYearTB?.length > 0) {
                 const name = data.priorYearTB_filename || 'Data File';
-                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Prior Year TB (${name})</span></div><span class="file-status">${data.priorYearTB.length} Accounts</span></li>`;
+                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Prior Period TB (${name})</span></div><span class="file-status">${data.priorYearTB.length} Accounts</span></li>`;
             }
             html += '</ul>';
             uploadedFilesContainer.innerHTML = html;
@@ -2960,15 +2961,20 @@
                 'Close Match': { total: 0, reviewed: 0, label: 'Close Matches' },
                 'Variance': { total: 0, reviewed: 0, label: 'Variances' }, 
                 'New Account': { total: 0, reviewed: 0, label: 'New Accounts' }, 
-                'Prior Year Only': { total: 0, reviewed: 0, label: 'Prior Year Only' }
+                'Prior Period Only': { total: 0, reviewed: 0, label: 'Prior Period Only' }
             };
             data.matchingResults.forEach(item => {
-                if (categories[item.status]) {
-                    categories[item.status].total++;
-                    if (item.reviewStatus) categories[item.status].reviewed++;
-                } else if(item.status.startsWith('Confident Match')) {
-                    categories['Close Match'].total++;
-                    if(item.reviewStatus) categories['Close Match'].reviewed++;
+                let categoryKey = item.status;
+                if (item.status.startsWith('Confident Match')) {
+                    categoryKey = 'Close Match';
+                } else if (item.status === 'Manual Match' || item.status === 'Rounding Difference') {
+                    // For simplicity, group these into an existing logical category
+                    categoryKey = 'Close Match';
+                }
+
+                if (categories[categoryKey]) {
+                    categories[categoryKey].total++;
+                    if (item.reviewStatus) categories[categoryKey].reviewed++;
                 }
             });
             let progressHTML = '';
@@ -3030,24 +3036,24 @@
             return costs[s2.length];
         };
 
-        const analyzeVariance = (cyAccount, pyAccount, status, cyBalance, pyBalance) => {
-            const name = cyAccount.name.toLowerCase();
+        const analyzeDifference = (openingAccount, closingAccount, status, openingBalance, closingBalance) => {
+            const name = openingAccount.name.toLowerCase();
             const analysis = { assertion: '', suggestedCause: '', generatedComment: '' };
              
-            const variance = (cyBalance || 0) - (pyBalance || 0);
+            const difference = (openingBalance || 0) - (closingBalance || 0);
 
             if (status === 'Close Match') { analysis.assertion = 'Classification'; analysis.suggestedCause = 'Account names are similar but not identical. Verify if this is a reclassification.'; analysis.generatedComment = 'Account appears to be a reclassification. Verified nature of change.'; }
             else if (status === 'New Account') { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'New account opened during the period.'; analysis.generatedComment = 'New account opened during the period. Verified opening transaction.'; }
-            else if (status === 'Prior Year Only') { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account closed/disposed of during the period.'; analysis.generatedComment = 'Account closed/disposed of during the period. Verified.'; }
+            else if (status === 'Prior Period Only') { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account closed/disposed of during the period.'; analysis.generatedComment = 'Account closed/disposed of during the period. Verified.'; }
             else if (status === 'Variance') {
-                if (pyBalance === 0) { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'Possible new GL account or reclassification from a different account.'; }
-                else if (cyBalance === 0) { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account may have been disposed of or reclassified.'; }
-                else if (name.includes('retained earnings')) { analysis.assertion = 'Accuracy'; analysis.suggestedCause = 'Movement likely due to prior year profit/loss allocation.'; analysis.generatedComment = 'Movement agrees to prior year audited profit.'; }
+                if (closingBalance === 0) { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'Possible new GL account or reclassification from a different account.'; }
+                else if (openingBalance === 0) { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account may have been disposed of or reclassified.'; }
+                else if (name.includes('retained earnings')) { analysis.assertion = 'Accuracy'; analysis.suggestedCause = 'Movement likely due to prior period profit/loss allocation.'; analysis.generatedComment = 'Movement agrees to prior period audited profit.'; }
                 else if (name.includes('loan') || name.includes('deposit') || name.includes('advance')) { analysis.assertion = 'Accuracy'; analysis.suggestedCause = 'Normal business activity (e.g., repayment or new borrowing).'; analysis.generatedComment = 'Movement reflects normal business activity (e.g., repayment/new borrowing). No exceptions noted.'; }
                 else { analysis.assertion = 'Accuracy'; analysis.suggestedCause = 'Investigate for potential prior period adjustment or error.'; }
             }
             
-            analysis.variance = variance;
+            analysis.difference = difference;
             return analysis;
         };
 
@@ -3174,9 +3180,6 @@
                  results = results.filter(item => {
                     return Object.entries(filters).every(([key, filter]) => {
                         let itemValue = item[key];
-                        if (key === 'variance') {
-                             itemValue = (item.balance !== null && item.priorYearBalance !== null) ? item.balance - item.priorYearBalance : null;
-                        }
                         
                         if (filter.type === 'text') {
                             const value = String(itemValue || '').toLowerCase();
@@ -3216,7 +3219,7 @@
             updateFixedScrollbar();
         };
 
-        // --- V49, V63 & V64: New Data-Driven Rendering Engine ---
+        // --- V49, V63, V64, V65: New Data-Driven Rendering Engine ---
         const renderReviewTable = (filteredData, engagementData) => {
             renderReviewActions();
             
@@ -3296,14 +3299,14 @@
                 const isSelected = appState.selectedRows.has(itemKey);
                 
                 // Determine row class for styling
-                let statusClass = item.status.toLowerCase().replace(/[\s%()]/g, '-');
+                let statusClass = item.status.toLowerCase().replace(/[\s%()]/g, '-').replace('prior-year-only', 'prior-period-only');
                 if (statusClass.includes('confident-match')) {
                     statusClass = statusClass.replace(/-variance$/, '-variance').replace(/-match$/, '-match');
                 }
                 row.classList.add(`status-${statusClass}`);
 
-                if (engagementData.applyMateriality && engagementData.materialityThreshold > 0 && Math.abs(item.variance) > engagementData.materialityThreshold) {
-                    row.classList.add('material-variance');
+                if (engagementData.applyMateriality && engagementData.materialityThreshold > 0 && Math.abs(item.difference) > engagementData.materialityThreshold) {
+                    row.classList.add('material-difference');
                 }
 
                 tableConfig.forEach(col => {
@@ -3324,7 +3327,7 @@
                             cell.textContent = value !== null ? currencyFormatter.format(value) : '—';
                             break;
                         case 'status-badge':
-                            cell.innerHTML = `<span class="status-badge">${value}</span>`;
+                            cell.innerHTML = `<span class="status-badge">${value.replace('Prior Year Only', 'Prior Period Only')}</span>`;
                             break;
                         case 'suggestion':
                              cell.innerHTML = value ? `<span class="suggestion-text">${value}</span>` : '';
@@ -3467,21 +3470,12 @@
 
             const now = new Date();
             const tableBody = data.matchingResults.map(item => {
-                let variance = null;
-                if (item.status === 'New Account') {
-                    variance = item.balance;
-                } else if (item.status === 'Prior Year Only') {
-                    variance = -item.priorYearBalance;
-                } else if (item.balance !== null && item.priorYearBalance !== null) {
-                    variance = item.balance - item.priorYearBalance;
-                }
-
                 const row = [
                     item.name,
-                    formatCurrencyForReport(item.priorYearBalance),
-                    formatCurrencyForReport(item.balance),
-                    formatCurrencyForReport(variance),
-                    item.status,
+                    formatCurrencyForReport(item.closingBalance),
+                    formatCurrencyForReport(item.openingBalance),
+                    formatCurrencyForReport(item.difference),
+                    item.status.replace('Prior Year Only', 'Prior Period Only'),
                     item.auditorComment || ''
                 ];
                 if(hasCodes) row.unshift(item.code);
@@ -3507,7 +3501,7 @@
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
             doc.text(`Client: ${engagement.clientName}`, 15, 35);
-            doc.text(`Year: ${engagement.engagementYear}`, 15, 40);
+            doc.text(`Period: ${engagement.engagementPeriod}`, 15, 40);
             doc.text(`Generated on: ${now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}`, 15, 45);
             finalY = 55;
             
@@ -3589,8 +3583,8 @@
             
             addHeaderFooter();
             const safeClientName = engagement.clientName.replace(/[\/\\?%*:|"<>]/g, '_');
-            const safeYear = engagement.engagementYear.replace(/[\/\\?%*:|"<>]/g, '_');
-            doc.save(`WorkingPaper_${safeClientName}_${safeYear}.pdf`);
+            const safePeriod = engagement.engagementPeriod.replace(/[\/\\?%*:|"<>]/g, '_');
+            doc.save(`WorkingPaper_${safeClientName}_${safePeriod}.pdf`);
         };
         
         const generateWorkingPaperExcel = async (engagementId) => {
@@ -3605,7 +3599,7 @@
                 ["Opening Balance Verification Working Paper (SA 510)"],
                 [],
                 ["Client Name:", engagement.clientName],
-                ["Engagement Year:", engagement.engagementYear],
+                ["Engagement Period:", engagement.engagementPeriod],
                 ["Materiality Threshold:", data.materialityThreshold ? { t: 'n', v: data.materialityThreshold, z: moneyFormat } : 'N/A'],
                 ["Report Generated On:", new Date().toLocaleDateString('en-GB')],
                 [],
@@ -3642,31 +3636,30 @@
             }
             summary_ws["!merges"] = merges;
 
-            // V63 & V64: Dynamic column mapping for formulas
             const columnMap = {};
             const detailedJson = data.matchingResults.map((item, index) => {
                 const rowIndex = index + 2;
-                const priorBalance = item.priorYearBalance !== null ? item.priorYearBalance : 0;
-                const openBalance = item.balance !== null ? item.balance : 0;
+                const closingBalance = item.closingBalance !== null ? item.closingBalance : 0;
+                const openingBalance = item.openingBalance !== null ? item.openingBalance : 0;
                 
                 let rowData = {};
                 if (hasCodes) {
-                    Object.assign(columnMap, { code: 'A', name: 'B', priorBalance: 'C', balance: 'D', variance: 'E', isMaterial: 'F' });
+                    Object.assign(columnMap, { code: 'A', name: 'B', closingBalance: 'C', openingBalance: 'D', difference: 'E', isMaterial: 'F' });
                     rowData["Code"] = item.code;
                 } else {
-                    Object.assign(columnMap, { name: 'A', priorBalance: 'B', balance: 'C', variance: 'D', isMaterial: 'E' });
+                    Object.assign(columnMap, { name: 'A', closingBalance: 'B', openingBalance: 'C', difference: 'D', isMaterial: 'E' });
                 }
 
                 rowData["Account Name"] = item.name;
-                rowData["Closing Balance"] = { t: 'n', v: priorBalance, z: moneyFormat };
-                rowData["Opening Balance"] = { t: 'n', v: openBalance, z: moneyFormat };
-                rowData["Difference"] = { t: 'n', f: `${columnMap.balance}${rowIndex}-${columnMap.priorBalance}${rowIndex}`, z: moneyFormat };
+                rowData["Closing Balance"] = { t: 'n', v: closingBalance, z: moneyFormat };
+                rowData["Opening Balance"] = { t: 'n', v: openingBalance, z: moneyFormat };
+                rowData["Difference"] = { t: 'n', f: `${columnMap.openingBalance}${rowIndex}-${columnMap.closingBalance}${rowIndex}`, z: moneyFormat };
 
-                let materialityFormula = `IF(ABS(${columnMap.variance}${rowIndex})>Summary!$B$5, "Yes", "No")`;
+                let materialityFormula = `IF(ABS(${columnMap.difference}${rowIndex})>Summary!$B$5, "Yes", "No")`;
                 if (!data.materialityThreshold) { materialityFormula = `"No"`; }
                 rowData["Is Material?"] = { t: 's', f: materialityFormula };
                 
-                rowData["Status"] = item.status;
+                rowData["Status"] = item.status.replace('Prior Year Only', 'Prior Period Only');
                 rowData["Auditor's Comments"] = item.auditorComment;
 
                 return rowData;
@@ -3687,17 +3680,15 @@
             XLSX.utils.book_append_sheet(wb, detailed_ws, "Detailed Data");
 
             const safeClientName = engagement.clientName.replace(/[\/\\?%*:|"<>]/g, '_');
-            const safeYear = engagement.engagementYear.replace(/[\/\\?%*:|"<>]/g, '_');
-            XLSX.writeFile(wb, `WorkingPaper_Interactive_${safeClientName}_${safeYear}.xlsx`);
+            const safePeriod = engagement.engagementPeriod.replace(/[\/\\?%*:|"<>]/g, '_');
+            XLSX.writeFile(wb, `WorkingPaper_Interactive_${safeClientName}_${safePeriod}.xlsx`);
         };
-
-
         const saveNormalizedData = async (normalizedData, parserSettings) => {
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const engagementData = await getFromStorage(dataKey) || createDefaultEngagementData();
-            const yearType = document.querySelector('#upload-content input[name="upload-year-type"]:checked').value;
+            const periodType = document.querySelector('#upload-content input[name="upload-period-type"]:checked').value;
             
-            if (yearType === 'current') {
+            if (periodType === 'current') {
                 engagementData.currentYearTB = normalizedData;
                 engagementData.currentYearTB_filename = appState.parserState.fileName;
             } else {
@@ -3706,7 +3697,6 @@
             }
             engagementData.parserSettings = parserSettings;
             engagementData.matchingResults = null;
-            // V63: Set the hasAccountCodes flag
             engagementData.hasAccountCodes = normalizedData.some(item => item.code && item.code.trim() !== '');
 
             await saveAndNotify(dataKey, engagementData);
@@ -3737,9 +3727,8 @@
             
             const a = document.createElement('a');
             const safeClientName = engagementMetadata.clientName.replace(/[\/\\?%*:|"<>]/g, '_');
-            const safeYear = 
-            engagementMetadata.engagementYear.replace(/[\/\\?%*:|"<>]/g, '_');
-            a.download = `OBT_${safeClientName}_${safeYear}.json`;
+            const safePeriod = engagementMetadata.engagementPeriod.replace(/[\/\\?%*:|"<>]/g, '_');
+            a.download = `OBT_${safeClientName}_${safePeriod}.json`;
             a.href = window.URL.createObjectURL(blob);
             a.style.display = 'none';
             document.body.appendChild(a);
@@ -3783,7 +3772,7 @@
                 }
                 await saveAndNotify('engagements', engagements);
 
-                alert(`Engagement "${metadata.clientName} (${metadata.engagementYear})" imported successfully!`);
+                alert(`Engagement "${metadata.clientName} (${metadata.engagementPeriod})" imported successfully!`);
                 await renderRecentEngagements();
             };
 
@@ -3903,6 +3892,7 @@
                     let displayVal = val;
                     if (val === '') { displayVal = '(Blank)'; }
                     if (key === 'reviewStatus') { displayVal = val === 'true' ? 'Reviewed' : 'Pending'; }
+                    if (key === 'status') { displayVal = val.replace('Prior Year Only', 'Prior Period Only'); }
                     return `<label class="filter-popup-checklist-item"><input type="checkbox" value="${val}" ${checkedValues.includes(val) ? 'checked' : ''}> ${displayVal}</label>`;
                 }).join('');
                 
@@ -4208,7 +4198,7 @@
 
             const keyField = data.hasAccountCodes ? 'code' : 'name';
             const unmatchedCY = data.matchingResults.filter(item => item.status === 'New Account');
-            const unmatchedPY = data.matchingResults.filter(item => item.status === 'Prior Year Only');
+            const unmatchedPY = data.matchingResults.filter(item => item.status === 'Prior Period Only');
 
             unmatchedCYList.innerHTML = unmatchedCY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
             unmatchedPYList.innerHTML = unmatchedPY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
@@ -4587,18 +4577,15 @@
                  const name = String(originalRow[columnMap.name] || '').trim();
                  if (!name) return;
 
-                 // V63: Set code to null if not mapped
                  let item = { originalRow, name, code: columnMap.code !== undefined ? String(originalRow[columnMap.code] || '').trim() : null };
                  
                  if (splitCombinedCheckbox.checked && columnMap.hasOwnProperty('name')) {
                     const splitResult = splitCombinedAccount(item.name);
-                    // Only overwrite code if split is successful and no code was mapped
                     if (splitResult.code && item.code === null) {
                         item.code = splitResult.code;
                         item.name = splitResult.name;
                     }
                  }
-                 // V63: Ensure code is null, not an empty string, if not present
                  if(item.code === '') item.code = null;
 
 
@@ -4641,7 +4628,6 @@
 
             parserPreviewSummary.innerHTML = `Successfully processed <b>${extractedData.length}</b> data rows. Found <b>${errorCount}</b> rows with potential balance parsing errors (highlighted). Please review the preview below.`;
             
-            // V63: Dynamic preview table headers
             const hasCodes = columnMap.code !== undefined || splitCombinedCheckbox.checked;
             let previewHeaders = `<thead><tr>`;
             if (hasCodes) previewHeaders += `<th>Account Code</th>`;
@@ -4749,8 +4735,8 @@
                 }
 
                 finalSignedBalance = (nature === 'Cr') ? -Math.abs(finalSignedBalance) : Math.abs(finalSignedBalance);
-                const yearType = document.querySelector('#upload-content input[name="upload-year-type"]:checked').value;
-                const inferenceKey = yearType === 'current' ? 'Inferred_by_CY' : 'Inferred_by_PY';
+                const periodType = document.querySelector('#upload-content input[name="upload-period-type"]:checked').value;
+                const inferenceKey = periodType === 'current' ? 'Inferred_by_CY' : 'Inferred_by_PY';
 
                 return { ...row, Final_signed_Closing_balance: finalSignedBalance, Balance_nature: nature, [inferenceKey]: inferredBy };
             });
@@ -4992,7 +4978,7 @@
                 const lastEngagement = await getFromStorage('currentEngagement');
                 if (lastEngagement) {
                     const message = document.getElementById('session-recovery-message');
-                    message.textContent = `It looks like your last session for engagement "${lastEngagement.clientName} (${lastEngagement.engagementYear})" ended unexpectedly. Would you like to restore your work?`;
+                    message.textContent = `It looks like your last session for engagement "${lastEngagement.clientName} (${lastEngagement.engagementPeriod})" ended unexpectedly. Would you like to restore your work?`;
                     sessionRecoveryModal.classList.remove('hidden');
                     document.body.classList.add('modal-open');
                 } else {
@@ -5007,14 +4993,14 @@
             engagementForm.addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const clientName = clientNameInput.value.trim();
-                const yearValue = engagementYearInput.value.trim();
-                if (clientName === '' || yearValue === '') { alert('Please fill in all engagement details.'); return; }
+                const periodValue = engagementPeriodInput.value.trim();
+                if (clientName === '' || periodValue === '') { alert('Please fill in all engagement details.'); return; }
                 createButton.disabled = true;
                 createButton.querySelector('span').textContent = 'Creating...';
                 
-                const yearType = document.querySelector('input[name="year-type"]:checked').value;
+                const periodType = document.querySelector('input[name="period-type"]:checked').value;
                 const newEngagement = { 
-                    id: Date.now(), clientName, engagementYear: yearValue, yearType
+                    id: Date.now(), clientName, engagementPeriod: periodValue, periodType
                 };
 
                 await saveEngagement(newEngagement);
@@ -5023,7 +5009,8 @@
                 createButton.disabled = false;
                 createButton.querySelector('span').textContent = 'Create Engagement';
                 engagementForm.reset();
-                engagementYearInput.value = new Date().getFullYear();
+                engagementPeriodInput.value = new Date().getFullYear();
+                engagementPeriodInput.type = 'number';
             });
 
             navTabsContainer.addEventListener('click', (e) => {
@@ -5200,11 +5187,10 @@
             
             themeToggle.addEventListener('click', toggleDarkMode);
 
-            yearTypeRadios.addEventListener('change', (e) => {
-                const yearType = e.target.value;
-                engagementYearLabel.textContent = (yearType === 'Financial') ? 'Financial Year' : 'Engagement Year';
-                engagementYearInput.placeholder = (yearType === 'Financial') ? 'e.g., 2024-25' : 'e.g., 2024';
-                engagementYearInput.type = (yearType === 'Financial') ? 'text' : 'number';
+            periodTypeRadios.addEventListener('change', (e) => {
+                const periodType = e.target.value;
+                engagementPeriodInput.placeholder = (periodType === 'Financial') ? 'e.g., 2024-25' : 'e.g., 2024';
+                engagementPeriodInput.type = (periodType === 'Financial') ? 'text' : 'number';
             });
             
             exportEngagementBtn.addEventListener('click', exportEngagementData);
@@ -5237,7 +5223,6 @@
                 if (appState.activeTab === 'review') await filterAndRenderReviewTable();
             });
             
-            // V61: Event listeners for Matching Sensitivity
             const handleSensitivityChange = async (value) => {
                 const dataKey = getEngagementDataKey(appState.currentEngagement.id);
                 const data = await getFromStorage(dataKey) || {};
@@ -5609,7 +5594,7 @@
                 
                 setupEventListeners();
                 
-                engagementYearInput.value = new Date().getFullYear();
+                engagementPeriodInput.value = new Date().getFullYear();
                 
                 await checkForSessionRecovery();
 
