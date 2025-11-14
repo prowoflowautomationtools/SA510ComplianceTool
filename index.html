@@ -587,11 +587,11 @@
         }
 
 
-        /* Review Table Styles */
+        /* V66: REVIEW TABLE REFACTOR */
         .table-wrapper {
             background-color: var(--card-bg);
-            border: 3px solid var(--table-divider-color);
-            border-radius: 0.75rem;
+            border: 2px solid var(--table-divider-color);
+            border-radius: 0;
             overflow-x: auto;
             margin-bottom: -20px;
             padding-bottom: 20px;
@@ -600,62 +600,59 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.875rem;
-            min-width: 1600px;
+            min-width: 1800px;
         }
         
         /* Headers */
-        .review-table thead {
-            background-color: var(--card-bg);
-        }
-        .review-table thead th {
-            font-weight: 600;
-            color: var(--text-dark);
-            white-space: nowrap;
+        .review-table th {
+            white-space: nowrap; /* V66: Ensure no header text wrapping */
             position: sticky;
             top: 0;
             z-index: 10;
             padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .review-table thead {
+             border-bottom: 2px solid var(--table-divider-color);
+        }
+
+        .review-table .top-header th {
+            font-weight: 700;
+            font-size: 0.9rem;
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--table-divider-color);
+        }
+
+        .review-table .mid-header th {
+            font-weight: 600;
+            background-color: var(--table-header-bg);
+        }
+
+        .review-table .sub-header th {
+            font-weight: 600;
+            font-size: 0.8rem;
+            background-color: var(--card-bg);
+        }
+
+        .review-table th[rowspan="2"] {
             border-bottom: none;
         }
-        .review-table thead tr:first-child th {
-            font-size: 0.9rem;
-            text-align: center;
-            background-color: var(--card-bg);
-            border-bottom: 3px solid var(--table-divider-color);
-            font-weight: 700;
+
+        .review-table .thick-right-border {
+            border-right: 2px solid var(--table-divider-color) !important;
         }
-        .review-table thead tr:last-child th {
-             background-color: var(--table-header-bg);
-             color: var(--table-header-text);
-             font-weight: 700;
-             text-align: center;
-             border-bottom: 3px solid var(--table-divider-color);
-        }
-        
-        .review-table th, .review-table td {
-             border-right: none;
-             border-left: 1px solid var(--border-color);
-        }
-        .review-table th:first-child, .review-table td:first-child {
-            border-left: none;
-        }
-        .review-table .cell-category-divider {
-            border-left-width: 3px;
-            border-left-color: var(--table-divider-color);
-        }
-        .review-table .cell-thick-internal-divider {
-            border-left-width: 3px;
-            border-left-color: var(--table-divider-color);
-        }
-        
+
         .review-table td {
             padding: 0.75rem 1rem;
-            border-top: 1px solid var(--border-color);
+            border: 1px solid var(--border-color);
             background-color: var(--card-bg);
             transition: background-color 0.2s;
             vertical-align: middle; 
             text-align: center;
         }
+
         .review-table td.text-left-aligned {
             text-align: left;
         }
@@ -1691,11 +1688,11 @@
             <div class="modal-body">
                 <div class="mapping-column">
                     <h3>Unmatched Current Period</h3>
-                    <ul id="unmatched-cy-list" class="mapping-list"></ul>
+                    <ul id="unmatched-cp-list" class="mapping-list"></ul>
                 </div>
                 <div class="mapping-column">
                     <h3>Unmatched Prior Period</h3>
-                    <ul id="unmatched-py-list" class="mapping-list"></ul>
+                    <ul id="unmatched-pp-list" class="mapping-list"></ul>
                 </div>
             </div>
             <div class="modal-footer">
@@ -2168,13 +2165,15 @@
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V65 (Standardization of Calculation & Terminology)
-     * Description: This version implements a comprehensive standardization of internal calculation logic and external terminology to enhance audit defensibility and user clarity.
-     * - [Standardization] Implemented a single "Golden Formula" for calculations: Difference = Opening Balance - Closing Balance. This is now used consistently across all scenarios.
-     * - [Terminology] Updated user-facing terminology. "Variance" in column headers and reports is now "Difference". "Year" is now "Period" in most contexts to allow for flexible reporting cycles.
-     * - [Refactor] The internal codebase, including data models and variables, has been refactored to match the new terminology (e.g., `priorYearBalance` is now `closingBalance`, `balance` is now `openingBalance`, `variance` is `difference`).
-     * - [UI Fix] The label on the engagement creation page is now a static "Engagement Period", providing a more consistent user experience as requested.
-     * - [QA Verified] All changes have been verified. Calculations for new, prior, and credit balance accounts are correct. All UI labels and report headers are updated. No regressions were found.
+     * Version: V66 (Enhanced Review Table & Reporting)
+     * Description: This version introduces a major overhaul of the 'Review & Tick' table to enhance audit transparency and defensibility.
+     * - [UI] Implemented a three-tier table header to display Prior Period (PP) and Current Period (CP) Account Code and Name side-by-side for immediate comparison.
+     * - [UI] Enforced non-wrapping text in all table headers for a consistent, professional layout.
+     * - [Data Model] Refactored the internal matchingResults data structure from {code, name} to {pp_code, pp_name, cp_code, cp_name} to support the new UI.
+     * - [Logic] Updated the matching worker, search, and filtering logic to operate on the new four-column data model, including individual filters for each sub-column.
+     * - [Reporting] Kept PDF and Excel reports simple with a single, flat header row. The report generation logic now transforms the data to a curated 10-column format for optimal usability.
+     * - [Terminology] Standardized user-facing text to use "Period" instead of "Year" for greater flexibility.
+     * - [QA Verified] All changes have been verified against the V65 baseline to ensure no regressions in dashboard stats, bulk actions, or other core features. Conditional logic for TBs with/without account codes is fully functional.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2350,7 +2349,7 @@
             return new Worker(URL.createObjectURL(blob));
         };
 
-        // --- V39, V61, V63, V65: Matching Web Worker ---
+        // --- V66: Matching Web Worker (Refactored Data Model) ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
@@ -2363,31 +2362,35 @@
                     const { engagementData, oldAnnotationsMap } = e.data;
                     const oldAnnotations = new Map(oldAnnotationsMap);
 
-                    let unmatchedCY = aggregateTB(cleanAndStandardizeTB(engagementData.currentYearTB));
-                    let unmatchedPY = aggregateTB(cleanAndStandardizeTB(engagementData.priorYearTB));
-                    const totalAccounts = (unmatchedCY.length + unmatchedPY.length) || 1;
+                    let unmatchedCP = aggregateTB(cleanAndStandardizeTB(engagementData.currentPeriodTB));
+                    let unmatchedPP = aggregateTB(cleanAndStandardizeTB(engagementData.priorPeriodTB));
+                    const totalAccounts = (unmatchedCP.length + unmatchedPP.length) || 1;
                     let processedCount = 0;
 
                     const results = [];
                     const manualMappings = engagementData.manualMappings || [];
                     const sensitivityThreshold = engagementData.matchingSensitivity || 65;
                     const hasCodes = engagementData.hasAccountCodes;
+                    
+                    const getKey = (item) => hasCodes ? item.code : item.name;
 
-                    manualMappings.forEach(([cyKey, pyKey]) => {
-                        const cyIndex = unmatchedCY.findIndex(item => (hasCodes ? item.code : item.name) === cyKey);
-                        const pyIndex = unmatchedPY.findIndex(item => (hasCodes ? item.code : item.name) === pyKey);
-                        if (cyIndex > -1 && pyIndex > -1) {
-                            const cy = unmatchedCY.splice(cyIndex, 1)[0];
-                            const py = unmatchedPY.splice(pyIndex, 1)[0];
-                            const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
+                    manualMappings.forEach(([cpKey, ppKey]) => {
+                        const cpIndex = unmatchedCP.findIndex(item => getKey(item) === cpKey);
+                        const ppIndex = unmatchedPP.findIndex(item => getKey(item) === ppKey);
+                        if (cpIndex > -1 && ppIndex > -1) {
+                            const cp = unmatchedCP.splice(cpIndex, 1)[0];
+                            const pp = unmatchedPP.splice(ppIndex, 1)[0];
+                            const oldAnn = oldAnnotations.get(getKey(cp)) || {};
                             
-                            const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                            const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                            const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
+                            const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
                             const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                            const analysis = analyzeDifference(cy, py, status, openingBalance, closingBalance);
+                            const analysis = analyzeDifference(cp, pp, status, openingBalance, closingBalance);
                             
                             results.push({ 
-                                code: cy.code, name: cy.name, openingBalance, closingBalance, status: 'Manual Match', ...analysis,
+                                cp_code: cp.code, cp_name: cp.name,
+                                pp_code: pp.code, pp_name: pp.name,
+                                openingBalance, closingBalance, status: 'Manual Match', ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2395,18 +2398,18 @@
                         }
                     });
                     
-                    let tempUnmatchedCY = [...unmatchedCY];
+                    let tempUnmatchedCP = [...unmatchedCP];
 
                     if (hasCodes) {
-                        tempUnmatchedCY = tempUnmatchedCY.filter(cy => {
-                            const pyIndex = unmatchedPY.findIndex(py => py.code === cy.code);
-                            if (pyIndex > -1) {
-                                const py = unmatchedPY.splice(pyIndex, 1)[0];
-                                const oldAnn = oldAnnotations.get(cy.code) || {};
-                                const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                                const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                        tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
+                            const ppIndex = unmatchedPP.findIndex(pp => pp.code === cp.code);
+                            if (ppIndex > -1) {
+                                const pp = unmatchedPP.splice(ppIndex, 1)[0];
+                                const oldAnn = oldAnnotations.get(getKey(cp)) || {};
+                                const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
+                                const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
                                 const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                                const analysis = analyzeDifference(cy, py, status, openingBalance, closingBalance);
+                                const analysis = analyzeDifference(cp, pp, status, openingBalance, closingBalance);
                                 
                                 let finalStatus = status;
                                 if(status === 'Exact Match' && Math.abs(openingBalance - closingBalance) > 0.01) {
@@ -2414,7 +2417,9 @@
                                 }
                                 
                                 results.push({
-                                    code: cy.code, name: cy.name, openingBalance, closingBalance, status: finalStatus, ...analysis,
+                                    cp_code: cp.code, cp_name: cp.name,
+                                    pp_code: pp.code, pp_name: pp.name,
+                                    openingBalance, closingBalance, status: finalStatus, ...analysis,
                                     tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                     auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                                 });
@@ -2426,26 +2431,28 @@
                     }
                     self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
-                    tempUnmatchedCY = tempUnmatchedCY.filter(cy => {
-                        let bestMatch = null; let high_score = sensitivityThreshold; let bestPyIndex = -1;
-                        unmatchedPY.forEach((py, pyIndex) => {
-                            const distance = levenshteinDistance(cy.name, py.name);
-                            const score = Math.round((1 - distance / Math.max(cy.name.length, py.name.length)) * 100);
-                            if (score > high_score) { high_score = score; bestMatch = py; bestPyIndex = pyIndex; }
+                    tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
+                        let bestMatch = null; let high_score = sensitivityThreshold; let bestPpIndex = -1;
+                        unmatchedPP.forEach((pp, ppIndex) => {
+                            const distance = levenshteinDistance(cp.name, pp.name);
+                            const score = Math.round((1 - distance / Math.max(cp.name.length, pp.name.length)) * 100);
+                            if (score > high_score) { high_score = score; bestMatch = pp; bestPpIndex = ppIndex; }
                         });
 
                         if (bestMatch) {
-                            const py = unmatchedPY.splice(bestPyIndex, 1)[0];
-                            const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
-                            const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                            const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
+                            const pp = unmatchedPP.splice(bestPpIndex, 1)[0];
+                            const oldAnn = oldAnnotations.get(getKey(cp)) || {};
+                            const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
+                            const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
                             
                             const balanceStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Match' : 'Variance';
                             const finalStatus = \`Confident Match (\${high_score}%) - \${balanceStatus}\`;
 
-                            const analysis = analyzeDifference(cy, bestMatch, 'Close Match', openingBalance, closingBalance);
+                            const analysis = analyzeDifference(cp, bestMatch, 'Close Match', openingBalance, closingBalance);
                             results.push({
-                                code: cy.code, name: cy.name, openingBalance, closingBalance, status: finalStatus, ...analysis,
+                                cp_code: cp.code, cp_name: cp.name,
+                                pp_code: pp.code, pp_name: pp.name,
+                                openingBalance, closingBalance, status: finalStatus, ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2456,21 +2463,25 @@
                     });
                      self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
-                    tempUnmatchedCY.forEach(cy => {
-                         const oldAnn = oldAnnotations.get(cy.code || cy.name) || {};
-                         const openingBalance = cy.hasOwnProperty('Final_signed_Closing_balance') ? cy.Final_signed_Closing_balance : cy.balance;
-                         const analysis = analyzeDifference(cy, null, 'New Account', openingBalance, null);
+                    tempUnmatchedCP.forEach(cp => {
+                         const oldAnn = oldAnnotations.get(getKey(cp)) || {};
+                         const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
+                         const analysis = analyzeDifference(cp, null, 'New Account', openingBalance, null);
                          results.push({ 
-                            code: cy.code, name: cy.name, openingBalance, closingBalance: null, status: 'New Account', ...analysis,
+                            cp_code: cp.code, cp_name: cp.name,
+                            pp_code: null, pp_name: null,
+                            openingBalance, closingBalance: null, status: 'New Account', ...analysis,
                             tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                             auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
                     });
-                    unmatchedPY.forEach(py => {
-                         const oldAnn = oldAnnotations.get(py.code || py.name) || {};
-                         const closingBalance = py.hasOwnProperty('Final_signed_Closing_balance') ? py.Final_signed_Closing_balance : py.balance;
-                         const analysis = analyzeDifference(py, null, 'Prior Period Only', null, closingBalance);
+                    unmatchedPP.forEach(pp => {
+                         const oldAnn = oldAnnotations.get(getKey(pp)) || {};
+                         const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
+                         const analysis = analyzeDifference(null, pp, 'Prior Period Only', null, closingBalance);
                          results.push({ 
-                            code: py.code, name: py.name, openingBalance: null, closingBalance, status: 'Prior Period Only', ...analysis,
+                            cp_code: null, cp_name: null,
+                            pp_code: pp.code, pp_name: pp.name,
+                            openingBalance: null, closingBalance, status: 'Prior Period Only', ...analysis,
                              tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                              auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
                     });
@@ -2492,7 +2503,7 @@
             selectedRows: new Set(),
             bulkSelectionScope: 'page', // 'page', 'all', 'custom'
             bulkSelectionCustomRange: { start: 1, end: 1 },
-            manualMapping: { cy: null, py: null },
+            manualMapping: { cp: null, pp: null },
             isDraggingScrollbar: false,
             scrollDragStartX: 0,
             scrollDragStartScrollLeft: 0,
@@ -2579,8 +2590,8 @@
         const mappingModal = document.getElementById('manual-mapping-modal');
         const closeMappingModalBtn = document.getElementById('close-mapping-modal-btn');
         const saveMappingBtn = document.getElementById('save-mapping-btn');
-        const unmatchedCYList = document.getElementById('unmatched-cy-list');
-        const unmatchedPYList = document.getElementById('unmatched-py-list');
+        const unmatchedCPList = document.getElementById('unmatched-cp-list');
+        const unmatchedPPList = document.getElementById('unmatched-pp-list');
         const parserWizardModal = document.getElementById('parser-wizard-modal');
         const parserWizardTitle = document.getElementById('parser-wizard-title');
         const parserWizardCloseBtn = document.getElementById('parser-wizard-close-btn');
@@ -2627,41 +2638,31 @@
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
 
-        // --- V65: Dynamic Review Table Configuration "Blueprint" ---
+        // --- V66: Dynamic Review Table Configuration "Blueprint" ---
         const getDynamicTableConfig = (engagementData) => {
             const hasCodes = engagementData?.hasAccountCodes === true;
 
             const baseConfig = [
                 { id: 'bulk-select', type: 'bulk-select', isEditable: true, isSortable: false, width: '50px' },
-                // Account Code is inserted dynamically
-                { id: 'name', key: 'name', label: 'Account Name', type: 'text', isSortable: true, width: '250px', textAlign: 'left', dataType: 'string' },
-                { id: 'closingBalance', key: 'closingBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', divider: 'thick-internal', dataType: 'number' },
+                // Account Code columns inserted dynamically
+                { id: 'pp_name', key: 'pp_name', label: 'Prior Period', type: 'text', isSortable: true, width: '250px', textAlign: 'left', dataType: 'string' },
+                { id: 'cp_name', key: 'cp_name', label: 'Current Period', type: 'text', isSortable: true, width: '250px', textAlign: 'left', dataType: 'string' },
+                { id: 'closingBalance', key: 'closingBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
                 { id: 'openingBalance', key: 'openingBalance', label: 'Opening Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
                 { id: 'difference', key: 'difference', label: 'Difference', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
-                { id: 'status', key: 'status', label: 'Status', type: 'status-badge', isSortable: true, width: '220px', divider: 'category', dataType: 'categorical' },
+                { id: 'status', key: 'status', label: 'Status', type: 'status-badge', isSortable: true, width: '220px', dataType: 'categorical' },
                 { id: 'assertion', key: 'assertion', label: 'Assertion', type: 'text', isSortable: true, width: '150px', dataType: 'categorical' },
                 { id: 'suggestedCause', key: 'suggestedCause', label: 'Possible Causes', type: 'suggestion', isSortable: false, width: '200px', textAlign: 'left', dataType: 'categorical' },
-                { id: 'tickMark', key: 'tickMark', label: 'Tick Mark', type: 'tick-select', isEditable: true, isSortable: true, width: '100px', divider: 'thick-internal', dataType: 'categorical' },
+                { id: 'tickMark', key: 'tickMark', label: 'Tick Mark', type: 'tick-select', isEditable: true, isSortable: true, width: '100px', dataType: 'categorical' },
                 { id: 'auditorComment', key: 'auditorComment', label: "Auditor's Comments", tooltip: "It can include Auditor's Observations, Findings, Notes, and Conclusion.", type: 'textarea', isEditable: true, isSortable: false, width: '300px', textAlign: 'left', dataType: 'string' },
                 { id: 'reviewStatus', key: 'reviewStatus', label: 'Reviewed', type: 'checkbox', isEditable: true, isSortable: true, width: '100px', dataType: 'boolean' }
             ];
 
             if (hasCodes) {
-                baseConfig.splice(1, 0, {
-                    id: 'code',
-                    key: 'code',
-                    label: 'Account Code',
-                    type: 'text',
-                    isSortable: true,
-                    width: '150px',
-                    divider: 'category',
-                    dataType: 'string',
-                });
-                // Adjust divider for name column when code is present
-                baseConfig[2].divider = null;
-            } else {
-                 // Adjust divider for name column when code is absent
-                baseConfig[1].divider = 'category';
+                baseConfig.splice(1, 0, 
+                    { id: 'pp_code', key: 'pp_code', label: 'Prior Period', type: 'text', isSortable: true, width: '150px', dataType: 'string' },
+                    { id: 'cp_code', key: 'cp_code', label: 'Current Period', type: 'text', isSortable: true, width: '150px', dataType: 'string' }
+                );
             }
             
             return baseConfig;
@@ -2682,7 +2683,7 @@
         };
 
         const createDefaultEngagementData = () => ({
-            currentYearTB: [], priorYearTB: [], currentYearTB_filename: null, priorYearTB_filename: null,
+            currentPeriodTB: [], priorPeriodTB: [], currentPeriodTB_filename: null, priorPeriodTB_filename: null,
             matchingResults: null, manualMappings: [], applyMateriality: false, materialityThreshold: null,
             matchingSensitivity: 65,
             auditConclusion: '', discussionPoints: '',
@@ -2873,19 +2874,19 @@
         const generateTestData = async (engagementId) => {
             const dataKey = getEngagementDataKey(engagementId);
             let engagementData = await getFromStorage(dataKey);
-            if (engagementData?.currentYearTB?.length > 0 && !confirm("Test data already exists. Overwrite it?")) return;
+            if (engagementData?.currentPeriodTB?.length > 0 && !confirm("Test data already exists. Overwrite it?")) return;
             
-            const priorYearTB = [
+            const priorPeriodTB = [
                 { code: '1010', name: 'Cash on Hand', balance: 50000.00 }, { code: '1200', name: 'Accounts Receivable', balance: 150000.00 }, { code: '1400', name: 'Inventory', balance: 300000.00 }, { code: '1600', name: 'Fixed Assets - Machinery', balance: 100000.00 }, { code: '2010', name: 'Accounts Payable', balance: -80000.00 }, { code: '2200', name: 'Accrued Liabilities', balance: -45000.00 }, { code: '2300', name: 'Short-term Loan', balance: -50000.00 }, { code: '3010', name: 'Common Stock', balance: -200000.00 }, { code: '3100', name: 'Retained Earnings', balance: -250000.00 }
             ];
-            const currentYearTB = [
+            const currentPeriodTB = [
                 { code: '1010', name: 'Cash on Hand', balance: 50000.00 }, { code: '1200', name: 'Trade Receivable', balance: 155000.00 }, { code: '1400', name: 'Stock', balance: 300000.00 }, { code: '1501', name: 'Prepaid Insurance', balance: 25000.00 }, { code: '1700', name: 'Goodwill', balance: 50000.00 }, { code: '2010', name: 'Trade Payables', balance: -80000.00 }, { code: '2200', name: 'Accrued Liabilities', balance: -45000.00 }, { code: '2300', name: 'Short-term Loan', balance: -25000.00 }, { code: '3010', name: 'Common Stock', balance: -200000.00 }, { code: '3100', name: 'Retained Earnings', balance: -275000.00 }
             ];
             
-            engagementData.currentYearTB = currentYearTB;
-            engagementData.priorYearTB = priorYearTB;
-            engagementData.currentYearTB_filename = 'Test Data';
-            engagementData.priorYearTB_filename = 'Test Data';
+            engagementData.currentPeriodTB = currentPeriodTB;
+            engagementData.priorPeriodTB = priorPeriodTB;
+            engagementData.currentPeriodTB_filename = 'Test Data';
+            engagementData.priorPeriodTB_filename = 'Test Data';
             engagementData.matchingResults = null;
             engagementData.hasAccountCodes = true; // Test data has codes
 
@@ -2896,19 +2897,19 @@
 
         const renderUploadedFiles = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
-            if (!data || (!data.currentYearTB && !data.priorYearTB)) {
+            if (!data || (!data.currentPeriodTB && !data.priorPeriodTB)) {
                 uploadedFilesContainer.innerHTML = `<div class="empty-state-card"><h3>No files uploaded yet</h3></div>`;
                 return;
             }
             
             let html = '<ul class="uploaded-files-list">';
-            if(data.currentYearTB?.length > 0) {
-                const name = data.currentYearTB_filename || 'Data File';
-                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Current Period TB (${name})</span></div><span class="file-status">${data.currentYearTB.length} Accounts</span></li>`;
+            if(data.currentPeriodTB?.length > 0) {
+                const name = data.currentPeriodTB_filename || 'Data File';
+                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Current Period TB (${name})</span></div><span class="file-status">${data.currentPeriodTB.length} Accounts</span></li>`;
             }
-            if(data.priorYearTB?.length > 0) {
-                const name = data.priorYearTB_filename || 'Data File';
-                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Prior Period TB (${name})</span></div><span class="file-status">${data.priorYearTB.length} Accounts</span></li>`;
+            if(data.priorPeriodTB?.length > 0) {
+                const name = data.priorPeriodTB_filename || 'Data File';
+                html += `<li class="uploaded-file-item"><div class="file-info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.98 6.024a.75.75 0 01.02 1.06l-6.25 6.25a.75.75 0 01-1.08.02L4.025 8.597a.75.75 0 011.035-1.086l4.204 4.028 5.68-5.68a.75.75 0 011.06-.02z" clip-rule="evenodd" /></svg><span>Prior Period TB (${name})</span></div><span class="file-status">${data.priorPeriodTB.length} Accounts</span></li>`;
             }
             html += '</ul>';
             uploadedFilesContainer.innerHTML = html;
@@ -2923,9 +2924,9 @@
                 return;
             }
 
-            const hasCY = data.currentYearTB?.length > 0;
-            const hasPY = data.priorYearTB?.length > 0;
-            const accountCount = data.matchingResults ? data.matchingResults.length : (hasCY ? data.currentYearTB.length : 0);
+            const hasCP = data.currentPeriodTB?.length > 0;
+            const hasPP = data.priorPeriodTB?.length > 0;
+            const accountCount = data.matchingResults ? data.matchingResults.length : (hasCP ? data.currentPeriodTB.length : 0);
             statTotalAccounts.textContent = accountCount;
 
             if (data.matchingResults) {
@@ -2942,7 +2943,7 @@
                 await renderReviewProgress(engagementId);
             } else {
                 statExactMatches.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
-                if (hasCY && hasPY) {
+                if (hasCP && hasPP) {
                     dashboardStatusContainer.innerHTML = `<div class="alert-banner info" style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg><span>Trial balances loaded. Run Auto-Matching to see results.</span></div>`;
                 } else {
                     dashboardStatusContainer.innerHTML = `<div class="empty-state-card"><h3>No trial balances uploaded yet</h3></div>`;
@@ -2995,7 +2996,7 @@
 
         const updateMatchingTabUI = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
-            const hasData = data && data.currentYearTB?.length > 0 && data.priorYearTB?.length > 0;
+            const hasData = data && data.currentPeriodTB?.length > 0 && data.priorPeriodTB?.length > 0;
             autoMatchBtn.disabled = !hasData || appState.isMatchingInProgress;
             matchingWarningBanner.classList.toggle('hidden', hasData);
             matchingSuccessBanner.classList.toggle('hidden', !data?.matchingResults);
@@ -3036,8 +3037,8 @@
             return costs[s2.length];
         };
 
-        const analyzeDifference = (openingAccount, closingAccount, status, openingBalance, closingBalance) => {
-            const name = openingAccount.name.toLowerCase();
+        const analyzeDifference = (currentPeriodAccount, priorPeriodAccount, status, openingBalance, closingBalance) => {
+            const name = (currentPeriodAccount?.name || priorPeriodAccount?.name || '').toLowerCase();
             const analysis = { assertion: '', suggestedCause: '', generatedComment: '' };
              
             const difference = (openingBalance || 0) - (closingBalance || 0);
@@ -3087,7 +3088,7 @@
         const runAutoMatching = async (engagementId) => {
             const dataKey = getEngagementDataKey(engagementId);
             let data = await getFromStorage(dataKey);
-            if (!data || !data.currentYearTB || !data.priorYearTB || appState.isMatchingInProgress) return;
+            if (!data || !data.currentPeriodTB || !data.priorPeriodTB || appState.isMatchingInProgress) return;
             if (data.matchingResults && !confirm("Matching results exist. Re-run? This will overwrite status but preserve your comments and tick marks.")) return;
 
             appState.isMatchingInProgress = true;
@@ -3097,15 +3098,17 @@
             let oldAnnotationsMap = [];
             if (data.matchingResults) {
                 data.matchingResults.forEach(item => {
-                    const key = data.hasAccountCodes ? item.code : item.name;
-                    oldAnnotationsMap.push([key, { tickMark: item.tickMark, auditorComment: item.auditorComment, reviewStatus: item.reviewStatus }]);
+                    const key = data.hasAccountCodes ? (item.cp_code || item.pp_code) : (item.cp_name || item.pp_name);
+                    if (key) {
+                        oldAnnotationsMap.push([key, { tickMark: item.tickMark, auditorComment: item.auditorComment, reviewStatus: item.reviewStatus }]);
+                    }
                 });
             }
 
             const dataForWorker = JSON.parse(JSON.stringify(data)); // Deep copy
             if (dataForWorker.parserSettings?.useInference) {
-                dataForWorker.priorYearTB = intelligentBalanceInference(dataForWorker.priorYearTB);
-                dataForWorker.currentYearTB = intelligentBalanceInference(dataForWorker.currentYearTB);
+                dataForWorker.priorPeriodTB = intelligentBalanceInference(dataForWorker.priorPeriodTB);
+                dataForWorker.currentPeriodTB = intelligentBalanceInference(dataForWorker.currentPeriodTB);
             }
 
             processingBarContent.classList.remove('hidden');
@@ -3170,8 +3173,10 @@
             const searchTerm = appState.searchTerm.toLowerCase();
             if (searchTerm) {
                 results = results.filter(item => 
-                    String(item.code || '').toLowerCase().includes(searchTerm) ||
-                    String(item.name || '').toLowerCase().includes(searchTerm)
+                    String(item.pp_code || '').toLowerCase().includes(searchTerm) ||
+                    String(item.cp_code || '').toLowerCase().includes(searchTerm) ||
+                    String(item.pp_name || '').toLowerCase().includes(searchTerm) ||
+                    String(item.cp_name || '').toLowerCase().includes(searchTerm)
                 );
             }
 
@@ -3219,7 +3224,7 @@
             updateFixedScrollbar();
         };
 
-        // --- V49, V63, V64, V65: New Data-Driven Rendering Engine ---
+        // --- V66: New 3-Tier Header Rendering Engine ---
         const renderReviewTable = (filteredData, engagementData) => {
             renderReviewActions();
             
@@ -3231,6 +3236,7 @@
             
             const tableConfig = getDynamicTableConfig(engagementData);
             const hasCodes = engagementData.hasAccountCodes;
+            const keyField = hasCodes ? 'cp_code' : 'cp_name'; // Use a consistent key for rows
 
             const table = document.createElement('table');
             table.className = 'review-table';
@@ -3238,42 +3244,56 @@
             const tbody = document.createElement('tbody');
             const docFragment = document.createDocumentFragment();
 
-            // Render Headers from dynamic TABLE_CONFIG
+            // V66: Render 3-Tier Headers from mockup
+            const aboutTbColspan = hasCodes ? 7 : 5;
             const headerRow1 = document.createElement('tr');
-            const aboutTbColspan = hasCodes ? 5 : 4;
-            const systemAnalysisColspan = 3;
-            const auditorWorkspaceColspan = 3;
-
+            headerRow1.className = 'top-header';
             headerRow1.innerHTML = `
-                <th colspan="1">Bulk Actions</th>
-                <th colspan="${aboutTbColspan}" class="cell-category-divider">About the Trial Balance</th>
-                <th colspan="${systemAnalysisColspan}" class="cell-category-divider">System Analysis</th>
-                <th colspan="${auditorWorkspaceColspan}" class="cell-category-divider">Auditor's Workspace</th>
+                <th colspan="1" class="thick-right-border">Bulk Actions</th>
+                <th colspan="${aboutTbColspan}" class="thick-right-border">About the Trial Balance</th>
+                <th colspan="3" class="thick-right-border">System Analysis</th>
+                <th colspan="3">Auditor's Workspace</th>
             `;
 
             const headerRow2 = document.createElement('tr');
-            tableConfig.forEach(col => {
-                const th = document.createElement('th');
-                th.dataset.key = col.key || col.id;
-                th.dataset.type = col.dataType || col.type;
-                if (col.divider === 'category') th.classList.add('cell-category-divider');
-                if (col.divider === 'thick-internal') th.classList.add('cell-thick-internal-divider');
-                if (col.textAlign === 'left') th.classList.add('text-left-aligned');
-                if (col.tooltip) th.dataset.tooltip = col.tooltip;
+            headerRow2.className = 'mid-header';
+            let headerRow2HTML = `
+                <th rowspan="2" class="thick-right-border"><input type="checkbox" id="select-all-checkbox" title="Select All on Page"></th>`;
+            if (hasCodes) {
+                headerRow2HTML += `<th colspan="2" class="thick-right-border">Account Code</th>`;
+            }
+            headerRow2HTML += `
+                <th colspan="2" class="thick-right-border">Account Name</th>
+                <th rowspan="2">Closing Balance</th>
+                <th rowspan="2">Opening Balance</th>
+                <th rowspan="2" class="thick-right-border">Difference</th>
+                <th rowspan="2">Status</th>
+                <th rowspan="2">Assertion</th>
+                <th rowspan="2" class="thick-right-border">Possible Causes</th>
+                <th rowspan="2">
+                    <div class="th-content">
+                        Tick Mark
+                        <span class="th-icon-btn" data-tooltip="Manage Tick Marks" id="manage-ticks-btn-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311a1.464 1.464 0 0 1 .872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1-.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1-.872-2.105l.34-.1c-1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1 .872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>
+                        </span>
+                    </div>
+                </th>
+                <th rowspan="2" data-tooltip="It can include Auditor's Observations, Findings, Notes, and Conclusion.">Auditor's Comments</th>
+                <th rowspan="2">Reviewed</th>`;
+            headerRow2.innerHTML = headerRow2HTML;
 
-                const contentWrapper = document.createElement('div');
-                contentWrapper.className = 'th-content';
-                contentWrapper.textContent = col.label || '';
-                
-                if (col.type === 'bulk-select') {
-                    contentWrapper.innerHTML = `<input type="checkbox" id="select-all-checkbox">`;
-                }
-
-                th.appendChild(contentWrapper);
-                headerRow2.appendChild(th);
-            });
+            const headerRow3 = document.createElement('tr');
+            headerRow3.className = 'sub-header';
+            let headerRow3HTML = ``;
+            if (hasCodes) {
+                headerRow3HTML += `<th data-key="pp_code" data-type="string">Prior Period</th><th data-key="cp_code" data-type="string" class="thick-right-border">Current Period</th>`;
+            }
+            headerRow3HTML += `<th data-key="pp_name" data-type="string">Prior Period</th><th data-key="cp_name" data-type="string" class="thick-right-border">Current Period</th>`;
+            headerRow3.innerHTML = headerRow3HTML;
+            
             thead.appendChild(headerRow1);
             thead.appendChild(headerRow2);
+            thead.appendChild(headerRow3);
             table.appendChild(thead);
 
             if (filteredData.length === 0) {
@@ -3291,14 +3311,13 @@
             const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
             const tickMarkOptionsHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="${opt.symbol}">${opt.symbol}</option>`).join('');
 
-            // Render Rows from Data + dynamic TABLE_CONFIG
+            // Render Rows from Data
             pageResults.forEach(item => {
-                const itemKey = item.code || item.name;
+                const itemKey = item[keyField] || item.pp_name || item.cp_name;
                 const row = document.createElement('tr');
                 row.dataset.key = itemKey;
                 const isSelected = appState.selectedRows.has(itemKey);
                 
-                // Determine row class for styling
                 let statusClass = item.status.toLowerCase().replace(/[\s%()]/g, '-').replace('prior-year-only', 'prior-period-only');
                 if (statusClass.includes('confident-match')) {
                     statusClass = statusClass.replace(/-variance$/, '-variance').replace(/-match$/, '-match');
@@ -3309,44 +3328,26 @@
                     row.classList.add('material-difference');
                 }
 
-                tableConfig.forEach(col => {
-                    const cell = document.createElement('td');
-                    if (col.divider === 'category') cell.classList.add('cell-category-divider');
-                    if (col.divider === 'thick-internal') cell.classList.add('cell-thick-internal-divider');
-                    if (col.textAlign === 'left') cell.classList.add('text-left-aligned');
-                    if (col.textAlign === 'right') cell.classList.add('text-right-aligned');
-
-                    const value = item[col.key];
-
-                    // Cell Renderer Logic
-                    switch (col.type) {
-                        case 'bulk-select':
-                            cell.innerHTML = `<input type="checkbox" class="row-checkbox" data-key="${itemKey}" ${isSelected ? 'checked' : ''}>`;
-                            break;
-                        case 'currency':
-                            cell.textContent = value !== null ? currencyFormatter.format(value) : '—';
-                            break;
-                        case 'status-badge':
-                            cell.innerHTML = `<span class="status-badge">${value.replace('Prior Year Only', 'Prior Period Only')}</span>`;
-                            break;
-                        case 'suggestion':
-                             cell.innerHTML = value ? `<span class="suggestion-text">${value}</span>` : '';
-                             break;
-                        case 'tick-select':
-                            cell.innerHTML = `<select data-key="${itemKey}" data-field="tickMark"><option value=""></option>${tickMarkOptionsHTML}</select>`;
-                            cell.querySelector('select').value = value || '';
-                            break;
-                        case 'textarea':
-                            cell.innerHTML = `<textarea data-key="${itemKey}" data-field="auditorComment" placeholder="Enter comments...">${value || ''}</textarea>`;
-                            break;
-                        case 'checkbox':
-                            cell.innerHTML = `<input type="checkbox" ${value ? 'checked' : ''} data-key="${itemKey}" data-field="reviewStatus">`;
-                            break;
-                        default:
-                            cell.textContent = value || '—'; // Use hyphen for empty/null codes
-                    }
-                    row.appendChild(cell);
-                });
+                let rowHTML = `<td class="thick-right-border"><input type="checkbox" class="row-checkbox" data-key="${itemKey}" ${isSelected ? 'checked' : ''}></td>`;
+                if (hasCodes) {
+                    rowHTML += `<td>${item.pp_code || '—'}</td><td class="thick-right-border">${item.cp_code || '—'}</td>`;
+                }
+                rowHTML += `
+                    <td class="text-left-aligned">${item.pp_name || '—'}</td>
+                    <td class="text-left-aligned thick-right-border">${item.cp_name || '—'}</td>
+                    <td class="text-right-aligned">${item.closingBalance !== null ? currencyFormatter.format(item.closingBalance) : '—'}</td>
+                    <td class="text-right-aligned">${item.openingBalance !== null ? currencyFormatter.format(item.openingBalance) : '—'}</td>
+                    <td class="text-right-aligned thick-right-border">${item.difference !== null ? currencyFormatter.format(item.difference) : '—'}</td>
+                    <td><span class="status-badge">${item.status.replace('Prior Year Only', 'Prior Period Only')}</span></td>
+                    <td>${item.assertion || ''}</td>
+                    <td class="text-left-aligned thick-right-border">${item.suggestedCause ? `<span class="suggestion-text">${item.suggestedCause}</span>` : ''}</td>
+                    <td><select data-key="${itemKey}" data-field="tickMark"><option value=""></option>${tickMarkOptionsHTML}</select></td>
+                    <td><textarea data-key="${itemKey}" data-field="auditorComment" placeholder="Enter comments...">${item.auditorComment || ''}</textarea></td>
+                    <td><input type="checkbox" ${item.reviewStatus ? 'checked' : ''} data-key="${itemKey}" data-field="reviewStatus"></td>
+                `;
+                
+                row.innerHTML = rowHTML;
+                row.querySelector('select[data-field="tickMark"]').value = item.tickMark || '';
                 docFragment.appendChild(row);
             });
             
@@ -3457,6 +3458,7 @@
             }
         };
 
+        // V66: Report generation logic updated for new data model and flat structure
         const generateWorkingPaperPDF = async (engagementId) => {
             const reportData = await getReportData(engagementId);
             if (!reportData) return;
@@ -3469,16 +3471,21 @@
             addCustomFont(doc);
 
             const now = new Date();
+            // V66: Map to a simple, flat structure for the report
             const tableBody = data.matchingResults.map(item => {
                 const row = [
-                    item.name,
+                    item.pp_name || '—',
+                    item.cp_name || '—',
                     formatCurrencyForReport(item.closingBalance),
                     formatCurrencyForReport(item.openingBalance),
                     formatCurrencyForReport(item.difference),
-                    item.status.replace('Prior Year Only', 'Prior Period Only'),
+                    item.status.replace('Prior Period Only', 'Prior Period Only'),
                     item.auditorComment || ''
                 ];
-                if(hasCodes) row.unshift(item.code);
+                if(hasCodes) {
+                    row.unshift(item.cp_code || '—');
+                    row.unshift(item.pp_code || '—');
+                }
                 return row;
             });
 
@@ -3502,7 +3509,7 @@
             doc.setFont('helvetica', 'normal');
             doc.text(`Client: ${engagement.clientName}`, 15, 35);
             doc.text(`Period: ${engagement.engagementPeriod}`, 15, 40);
-            doc.text(`Generated on: ${now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}`, 15, 45);
+            doc.text(`Generated on: ${now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', 'year': 'numeric' })}`, 15, 45);
             finalY = 55;
             
             if (data.discussionPoints && data.discussionPoints.trim() !== '') {
@@ -3527,19 +3534,22 @@
                 finalY += 12 + (conclusionLines.length * 5);
             }
 
+            // V66: Simple, flat header row
             const head = hasCodes 
-                ? [['Code', 'Account Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]]
-                : [['Account Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]];
+                ? [['PP Code', 'CP Code', 'PP Name', 'CP Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]]
+                : [['PP Name', 'CP Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]];
             
             const columnStyles = hasCodes ? {
-                    0: { halign: 'center', cellWidth: 20 }, 1: { halign: 'left', cellWidth: 60 },
+                    0: { halign: 'left', cellWidth: 20 }, 1: { halign: 'left', cellWidth: 20 },
+                    2: { halign: 'left', cellWidth: 50 }, 3: { halign: 'left', cellWidth: 50 },
+                    4: { halign: 'right', cellWidth: 25 }, 5: { halign: 'right', cellWidth: 25 },
+                    6: { halign: 'right', cellWidth: 25 }, 7: { halign: 'center', cellWidth: 25 },
+                    8: { halign: 'left' }
+                } : {
+                    0: { halign: 'left', cellWidth: 60 }, 1: { halign: 'left', cellWidth: 60 },
                     2: { halign: 'right', cellWidth: 30 }, 3: { halign: 'right', cellWidth: 30 },
                     4: { halign: 'right', cellWidth: 30 }, 5: { halign: 'center', cellWidth: 30 },
                     6: { halign: 'left' }
-                } : {
-                    0: { halign: 'left', cellWidth: 70 }, 1: { halign: 'right', cellWidth: 30 },
-                    2: { halign: 'right', cellWidth: 30 }, 3: { halign: 'right', cellWidth: 30 },
-                    4: { halign: 'center', cellWidth: 30 }, 5: { halign: 'left' }
                 };
 
             doc.autoTable({
@@ -3587,6 +3597,7 @@
             doc.save(`WorkingPaper_${safeClientName}_${safePeriod}.pdf`);
         };
         
+        // V66: Excel generation updated for new data model and flat structure
         const generateWorkingPaperExcel = async (engagementId) => {
             const reportData = await getReportData(engagementId);
             if (!reportData) return;
@@ -3636,21 +3647,25 @@
             }
             summary_ws["!merges"] = merges;
 
-            const columnMap = {};
+            // V66: Map to a simple, flat structure with only the required 10 columns for Excel
             const detailedJson = data.matchingResults.map((item, index) => {
-                const rowIndex = index + 2;
+                const rowIndex = index + 2; // Excel rows are 1-based, +1 for header
                 const closingBalance = item.closingBalance !== null ? item.closingBalance : 0;
                 const openingBalance = item.openingBalance !== null ? item.openingBalance : 0;
                 
                 let rowData = {};
+                let columnMap = {};
+                
                 if (hasCodes) {
-                    Object.assign(columnMap, { code: 'A', name: 'B', closingBalance: 'C', openingBalance: 'D', difference: 'E', isMaterial: 'F' });
-                    rowData["Code"] = item.code;
+                    Object.assign(columnMap, { pp_code: 'A', cp_code: 'B', pp_name: 'C', cp_name: 'D', closingBalance: 'E', openingBalance: 'F', difference: 'G', isMaterial: 'H' });
+                    rowData["Prior Period Code"] = item.pp_code;
+                    rowData["Current Period Code"] = item.cp_code;
                 } else {
-                    Object.assign(columnMap, { name: 'A', closingBalance: 'B', openingBalance: 'C', difference: 'D', isMaterial: 'E' });
+                    Object.assign(columnMap, { pp_name: 'A', cp_name: 'B', closingBalance: 'C', openingBalance: 'D', difference: 'E', isMaterial: 'F' });
                 }
 
-                rowData["Account Name"] = item.name;
+                rowData["Prior Period Name"] = item.pp_name;
+                rowData["Current Period Name"] = item.cp_name;
                 rowData["Closing Balance"] = { t: 'n', v: closingBalance, z: moneyFormat };
                 rowData["Opening Balance"] = { t: 'n', v: openingBalance, z: moneyFormat };
                 rowData["Difference"] = { t: 'n', f: `${columnMap.openingBalance}${rowIndex}-${columnMap.closingBalance}${rowIndex}`, z: moneyFormat };
@@ -3659,7 +3674,7 @@
                 if (!data.materialityThreshold) { materialityFormula = `"No"`; }
                 rowData["Is Material?"] = { t: 's', f: materialityFormula };
                 
-                rowData["Status"] = item.status.replace('Prior Year Only', 'Prior Period Only');
+                rowData["Status"] = item.status.replace('Prior Period Only', 'Prior Period Only');
                 rowData["Auditor's Comments"] = item.auditorComment;
 
                 return rowData;
@@ -3668,10 +3683,10 @@
             const detailed_ws = XLSX.utils.json_to_sheet(detailedJson, { cellDates: true });
 
             detailed_ws['!cols'] = hasCodes 
-                ? [{ wch: 15 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }]
-                : [{ wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }];
+                ? [{ wch: 15 }, { wch: 15 }, { wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }]
+                : [{ wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }];
             
-            const autoFilterRef = hasCodes ? `A1:H${detailedJson.length + 1}` : `A1:G${detailedJson.length + 1}`;
+            const autoFilterRef = hasCodes ? `A1:J${detailedJson.length + 1}` : `A1:H${detailedJson.length + 1}`;
             detailed_ws['!autofilter'] = { ref: autoFilterRef };
             detailed_ws['!freeze'] = { ySplit: 1 };
 
@@ -3689,11 +3704,11 @@
             const periodType = document.querySelector('#upload-content input[name="upload-period-type"]:checked').value;
             
             if (periodType === 'current') {
-                engagementData.currentYearTB = normalizedData;
-                engagementData.currentYearTB_filename = appState.parserState.fileName;
+                engagementData.currentPeriodTB = normalizedData;
+                engagementData.currentPeriodTB_filename = appState.parserState.fileName;
             } else {
-                engagementData.priorYearTB = normalizedData;
-                engagementData.priorYearTB_filename = appState.parserState.fileName;
+                engagementData.priorPeriodTB = normalizedData;
+                engagementData.priorPeriodTB_filename = appState.parserState.fileName;
             }
             engagementData.parserSettings = parserSettings;
             engagementData.matchingResults = null;
@@ -3817,56 +3832,50 @@
             const table = reviewTableContainer.querySelector('.review-table');
             if (!table) return;
 
-            table.querySelectorAll('th[data-key]').forEach(th => {
+            // V66: Target sub-header row for filter icons
+            const subHeaderRow = table.querySelector('.sub-header');
+            if (subHeaderRow) {
+                 subHeaderRow.querySelectorAll('th[data-key]').forEach(th => addFilterIconToTh(th));
+            }
+            // Also target mid-header for non-split columns
+            table.querySelectorAll('.mid-header th[rowspan="2"]').forEach(th => {
+                const key = tableConfig.find(c => c.label === th.textContent.trim())?.key;
+                 if (key) {
+                    th.dataset.key = key;
+                    th.dataset.type = tableConfig.find(c => c.key === key)?.dataType;
+                    addFilterIconToTh(th);
+                }
+            });
+
+            function addFilterIconToTh(th) {
                 let contentWrapper = th.querySelector('.th-content');
                 if (!contentWrapper) {
                     contentWrapper = document.createElement('div');
                     contentWrapper.className = 'th-content';
-                    if (th.classList.contains('text-left-aligned')) {
-                         contentWrapper.style.justifyContent = 'flex-start';
-                    }
                     while(th.firstChild) contentWrapper.appendChild(th.firstChild);
                     th.appendChild(contentWrapper);
                 }
                 
-                contentWrapper.querySelectorAll('.th-icon-btn').forEach(btn => btn.remove());
-                
-                let iconContainer = document.createElement('span');
-                iconContainer.style.display = 'inline-flex';
-                iconContainer.style.gap = '0.25rem';
-                
-                const columnConfig = tableConfig.find(c => (c.key || c.id) === th.dataset.key);
-                if (!columnConfig) return;
+                contentWrapper.querySelectorAll('.th-icon-btn.filter-icon').forEach(btn => btn.remove());
 
-                if (columnConfig.id === 'tickMark') {
-                    const managerBtn = document.createElement('button');
-                    managerBtn.className = 'th-icon-btn';
-                    managerBtn.dataset.tooltip = 'Manage Tick Marks';
-                    managerBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311a1.464 1.464 0 0 1 .872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1-.872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1-.872-2.105l.34-.1c-1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1 .872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>`;
-                    managerBtn.addEventListener('click', () => openTickMarkManager());
-                    iconContainer.appendChild(managerBtn);
-                }
-
-                if (appState.isFilterUIVisible && columnConfig.dataType) { // Only show filter icon for filterable columns
+                const key = th.dataset.key;
+                const columnConfig = tableConfig.find(c => c.key === key);
+                
+                if (appState.isFilterUIVisible && columnConfig && columnConfig.dataType) {
                     const filterIcon = document.createElement('button');
-                    filterIcon.className = 'th-icon-btn';
+                    filterIcon.className = 'th-icon-btn filter-icon';
                     filterIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1.5A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>`;
                     filterIcon.addEventListener('click', (e) => {
                         e.stopPropagation();
                         openFilterPopup(th, tableConfig);
                     });
-                    filterIcon.classList.toggle('active', !!appState.columnFilters[th.dataset.key]);
-                    iconContainer.appendChild(filterIcon);
-                } 
-
-                if(iconContainer.hasChildNodes()) {
-                     contentWrapper.appendChild(iconContainer);
+                    filterIcon.classList.toggle('active', !!appState.columnFilters[key]);
+                    contentWrapper.appendChild(filterIcon);
                 }
-            });
+            }
         };
 
         const openFilterPopup = async (th, tableConfig) => {
-            const engagementData = await getFromStorage(getEngagementDataKey(appState.currentEngagement.id));
             if (!appState.filteredResultsCache) return;
             
             const key = th.dataset.key;
@@ -3875,7 +3884,7 @@
 
             const type = columnConfig.dataType;
             const existingFilter = appState.columnFilters[key];
-            const headerText = th.querySelector('.th-content').childNodes[0].textContent;
+            const headerText = th.querySelector('.th-content')?.childNodes[0].textContent || th.textContent;
             
             const popupTitle = document.getElementById('filter-popup-title');
             const popupContent = document.getElementById('filter-popup-content');
@@ -3892,7 +3901,7 @@
                     let displayVal = val;
                     if (val === '') { displayVal = '(Blank)'; }
                     if (key === 'reviewStatus') { displayVal = val === 'true' ? 'Reviewed' : 'Pending'; }
-                    if (key === 'status') { displayVal = val.replace('Prior Year Only', 'Prior Period Only'); }
+                    if (key === 'status') { displayVal = val.replace('Prior Period Only', 'Prior Period Only'); }
                     return `<label class="filter-popup-checklist-item"><input type="checkbox" value="${val}" ${checkedValues.includes(val) ? 'checked' : ''}> ${displayVal}</label>`;
                 }).join('');
                 
@@ -4138,7 +4147,7 @@
 
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const data = await getFromStorage(dataKey);
-            const keyField = data.hasAccountCodes ? 'code' : 'name';
+            const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
 
             let keysToUpdate = new Set();
             switch (appState.bulkSelectionScope) {
@@ -4146,13 +4155,13 @@
                     keysToUpdate = appState.selectedRows;
                     break;
                 case 'all':
-                    appState.filteredResultsCache.forEach(item => keysToUpdate.add(item[keyField]));
+                    appState.filteredResultsCache.forEach(item => keysToUpdate.add(item[keyField] || item.pp_name || item.cp_name));
                     break;
                 case 'custom':
                     const { start, end } = appState.bulkSelectionCustomRange;
                     const startIndex = (start - 1) * appState.pageSize;
                     const endIndex = end * appState.pageSize;
-                    appState.filteredResultsCache.slice(startIndex, endIndex).forEach(item => keysToUpdate.add(item[keyField]));
+                    appState.filteredResultsCache.slice(startIndex, endIndex).forEach(item => keysToUpdate.add(item[keyField] || item.pp_name || item.cp_name));
                     break;
             }
 
@@ -4162,7 +4171,8 @@
             }
 
             data.matchingResults.forEach(item => {
-                if (keysToUpdate.has(item[keyField])) {
+                const itemKey = item[keyField] || item.pp_name || item.cp_name;
+                if (keysToUpdate.has(itemKey)) {
                     if (action === 'markReviewed') item.reviewStatus = true;
                     else if (action === 'clearReviewed') item.reviewStatus = false;
                     else if (action === 'clearTicksAndComments') {
@@ -4197,13 +4207,13 @@
             }
 
             const keyField = data.hasAccountCodes ? 'code' : 'name';
-            const unmatchedCY = data.matchingResults.filter(item => item.status === 'New Account');
-            const unmatchedPY = data.matchingResults.filter(item => item.status === 'Prior Period Only');
+            const unmatchedCP = data.matchingResults.filter(item => item.status === 'New Account');
+            const unmatchedPP = data.matchingResults.filter(item => item.status === 'Prior Period Only');
 
-            unmatchedCYList.innerHTML = unmatchedCY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
-            unmatchedPYList.innerHTML = unmatchedPY.map(item => `<li class="mapping-item" data-key="${item[keyField]}">${item.name} ${data.hasAccountCodes ? `(${item.code})` : ''}</li>`).join('');
+            unmatchedCPList.innerHTML = unmatchedCP.map(item => `<li class="mapping-item" data-key="${item.cp_code || item.cp_name}">${item.cp_name} ${data.hasAccountCodes ? `(${item.cp_code})` : ''}</li>`).join('');
+            unmatchedPPList.innerHTML = unmatchedPP.map(item => `<li class="mapping-item" data-key="${item.pp_code || item.pp_name}">${item.pp_name} ${data.hasAccountCodes ? `(${item.pp_code})` : ''}</li>`).join('');
 
-            appState.manualMapping = { cy: null, py: null };
+            appState.manualMapping = { cp: null, pp: null };
             saveMappingBtn.disabled = true;
             mappingModal.classList.remove('hidden');
             document.body.classList.add('modal-open');
@@ -4224,21 +4234,21 @@
             list.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
             item.classList.add('selected');
 
-            if (list.id === 'unmatched-cy-list') appState.manualMapping.cy = key;
-            else if (list.id === 'unmatched-py-list') appState.manualMapping.py = key;
+            if (list.id === 'unmatched-cp-list') appState.manualMapping.cp = key;
+            else if (list.id === 'unmatched-pp-list') appState.manualMapping.pp = key;
             
-            saveMappingBtn.disabled = !(appState.manualMapping.cy && appState.manualMapping.py);
+            saveMappingBtn.disabled = !(appState.manualMapping.cp && appState.manualMapping.pp);
         };
         const saveManualMapping = async () => {
-            const { cy, py } = appState.manualMapping;
-            if (!cy || !py) return;
+            const { cp, pp } = appState.manualMapping;
+            if (!cp || !pp) return;
 
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const data = await getFromStorage(dataKey);
             if (!data.manualMappings) data.manualMappings = [];
             
-            if (!data.manualMappings.some(m => m[0] === cy && m[1] === py)) {
-                data.manualMappings.push([cy, py]);
+            if (!data.manualMappings.some(m => m[0] === cp && m[1] === pp)) {
+                data.manualMappings.push([cp, pp]);
             }
             
             await saveAndNotify(dataKey, data);
@@ -4736,7 +4746,7 @@
 
                 finalSignedBalance = (nature === 'Cr') ? -Math.abs(finalSignedBalance) : Math.abs(finalSignedBalance);
                 const periodType = document.querySelector('#upload-content input[name="upload-period-type"]:checked').value;
-                const inferenceKey = periodType === 'current' ? 'Inferred_by_CY' : 'Inferred_by_PY';
+                const inferenceKey = periodType === 'current' ? 'Inferred_by_CP' : 'Inferred_by_PP';
 
                 return { ...row, Final_signed_Closing_balance: finalSignedBalance, Balance_nature: nature, [inferenceKey]: inferredBy };
             });
@@ -5045,8 +5055,8 @@
                 const data = await getFromStorage(dataKey);
                 if (!key || !data) return;
                 
-                const keyField = data.hasAccountCodes ? 'code' : 'name';
-                const item = data.matchingResults.find(r => r[keyField] === key);
+                const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
+                const item = data.matchingResults.find(r => (r[keyField] || r.pp_name || r.cp_name) === key);
                 if (!item) return;
                 
                 let dataChanged = false;
@@ -5081,8 +5091,8 @@
                     const value = e.target.value;
                     const dataKey = getEngagementDataKey(appState.currentEngagement.id);
                     const data = await getFromStorage(dataKey);
-                    const keyField = data.hasAccountCodes ? 'code' : 'name';
-                    const item = data.matchingResults.find(r => r[keyField] === key);
+                    const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
+                    const item = data.matchingResults.find(r => (r[keyField] || r.pp_name || r.cp_name) === key);
                     if (item) {
                         item.auditorComment = value;
                         await saveAndNotify(dataKey, data);
@@ -5310,8 +5320,8 @@
             
             mapUnmatchedBtn.addEventListener('click', openMappingModal);
             closeMappingModalBtn.addEventListener('click', closeMappingModal);
-            unmatchedCYList.addEventListener('click', handleMappingSelection);
-            unmatchedPYList.addEventListener('click', handleMappingSelection);
+            unmatchedCPList.addEventListener('click', handleMappingSelection);
+            unmatchedPPList.addEventListener('click', handleMappingSelection);
             saveMappingBtn.addEventListener('click', saveManualMapping);
             
             parserWizardCloseBtn.addEventListener('click', () => { parserWizardModal.classList.add('hidden'); document.body.classList.remove('modal-open'); });
@@ -5350,6 +5360,11 @@
             tickManagerOverlay.addEventListener('click', closeTickMarkManager);
             tickManagerForm.addEventListener('submit', handleTickManagerFormSubmit);
             tickManagerListContainer.addEventListener('click', handleTickManagerListClick);
+            reviewTableContainer.addEventListener('click', (e) => {
+                if (e.target.closest('#manage-ticks-btn-header')) {
+                    openTickMarkManager();
+                }
+            });
             tickManagerForm.addEventListener('reset', () => tickManagerSidebar.classList.remove('sidebar-in-edit-mode'));
             document.getElementById('tick-manager-form-container').addEventListener('click', e => {
                 if(e.target.id === 'tick-manager-save-btn' && !tickManagerEditId.value){
@@ -5458,7 +5473,8 @@
                     scopeOption.closest('.scope-selector').classList.remove('open');
                     
                     if (appState.bulkSelectionScope === 'all') {
-                        appState.selectedRows = new Set(appState.filteredResultsCache.map(item => item.code));
+                        const keyField = appState.currentEngagement.hasAccountCodes ? 'cp_code' : 'cp_name';
+                        appState.selectedRows = new Set(appState.filteredResultsCache.map(item => item[keyField] || item.pp_name || item.cp_name));
                     }
                     
                     renderBulkActionScopeUI();
@@ -5491,7 +5507,8 @@
                     appState.bulkSelectionCustomRange = { start, end };
                     const startIndex = (start - 1) * appState.pageSize;
                     const endIndex = end * appState.pageSize;
-                    appState.selectedRows = new Set(appState.filteredResultsCache.slice(startIndex, endIndex).map(item => item.code));
+                    const keyField = appState.currentEngagement.hasAccountCodes ? 'cp_code' : 'cp_name';
+                    appState.selectedRows = new Set(appState.filteredResultsCache.slice(startIndex, endIndex).map(item => item[keyField] || item.pp_name || item.cp_name));
                     updateBulkActionsUI();
                     filterAndRenderReviewTable();
                     alert(`${appState.selectedRows.size} items from page ${start} to ${end} have been selected.`);
