@@ -685,16 +685,12 @@
             background-color: var(--light-gray-bg);
         }
         
-        .review-table tr.material-difference td {
-            background-color: var(--danger-red-bg);
-        }
+        /* V67: REMOVED .material-difference class */
 
         body.dark-mode .review-table tr:hover td {
              background-color: #111827;
         }
-        body.dark-mode .review-table tr.material-difference td {
-            background-color: var(--danger-red-bg);
-        }
+
         .status-badge {
             display: inline-block;
             padding: 0.125rem 0.5rem;
@@ -703,29 +699,31 @@
             font-size: 0.75rem;
             white-space: nowrap;
         }
-        .status-exact-match .status-badge { background-color: #BBF7D0; color: #15803D; }
-        .status-variance .status-badge { background-color: #FEF08A; color: #854D0E; }
-        .status-new-account .status-badge { background-color: #DBEAFE; color: #1E40AF; }
-        .status-prior-period-only .status-badge { background-color: #E5E7EB; color: #4B5563; }
-        .status-close-match .status-badge { background-color: #E0E7FF; color: #4338CA; }
-        .status-manual-match .status-badge { background-color: #C7D2FE; color: #3730A3; }
-        .status-rounding-difference .status-badge { background-color: #E5E7EB; color: #4B5563; }
-        /* V63: New Hybrid Status Styles */
-        .status-confident-match-match .status-badge { background-color: #E0E7FF; color: #4338CA; }
-        .status-confident-match-variance .status-badge { background-color: #FBCFE8; color: #9D2463; border: 1px solid #DB2777; }
-
-
-        body.dark-mode .status-exact-match .status-badge { background-color: #166534; color: #BBF7D0; }
-        body.dark-mode .status-variance .status-badge { background-color: #92400E; color: #FDE68A; }
-        body.dark-mode .status-new-account .status-badge { background-color: #1E40AF; color: #BFDBFE; }
-        body.dark-mode .status-prior-period-only .status-badge { background-color: #4B5563; color: #D1D5DB; }
-        body.dark-mode .status-close-match .status-badge { background-color: #4338CA; color: #C7D2FE; }
-        body.dark-mode .status-manual-match .status-badge { background-color: #5B21B6; color: #DDD6FE; }
-        body.dark-mode .status-rounding-difference .status-badge { background-color: #4B5563; color: #D1D5DB; }
-        /* V63: Dark mode for new statuses */
-        body.dark-mode .status-confident-match-match .status-badge { background-color: #4338CA; color: #C7D2FE; }
-        body.dark-mode .status-confident-match-variance .status-badge { background-color: #831843; color: #FBCFE8; border-color: #FBCFE8; }
         
+        /* V67: NEW STATUS BADGE STYLES */
+        /* Account Match Statuses */
+        .status-exact-code-match .status-badge, .status-exact-name-match .status-badge { background-color: #BBF7D0; color: #15803D; }
+        .status-name-similarity .status-badge { background-color: #DBEAFE; color: #1E40AF; }
+        .status-manual-match .status-badge { background-color: #C7D2FE; color: #3730A3; }
+        .status-new-account .status-badge { background-color: #FEF3C7; color: #92400E; } /* Orange */
+        .status-prior-period-only .status-badge { background-color: #E5E7EB; color: #4B5563; } /* Gray */
+        
+        /* Balance Match Statuses */
+        .status-no-variance .status-badge { background-color: #BBF7D0; color: #15803D; }
+        .status-variance .status-badge { background-color: #FEF08A; color: #854D0E; }
+        .status-n-a .status-badge { background-color: #E5E7EB; color: #4B5563; }
+
+        /* Dark Mode Statuses */
+        body.dark-mode .status-exact-code-match .status-badge, body.dark-mode .status-exact-name-match .status-badge { background-color: #166534; color: #BBF7D0; }
+        body.dark-mode .status-name-similarity .status-badge { background-color: #1E40AF; color: #BFDBFE; }
+        body.dark-mode .status-manual-match .status-badge { background-color: #5B21B6; color: #DDD6FE; }
+        body.dark-mode .status-new-account .status-badge { background-color: #92400E; color: #FEF3C7; }
+        body.dark-mode .status-prior-period-only .status-badge { background-color: #4B5563; color: #D1D5DB; }
+        
+        body.dark-mode .status-no-variance .status-badge { background-color: #166534; color: #BBF7D0; }
+        body.dark-mode .status-variance .status-badge { background-color: #92400E; color: #FDE68A; }
+        body.dark-mode .status-n-a .status-badge { background-color: #4B5563; color: #D1D5DB; }
+
         .review-table input[type="text"], .review-table select, .review-table textarea {
             width: 100%;
             padding: 0.5rem;
@@ -1926,8 +1924,8 @@
                     </div>
                     <div class="dashboard-grid" id="dashboard-grid">
                         <div class="stat-card stat-clickable" data-filter-type="all"><div class="icon-wrapper blue"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg></div><div class="stat-info"><h4>Total Accounts</h4><p id="stat-total-accounts">0</p></div></div>
-                        <div class="stat-card stat-clickable" data-filter-type="status" data-filter-value="Exact Match"><div class="icon-wrapper green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><div class="stat-info"><h4>Exact Matches</h4><p id="stat-exact-matches">0</p></div></div>
-                        <div class="stat-card stat-clickable" data-filter-type="status" data-filter-value="Variance"><div class="icon-wrapper yellow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg></div><div class="stat-info"><h4>Variances</h4><p id="stat-variances">0</p></div></div>
+                        <div class="stat-card stat-clickable" data-filter-type="balanceMatchStatus" data-filter-value="No Variance"><div class="icon-wrapper green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><div class="stat-info"><h4 id="stat-no-variances-label">No Variances</h4><p id="stat-no-variances">0</p></div></div>
+                        <div class="stat-card stat-clickable" data-filter-type="balanceMatchStatus" data-filter-value="Variance"><div class="icon-wrapper yellow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg></div><div class="stat-info"><h4>Variances</h4><p id="stat-variances">0</p></div></div>
                         <div class="stat-card stat-clickable" data-filter-type="reviewStatus" data-filter-value="true"><div class="icon-wrapper purple"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg></div><div class="stat-info"><h4>Reviewed</h4><p id="stat-reviewed-count">0</p></div></div>
                     </div>
                     <div class="progress-card">
@@ -1992,27 +1990,18 @@
                 <div id="matching-content" class="tab-pane hidden">
                     <div class="card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
                         <h3 style="margin-top:0; margin-bottom: 1rem;">Audit Settings</h3>
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label for="apply-materiality-checkbox" style="display:flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-                                <input type="checkbox" id="apply-materiality-checkbox" style="width: 1rem; height: 1rem;">
-                                Apply Materiality Threshold
-                            </label>
-                        </div>
-                        <div id="materiality-input-container" class="form-group hidden" style="margin-top: 1rem; margin-bottom: 0;">
-                             <label for="materiality-threshold-input">Materiality Threshold (₹)</label>
-                             <input type="number" id="materiality-threshold-input" placeholder="e.g., 50000">
-                        </div>
-                        <!-- V61: NEW Matching Sensitivity Control -->
+                        <!-- V67: REMOVED Materiality Threshold section -->
+                        <!-- V67: RENAMED Matching Sensitivity section -->
                         <div id="sensitivity-input-container" class="form-group" style="margin-top: 1rem; margin-bottom: 0;">
-                            <label for="matching-sensitivity-input" style="display:flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-                                Matching Sensitivity
-                                <span class="tooltip-container" data-tooltip="Controls the strictness for matching account names. Higher values require a more exact match. Recommended: 60-75%.">
+                            <label for="name-similarity-input" style="display:flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                                Name Similarity Threshold
+                                <span class="tooltip-container" data-tooltip="Controls the strictness for fuzzy matching account names. Higher values require a more exact match. A threshold of 75% means names must be at least 75% similar to be considered a potential match.">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="color: var(--text-light);"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.054.592.11.854.173.236.065.418.158.544.294.125.137.188.319.188.553 0 .25-.074.455-.22.615-.146.16-.36.24-.626.24h-.832v.46h.832c.39 0 .695-.121.914-.363.219-.243.328-.55.328-.913 0-.415-.147-.755-.44-1.036-.293-.282-.662-.485-1.076-.614zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4z"/></svg>
                                 </span>
                             </label>
                             <div style="display: flex; align-items: center; gap: 1rem;">
-                                <input type="range" id="matching-sensitivity-slider" min="40" max="100" value="65" style="flex-grow: 1;">
-                                <input type="number" id="matching-sensitivity-input" min="40" max="100" value="65" style="width: 80px; text-align: center;">
+                                <input type="range" id="name-similarity-slider" min="40" max="100" value="65" style="flex-grow: 1;">
+                                <input type="number" id="name-similarity-input" min="40" max="100" value="65" style="width: 80px; text-align: center;">
                             </div>
                         </div>
                     </div>
@@ -2165,15 +2154,23 @@
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V66 (Enhanced Review Table & Reporting)
-     * Description: This version introduces a major overhaul of the 'Review & Tick' table to enhance audit transparency and defensibility.
-     * - [UI] Implemented a three-tier table header to display Prior Period (PP) and Current Period (CP) Account Code and Name side-by-side for immediate comparison.
-     * - [UI] Enforced non-wrapping text in all table headers for a consistent, professional layout.
-     * - [Data Model] Refactored the internal matchingResults data structure from {code, name} to {pp_code, pp_name, cp_code, cp_name} to support the new UI.
-     * - [Logic] Updated the matching worker, search, and filtering logic to operate on the new four-column data model, including individual filters for each sub-column.
-     * - [Reporting] Kept PDF and Excel reports simple with a single, flat header row. The report generation logic now transforms the data to a curated 10-column format for optimal usability.
-     * - [Terminology] Standardized user-facing text to use "Period" instead of "Year" for greater flexibility.
-     * - [QA Verified] All changes have been verified against the V65 baseline to ensure no regressions in dashboard stats, bulk actions, or other core features. Conditional logic for TBs with/without account codes is fully functional.
+     * Version: V67 (Status Column Split & Simplification)
+     * Description: This version enhances audit clarity by splitting the Status column and simplifies the UI by removing the materiality feature.
+     * - [Requirement 1] Status Column Split:
+     *   - [Data Model] The `status` field in `matchingResults` is replaced with `accountMatchStatus` and `balanceMatchStatus`.
+     *   - [Logic] The matching worker now generates the two new status fields based on matching methodology and balance differences.
+     *   - [UI] The Review Table now displays "Account Match Status" and "Balance Match Status" as two separate columns. The 3-tier header is preserved.
+     *   - [Dashboard] "Exact Matches" card is renamed to "No Variances" and correctly counts items with a "No Variance" balance status. Filtering is updated.
+     *   - [Reporting] PDF and Excel reports are updated to reflect the new two-column status structure.
+     * - [Requirement 2] Materiality Feature Removal:
+     *   - [UI] Removed the "Apply Materiality Threshold" checkbox and input field from the Balance Matching tab for a cleaner interface.
+     *   - [Logic] All associated JavaScript logic, event listeners, and data model properties (`applyMateriality`, `materialityThreshold`) have been removed.
+     *   - [CSS] Removed the `.material-difference` styling that highlighted rows, as the feature no longer exists.
+     *   - [Reporting] Excel export no longer includes the "Is Material?" column or the materiality threshold on the summary sheet.
+     * - [Requirement 3] Terminology Update & Backward Compatibility:
+     *   - [UI/Logic] Renamed "Matching Sensitivity" to "Name Similarity Threshold" across all UI labels, tooltips, DOM IDs, and internal variables.
+     *   - [Data Model] The internal data property was renamed from `matchingSensitivity` to `nameSimilarityThreshold`.
+     *   - [Compatibility] Implemented a backward compatibility layer to seamlessly load older engagements. The app auto-detects the old `matchingSensitivity` property, migrates it to `nameSimilarityThreshold` in memory, and saves it in the new format on the next update, ensuring no data is lost for existing users.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2349,7 +2346,7 @@
             return new Worker(URL.createObjectURL(blob));
         };
 
-        // --- V66: Matching Web Worker (Refactored Data Model) ---
+        // --- V67: Matching Web Worker (Refactored Data Model) ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
@@ -2369,11 +2366,13 @@
 
                     const results = [];
                     const manualMappings = engagementData.manualMappings || [];
-                    const sensitivityThreshold = engagementData.matchingSensitivity || 65;
+                    // V67: Use new property name with backward compatibility
+                    const similarityThreshold = engagementData.nameSimilarityThreshold || engagementData.matchingSensitivity || 65;
                     const hasCodes = engagementData.hasAccountCodes;
                     
                     const getKey = (item) => hasCodes ? item.code : item.name;
 
+                    // Pass 1: Manual Mappings
                     manualMappings.forEach(([cpKey, ppKey]) => {
                         const cpIndex = unmatchedCP.findIndex(item => getKey(item) === cpKey);
                         const ppIndex = unmatchedPP.findIndex(item => getKey(item) === ppKey);
@@ -2384,13 +2383,18 @@
                             
                             const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
                             const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
-                            const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                            const analysis = analyzeDifference(cp, pp, status, openingBalance, closingBalance);
+                            
+                            const balanceMatchStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'No Variance' : 'Variance';
+                            const analysis = analyzeDifference(cp, pp, 'Manual Match', openingBalance, closingBalance);
                             
                             results.push({ 
                                 cp_code: cp.code, cp_name: cp.name,
                                 pp_code: pp.code, pp_name: pp.name,
-                                openingBalance, closingBalance, status: 'Manual Match', ...analysis,
+                                openingBalance, closingBalance, 
+                                accountMatchStatus: 'Manual Match',
+                                balanceMatchStatus: balanceMatchStatus,
+                                matchConfidence: 100,
+                                ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2400,7 +2404,8 @@
                     
                     let tempUnmatchedCP = [...unmatchedCP];
 
-                    if (hasCodes) {
+                    // Pass 2: Exact Code or Name Match
+                    if (hasCodes) { // Exact Code Match
                         tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
                             const ppIndex = unmatchedPP.findIndex(pp => pp.code === cp.code);
                             if (ppIndex > -1) {
@@ -2408,18 +2413,46 @@
                                 const oldAnn = oldAnnotations.get(getKey(cp)) || {};
                                 const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
                                 const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
-                                const status = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Exact Match' : 'Variance';
-                                const analysis = analyzeDifference(cp, pp, status, openingBalance, closingBalance);
                                 
-                                let finalStatus = status;
-                                if(status === 'Exact Match' && Math.abs(openingBalance - closingBalance) > 0.01) {
-                                    finalStatus = 'Rounding Difference';
-                                }
+                                const balanceMatchStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'No Variance' : 'Variance';
+                                const analysis = analyzeDifference(cp, pp, 'Exact Code Match', openingBalance, closingBalance);
                                 
                                 results.push({
                                     cp_code: cp.code, cp_name: cp.name,
                                     pp_code: pp.code, pp_name: pp.name,
-                                    openingBalance, closingBalance, status: finalStatus, ...analysis,
+                                    openingBalance, closingBalance,
+                                    accountMatchStatus: 'Exact Code Match',
+                                    balanceMatchStatus: balanceMatchStatus,
+                                    matchConfidence: 100,
+                                    ...analysis,
+                                    tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
+                                    auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
+                                });
+                                processedCount += 2;
+                                return false;
+                            }
+                            return true;
+                        });
+                    } else { // Exact Name Match (for TBs without codes)
+                         tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
+                            const ppIndex = unmatchedPP.findIndex(pp => pp.name.toLowerCase() === cp.name.toLowerCase());
+                            if (ppIndex > -1) {
+                                const pp = unmatchedPP.splice(ppIndex, 1)[0];
+                                const oldAnn = oldAnnotations.get(getKey(cp)) || {};
+                                const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
+                                const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
+                                
+                                const balanceMatchStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'No Variance' : 'Variance';
+                                const analysis = analyzeDifference(cp, pp, 'Exact Name Match', openingBalance, closingBalance);
+                                
+                                results.push({
+                                    cp_code: cp.code, cp_name: cp.name,
+                                    pp_code: pp.code, pp_name: pp.name,
+                                    openingBalance, closingBalance,
+                                    accountMatchStatus: 'Exact Name Match',
+                                    balanceMatchStatus: balanceMatchStatus,
+                                    matchConfidence: 100,
+                                    ...analysis,
                                     tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                     auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                                 });
@@ -2431,12 +2464,13 @@
                     }
                     self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
+                    // Pass 3: Name Similarity Match
                     tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                        let bestMatch = null; let high_score = sensitivityThreshold; let bestPpIndex = -1;
+                        let bestMatch = null; let highScore = similarityThreshold; let bestPpIndex = -1;
                         unmatchedPP.forEach((pp, ppIndex) => {
                             const distance = levenshteinDistance(cp.name, pp.name);
                             const score = Math.round((1 - distance / Math.max(cp.name.length, pp.name.length)) * 100);
-                            if (score > high_score) { high_score = score; bestMatch = pp; bestPpIndex = ppIndex; }
+                            if (score >= highScore) { highScore = score; bestMatch = pp; bestPpIndex = ppIndex; }
                         });
 
                         if (bestMatch) {
@@ -2445,14 +2479,16 @@
                             const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
                             const closingBalance = pp.hasOwnProperty('Final_signed_Closing_balance') ? pp.Final_signed_Closing_balance : pp.balance;
                             
-                            const balanceStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'Match' : 'Variance';
-                            const finalStatus = \`Confident Match (\${high_score}%) - \${balanceStatus}\`;
-
-                            const analysis = analyzeDifference(cp, bestMatch, 'Close Match', openingBalance, closingBalance);
+                            const balanceMatchStatus = Math.abs(openingBalance - closingBalance) < 1.00 ? 'No Variance' : 'Variance';
+                            const analysis = analyzeDifference(cp, bestMatch, 'Name Similarity', openingBalance, closingBalance);
                             results.push({
                                 cp_code: cp.code, cp_name: cp.name,
                                 pp_code: pp.code, pp_name: pp.name,
-                                openingBalance, closingBalance, status: finalStatus, ...analysis,
+                                openingBalance, closingBalance,
+                                accountMatchStatus: \`Name Similarity (\${highScore}%)\`,
+                                balanceMatchStatus: balanceMatchStatus,
+                                matchConfidence: highScore,
+                                ...analysis,
                                 tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
                                 auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
                             });
@@ -2463,6 +2499,7 @@
                     });
                      self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
+                    // Pass 4: Unmatched Accounts
                     tempUnmatchedCP.forEach(cp => {
                          const oldAnn = oldAnnotations.get(getKey(cp)) || {};
                          const openingBalance = cp.hasOwnProperty('Final_signed_Closing_balance') ? cp.Final_signed_Closing_balance : cp.balance;
@@ -2470,9 +2507,13 @@
                          results.push({ 
                             cp_code: cp.code, cp_name: cp.name,
                             pp_code: null, pp_name: null,
-                            openingBalance, closingBalance: null, status: 'New Account', ...analysis,
+                            openingBalance, closingBalance: null,
+                            accountMatchStatus: 'New Account',
+                            balanceMatchStatus: 'N/A',
+                            ...analysis,
                             tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
-                            auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
+                            auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
+                         });
                     });
                     unmatchedPP.forEach(pp => {
                          const oldAnn = oldAnnotations.get(getKey(pp)) || {};
@@ -2481,9 +2522,13 @@
                          results.push({ 
                             cp_code: null, cp_name: null,
                             pp_code: pp.code, pp_name: pp.name,
-                            openingBalance: null, closingBalance, status: 'Prior Period Only', ...analysis,
+                            openingBalance: null, closingBalance,
+                            accountMatchStatus: 'Prior Period Only',
+                            balanceMatchStatus: 'N/A',
+                            ...analysis,
                              tickMark: oldAnn.tickMark || '', reviewStatus: oldAnn.reviewStatus || false,
-                             auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''});
+                             auditorComment: oldAnn.auditorComment || analysis.generatedComment || ''
+                         });
                     });
                     
                     self.postMessage({ type: 'complete', results: results });
@@ -2542,7 +2587,8 @@
         const uploadedFilesContainer = document.getElementById('uploaded-files-container');
         const dashboardStatusContainer = document.getElementById('dashboard-status-container');
         const statTotalAccounts = document.getElementById('stat-total-accounts');
-        const statExactMatches = document.getElementById('stat-exact-matches');
+        const statNoVariances = document.getElementById('stat-no-variances');
+        const statNoVariancesLabel = document.getElementById('stat-no-variances-label');
         const statVariances = document.getElementById('stat-variances');
         const statReviewedCount = document.getElementById('stat-reviewed-count');
         const autoMatchBtn = document.getElementById('auto-match-btn');
@@ -2570,11 +2616,9 @@
         const exportEngagementBtn = document.getElementById('export-engagement-btn');
         const importEngagementBtn = document.getElementById('import-engagement-btn');
         const importFileInput = document.getElementById('import-file-input');
-        const applyMaterialityCheckbox = document.getElementById('apply-materiality-checkbox');
-        const materialityInputContainer = document.getElementById('materiality-input-container');
-        const materialityThresholdInput = document.getElementById('materiality-threshold-input');
-        const matchingSensitivitySlider = document.getElementById('matching-sensitivity-slider'); // V61
-        const matchingSensitivityInput = document.getElementById('matching-sensitivity-input'); // V61
+        // V67: RENAMED and REMOVED selectors
+        const nameSimilaritySlider = document.getElementById('name-similarity-slider');
+        const nameSimilarityInput = document.getElementById('name-similarity-input');
         const reviewSearchInput = document.getElementById('review-search-input');
         const dashboardGrid = document.getElementById('dashboard-grid');
         const bulkActionsContainer = document.getElementById('bulk-actions-container');
@@ -2638,7 +2682,7 @@
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
 
-        // --- V66: Dynamic Review Table Configuration "Blueprint" ---
+        // --- V67: Dynamic Review Table Configuration "Blueprint" ---
         const getDynamicTableConfig = (engagementData) => {
             const hasCodes = engagementData?.hasAccountCodes === true;
 
@@ -2650,7 +2694,9 @@
                 { id: 'closingBalance', key: 'closingBalance', label: 'Closing Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
                 { id: 'openingBalance', key: 'openingBalance', label: 'Opening Balance', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
                 { id: 'difference', key: 'difference', label: 'Difference', type: 'currency', isSortable: true, width: '180px', textAlign: 'right', dataType: 'number' },
-                { id: 'status', key: 'status', label: 'Status', type: 'status-badge', isSortable: true, width: '220px', dataType: 'categorical' },
+                // V67: Replaced 'status' with two new columns
+                { id: 'accountMatchStatus', key: 'accountMatchStatus', label: 'Account Match Status', type: 'status-badge', isSortable: true, width: '220px', dataType: 'categorical' },
+                { id: 'balanceMatchStatus', key: 'balanceMatchStatus', label: 'Balance Match Status', type: 'status-badge', isSortable: true, width: '220px', dataType: 'categorical' },
                 { id: 'assertion', key: 'assertion', label: 'Assertion', type: 'text', isSortable: true, width: '150px', dataType: 'categorical' },
                 { id: 'suggestedCause', key: 'suggestedCause', label: 'Possible Causes', type: 'suggestion', isSortable: false, width: '200px', textAlign: 'left', dataType: 'categorical' },
                 { id: 'tickMark', key: 'tickMark', label: 'Tick Mark', type: 'tick-select', isEditable: true, isSortable: true, width: '100px', dataType: 'categorical' },
@@ -2668,7 +2714,6 @@
             return baseConfig;
         };
 
-
         // --- Core Functions (now async where DB is used) ---
         const getFromStorage = async (key) => await DB.get(key);
         
@@ -2684,8 +2729,8 @@
 
         const createDefaultEngagementData = () => ({
             currentPeriodTB: [], priorPeriodTB: [], currentPeriodTB_filename: null, priorPeriodTB_filename: null,
-            matchingResults: null, manualMappings: [], applyMateriality: false, materialityThreshold: null,
-            matchingSensitivity: 65,
+            matchingResults: null, manualMappings: [], 
+            nameSimilarityThreshold: 65, // V67 Renamed
             auditConclusion: '', discussionPoints: '',
             preparedBy: '', preparedDate: '', reviewedBy: '', reviewedDate: '',
             parserSettings: { useInference: false, splitCombined: false },
@@ -2917,8 +2962,10 @@
         
         const updateDashboard = async (engagementId) => {
             const data = await getFromStorage(getEngagementDataKey(engagementId));
+            statNoVariancesLabel.textContent = "No Variances"; // V67 Rename
+
             if (!data) {
-                statTotalAccounts.textContent = "0"; statExactMatches.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
+                statTotalAccounts.textContent = "0"; statNoVariances.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
                 dashboardStatusContainer.innerHTML = `<div class="empty-state-card"><h3>No trial balances uploaded yet</h3></div>`;
                 reviewProgressContainer.innerHTML = `<div class="empty-state-card" style="padding: 2rem;"><h3>No data to review</h3></div>`;
                 return;
@@ -2931,18 +2978,19 @@
 
             if (data.matchingResults) {
                 const results = data.matchingResults;
-                const matches = results.filter(r => r.status === 'Exact Match').length;
-                const variances = results.filter(r => r.status === 'Variance').length;
+                // V67: Update count logic
+                const noVariancesCount = results.filter(r => r.balanceMatchStatus === 'No Variance').length;
+                const variancesCount = results.filter(r => r.balanceMatchStatus === 'Variance').length;
                 const reviewed = results.filter(r => r.reviewStatus).length;
 
-                statExactMatches.textContent = matches;
-                statVariances.textContent = variances;
+                statNoVariances.textContent = noVariancesCount;
+                statVariances.textContent = variancesCount;
                 statReviewedCount.textContent = reviewed;
-                dashboardStatusContainer.innerHTML = `<div class="alert-banner success" style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Matching complete: ${matches} matches, ${variances} variances. ${reviewed} items reviewed.</span></div>`;
+                dashboardStatusContainer.innerHTML = `<div class="alert-banner success" style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><span>Matching complete: ${noVariancesCount} accounts with no variance, ${variancesCount} with variance. ${reviewed} items reviewed.</span></div>`;
                 
                 await renderReviewProgress(engagementId);
             } else {
-                statExactMatches.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
+                statNoVariances.textContent = "0"; statVariances.textContent = "0"; statReviewedCount.textContent = "0";
                 if (hasCP && hasPP) {
                     dashboardStatusContainer.innerHTML = `<div class="alert-banner info" style="margin:0;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg><span>Trial balances loaded. Run Auto-Matching to see results.</span></div>`;
                 } else {
@@ -2957,22 +3005,14 @@
                 reviewProgressContainer.innerHTML = `<div class="empty-state-card" style="padding: 2rem;"><h3>Run matching to see progress</h3></div>`;
                 return;
             }
+            // V67: Simplified progress tracking based on balance status
             const categories = {
-                'Exact Match': { total: 0, reviewed: 0, label: 'Exact Matches' }, 
-                'Close Match': { total: 0, reviewed: 0, label: 'Close Matches' },
+                'No Variance': { total: 0, reviewed: 0, label: 'No Variances' }, 
                 'Variance': { total: 0, reviewed: 0, label: 'Variances' }, 
-                'New Account': { total: 0, reviewed: 0, label: 'New Accounts' }, 
-                'Prior Period Only': { total: 0, reviewed: 0, label: 'Prior Period Only' }
+                'N/A': { total: 0, reviewed: 0, label: 'New / Removed' }
             };
             data.matchingResults.forEach(item => {
-                let categoryKey = item.status;
-                if (item.status.startsWith('Confident Match')) {
-                    categoryKey = 'Close Match';
-                } else if (item.status === 'Manual Match' || item.status === 'Rounding Difference') {
-                    // For simplicity, group these into an existing logical category
-                    categoryKey = 'Close Match';
-                }
-
+                let categoryKey = item.balanceMatchStatus;
                 if (categories[categoryKey]) {
                     categories[categoryKey].total++;
                     if (item.reviewStatus) categories[categoryKey].reviewed++;
@@ -2995,27 +3035,29 @@
         };
 
         const updateMatchingTabUI = async (engagementId) => {
-            const data = await getFromStorage(getEngagementDataKey(engagementId));
+            const dataKey = getEngagementDataKey(engagementId);
+            let data = await getFromStorage(dataKey);
+            
+            // V67: Backward compatibility for renaming 'matchingSensitivity'
+            if (data && data.hasOwnProperty('matchingSensitivity') && !data.hasOwnProperty('nameSimilarityThreshold')) {
+                data.nameSimilarityThreshold = data.matchingSensitivity;
+                delete data.matchingSensitivity;
+                // The data will be saved with the new key upon next interaction.
+            }
+
             const hasData = data && data.currentPeriodTB?.length > 0 && data.priorPeriodTB?.length > 0;
             autoMatchBtn.disabled = !hasData || appState.isMatchingInProgress;
             matchingWarningBanner.classList.toggle('hidden', hasData);
             matchingSuccessBanner.classList.toggle('hidden', !data?.matchingResults);
 
             if (data) {
-                applyMaterialityCheckbox.checked = data.applyMateriality === true;
-                materialityThresholdInput.value = data.materialityThreshold || '';
-                materialityInputContainer.classList.toggle('hidden', !applyMaterialityCheckbox.checked);
-                
-                const sensitivity = data.matchingSensitivity || 65;
-                matchingSensitivitySlider.value = sensitivity;
-                matchingSensitivityInput.value = sensitivity;
-
+                // V67: Renamed property
+                const similarity = data.nameSimilarityThreshold || 65;
+                nameSimilaritySlider.value = similarity;
+                nameSimilarityInput.value = similarity;
             } else {
-                applyMaterialityCheckbox.checked = false;
-                materialityThresholdInput.value = '';
-                materialityInputContainer.classList.add('hidden');
-                matchingSensitivitySlider.value = 65;
-                matchingSensitivityInput.value = 65;
+                nameSimilaritySlider.value = 65;
+                nameSimilarityInput.value = 65;
             }
         };
         
@@ -3037,16 +3079,16 @@
             return costs[s2.length];
         };
 
-        const analyzeDifference = (currentPeriodAccount, priorPeriodAccount, status, openingBalance, closingBalance) => {
+        const analyzeDifference = (currentPeriodAccount, priorPeriodAccount, accountMatchStatus, openingBalance, closingBalance) => {
             const name = (currentPeriodAccount?.name || priorPeriodAccount?.name || '').toLowerCase();
             const analysis = { assertion: '', suggestedCause: '', generatedComment: '' };
              
             const difference = (openingBalance || 0) - (closingBalance || 0);
 
-            if (status === 'Close Match') { analysis.assertion = 'Classification'; analysis.suggestedCause = 'Account names are similar but not identical. Verify if this is a reclassification.'; analysis.generatedComment = 'Account appears to be a reclassification. Verified nature of change.'; }
-            else if (status === 'New Account') { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'New account opened during the period.'; analysis.generatedComment = 'New account opened during the period. Verified opening transaction.'; }
-            else if (status === 'Prior Period Only') { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account closed/disposed of during the period.'; analysis.generatedComment = 'Account closed/disposed of during the period. Verified.'; }
-            else if (status === 'Variance') {
+            if (accountMatchStatus === 'Name Similarity') { analysis.assertion = 'Classification'; analysis.suggestedCause = 'Account names are similar but not identical. Verify if this is a reclassification.'; analysis.generatedComment = 'Account appears to be a reclassification. Verified nature of change.'; }
+            else if (accountMatchStatus === 'New Account') { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'New account opened during the period.'; analysis.generatedComment = 'New account opened during the period. Verified opening transaction.'; }
+            else if (accountMatchStatus === 'Prior Period Only') { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account closed/disposed of during the period.'; analysis.generatedComment = 'Account closed/disposed of during the period. Verified.'; }
+            else if (Math.abs(difference) > 0.01) { // It's a variance
                 if (closingBalance === 0) { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'Possible new GL account or reclassification from a different account.'; }
                 else if (openingBalance === 0) { analysis.assertion = 'Completeness'; analysis.suggestedCause = 'Account may have been disposed of or reclassified.'; }
                 else if (name.includes('retained earnings')) { analysis.assertion = 'Accuracy'; analysis.suggestedCause = 'Movement likely due to prior period profit/loss allocation.'; analysis.generatedComment = 'Movement agrees to prior period audited profit.'; }
@@ -3179,7 +3221,6 @@
                     String(item.cp_name || '').toLowerCase().includes(searchTerm)
                 );
             }
-
             const filters = appState.columnFilters;
             if (Object.keys(filters).length > 0) {
                  results = results.filter(item => {
@@ -3210,6 +3251,15 @@
                                 default: return true;
                             }
                         } else if (filter.type === 'categorical' || filter.type === 'boolean') {
+                            // V67 Update: Handle special case for Name Similarity filter
+                           /* if (key === 'accountMatchStatus' && filter.values.some(v => v.startsWith('Name Similarity'))) {
+                                return filter.values.some(filterVal => {
+                                    if (filterVal.startsWith('Name Similarity')) {
+                                        return itemValue.startsWith('Name Similarity');
+                                    }
+                                    return String(itemValue || '') === filterVal;
+                                });
+                            } */
                             return filter.values.includes(String(itemValue || '')); // Handle blank/null
                         }
                         return true;
@@ -3224,19 +3274,19 @@
             updateFixedScrollbar();
         };
 
-        // --- V66: New 3-Tier Header Rendering Engine ---
+        // --- V67: New 3-Tier Header Rendering Engine with 2 status columns ---
         const renderReviewTable = (filteredData, engagementData) => {
             renderReviewActions();
             
             if (!filteredData || !engagementData) {
-                reviewTableContainer.innerHTML = `<div class="empty-state-card"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="48" height="48"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6-2.292m0 0v14.25m0-14.25a8.967 8.967 0 00-6 2.292m6-2.292a8.967 8.967 0 016 2.292m0 0V18m-6-6h.008v.008H12V12z" /></svg><h3>No balance matches available</h3><p>Please run auto-matching first.</p></div>`;
+                reviewTableContainer.innerHTML = `<div class="empty-state-card"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="48" height="48"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18-3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6-2.292m0 0v14.25m0-14.25a8.967 8.967 0 00-6 2.292m6-2.292a8.967 8.967 0 016 2.292m0 0V18m-6-6h.008v.008H12V12z" /></svg><h3>No balance matches available</h3><p>Please run auto-matching first.</p></div>`;
                 paginationContainer.classList.add('hidden');
                 return;
             }
             
             const tableConfig = getDynamicTableConfig(engagementData);
             const hasCodes = engagementData.hasAccountCodes;
-            const keyField = hasCodes ? 'cp_code' : 'cp_name'; // Use a consistent key for rows
+            const keyField = hasCodes ? 'cp_code' : 'cp_name';
 
             const table = document.createElement('table');
             table.className = 'review-table';
@@ -3244,14 +3294,13 @@
             const tbody = document.createElement('tbody');
             const docFragment = document.createDocumentFragment();
 
-            // V66: Render 3-Tier Headers from mockup
             const aboutTbColspan = hasCodes ? 7 : 5;
             const headerRow1 = document.createElement('tr');
             headerRow1.className = 'top-header';
             headerRow1.innerHTML = `
                 <th colspan="1" class="thick-right-border">Bulk Actions</th>
                 <th colspan="${aboutTbColspan}" class="thick-right-border">About the Trial Balance</th>
-                <th colspan="3" class="thick-right-border">System Analysis</th>
+                <th colspan="4" class="thick-right-border">System Analysis</th>
                 <th colspan="3">Auditor's Workspace</th>
             `;
 
@@ -3267,7 +3316,8 @@
                 <th rowspan="2">Closing Balance</th>
                 <th rowspan="2">Opening Balance</th>
                 <th rowspan="2" class="thick-right-border">Difference</th>
-                <th rowspan="2">Status</th>
+                <th rowspan="2">Account Match Status</th>
+                <th rowspan="2">Balance Match Status</th>
                 <th rowspan="2">Assertion</th>
                 <th rowspan="2" class="thick-right-border">Possible Causes</th>
                 <th rowspan="2">
@@ -3303,7 +3353,6 @@
                  return;
             }
 
-            // Paginate results
             const startIndex = (appState.currentPage - 1) * appState.pageSize;
             const endIndex = startIndex + appState.pageSize;
             const pageResults = filteredData.slice(startIndex, endIndex);
@@ -3311,34 +3360,28 @@
             const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
             const tickMarkOptionsHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="${opt.symbol}">${opt.symbol}</option>`).join('');
 
-            // Render Rows from Data
             pageResults.forEach(item => {
                 const itemKey = item[keyField] || item.pp_name || item.cp_name;
                 const row = document.createElement('tr');
                 row.dataset.key = itemKey;
                 const isSelected = appState.selectedRows.has(itemKey);
                 
-                let statusClass = item.status.toLowerCase().replace(/[\s%()]/g, '-').replace('prior-year-only', 'prior-period-only');
-                if (statusClass.includes('confident-match')) {
-                    statusClass = statusClass.replace(/-variance$/, '-variance').replace(/-match$/, '-match');
-                }
-                row.classList.add(`status-${statusClass}`);
-
-                if (engagementData.applyMateriality && engagementData.materialityThreshold > 0 && Math.abs(item.difference) > engagementData.materialityThreshold) {
-                    row.classList.add('material-difference');
-                }
-
                 let rowHTML = `<td class="thick-right-border"><input type="checkbox" class="row-checkbox" data-key="${itemKey}" ${isSelected ? 'checked' : ''}></td>`;
                 if (hasCodes) {
                     rowHTML += `<td>${item.pp_code || '—'}</td><td class="thick-right-border">${item.cp_code || '—'}</td>`;
                 }
+                
+                const accountMatchClass = (item.accountMatchStatus || '').toLowerCase().replace(/[\s%()]/g, '-');
+                const balanceMatchClass = (item.balanceMatchStatus || '').toLowerCase().replace(/[\s/]/g, '-');
+
                 rowHTML += `
                     <td class="text-left-aligned">${item.pp_name || '—'}</td>
                     <td class="text-left-aligned thick-right-border">${item.cp_name || '—'}</td>
                     <td class="text-right-aligned">${item.closingBalance !== null ? currencyFormatter.format(item.closingBalance) : '—'}</td>
                     <td class="text-right-aligned">${item.openingBalance !== null ? currencyFormatter.format(item.openingBalance) : '—'}</td>
                     <td class="text-right-aligned thick-right-border">${item.difference !== null ? currencyFormatter.format(item.difference) : '—'}</td>
-                    <td><span class="status-badge">${item.status.replace('Prior Year Only', 'Prior Period Only')}</span></td>
+                    <td class="status-${accountMatchClass}"><span class="status-badge">${item.accountMatchStatus}</span></td>
+                    <td class="status-${balanceMatchClass}"><span class="status-badge">${item.balanceMatchStatus}</span></td>
                     <td>${item.assertion || ''}</td>
                     <td class="text-left-aligned thick-right-border">${item.suggestedCause ? `<span class="suggestion-text">${item.suggestedCause}</span>` : ''}</td>
                     <td><select data-key="${itemKey}" data-field="tickMark"><option value=""></option>${tickMarkOptionsHTML}</select></td>
@@ -3408,14 +3451,13 @@
                 reviewedDateInput.value = reviewedDate || '';
 
                 const total = matchingResults.length;
-                const matches = matchingResults.filter(r => r.status === 'Exact Match' || r.status.endsWith('- Match')).length;
-                const closeMatches = matchingResults.filter(r => r.status.startsWith('Confident Match')).length;
-                const variances = matchingResults.filter(r => r.status === 'Variance' || r.status.endsWith('- Variance')).length;
+                const noVariances = matchingResults.filter(r => r.balanceMatchStatus === 'No Variance').length;
+                const variances = matchingResults.filter(r => r.balanceMatchStatus === 'Variance').length;
                 const reviewed = matchingResults.filter(r => r.reviewStatus).length;
                 const completion = total > 0 ? (reviewed / total * 100).toFixed(0) : 0;
                 paperSummaryGrid.innerHTML = `
                     <div class="stat-card"><div class="stat-info"><h4>Total Accounts</h4><p>${total}</p></div></div>
-                    <div class="stat-card"><div class="stat-info"><h4>Matches</h4><p>${matches}</p></div></div>
+                    <div class="stat-card"><div class="stat-info"><h4>No Variances</h4><p>${noVariances}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Variances</h4><p>${variances}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Reviewed</h4><p>${reviewed}</p></div></div>
                     <div class="stat-card"><div class="stat-info"><h4>Completion</h4><p>${completion}%</p></div></div>`;
@@ -3458,7 +3500,7 @@
             }
         };
 
-        // V66: Report generation logic updated for new data model and flat structure
+        // V67: Report generation logic updated for new data model and flat structure
         const generateWorkingPaperPDF = async (engagementId) => {
             const reportData = await getReportData(engagementId);
             if (!reportData) return;
@@ -3471,7 +3513,6 @@
             addCustomFont(doc);
 
             const now = new Date();
-            // V66: Map to a simple, flat structure for the report
             const tableBody = data.matchingResults.map(item => {
                 const row = [
                     item.pp_name || '—',
@@ -3479,7 +3520,8 @@
                     formatCurrencyForReport(item.closingBalance),
                     formatCurrencyForReport(item.openingBalance),
                     formatCurrencyForReport(item.difference),
-                    item.status.replace('Prior Period Only', 'Prior Period Only'),
+                    item.accountMatchStatus,
+                    item.balanceMatchStatus,
                     item.auditorComment || ''
                 ];
                 if(hasCodes) {
@@ -3534,22 +3576,21 @@
                 finalY += 12 + (conclusionLines.length * 5);
             }
 
-            // V66: Simple, flat header row
             const head = hasCodes 
-                ? [['PP Code', 'CP Code', 'PP Name', 'CP Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]]
-                : [['PP Name', 'CP Name', 'Closing Balance (INR)', 'Opening Balance (INR)', 'Difference (INR)', 'Status', "Auditor's Comments"]];
+                ? [['PP Code', 'CP Code', 'PP Name', 'CP Name', 'Closing (INR)', 'Opening (INR)', 'Diff (INR)', 'Account Match', 'Balance Match', "Comments"]]
+                : [['PP Name', 'CP Name', 'Closing (INR)', 'Opening (INR)', 'Diff (INR)', 'Account Match', 'Balance Match', "Comments"]];
             
             const columnStyles = hasCodes ? {
-                    0: { halign: 'left', cellWidth: 20 }, 1: { halign: 'left', cellWidth: 20 },
-                    2: { halign: 'left', cellWidth: 50 }, 3: { halign: 'left', cellWidth: 50 },
-                    4: { halign: 'right', cellWidth: 25 }, 5: { halign: 'right', cellWidth: 25 },
-                    6: { halign: 'right', cellWidth: 25 }, 7: { halign: 'center', cellWidth: 25 },
-                    8: { halign: 'left' }
+                    0: { cellWidth: 18 }, 1: { cellWidth: 18 },
+                    2: { cellWidth: 40 }, 3: { cellWidth: 40 },
+                    4: { halign: 'right', cellWidth: 22 }, 5: { halign: 'right', cellWidth: 22 },
+                    6: { halign: 'right', cellWidth: 22 }, 7: { cellWidth: 25 }, 8: { cellWidth: 25 },
+                    9: { halign: 'left' }
                 } : {
-                    0: { halign: 'left', cellWidth: 60 }, 1: { halign: 'left', cellWidth: 60 },
-                    2: { halign: 'right', cellWidth: 30 }, 3: { halign: 'right', cellWidth: 30 },
-                    4: { halign: 'right', cellWidth: 30 }, 5: { halign: 'center', cellWidth: 30 },
-                    6: { halign: 'left' }
+                    0: { cellWidth: 50 }, 1: { cellWidth: 50 },
+                    2: { halign: 'right', cellWidth: 25 }, 3: { halign: 'right', cellWidth: 25 },
+                    4: { halign: 'right', cellWidth: 25 }, 5: { cellWidth: 30 }, 6: { cellWidth: 30 },
+                    7: { halign: 'left' }
                 };
 
             doc.autoTable({
@@ -3557,8 +3598,8 @@
                 body: tableBody,
                 startY: finalY + 5,
                 theme: 'grid',
-                headStyles: { fillColor: [44, 62, 80], textColor: 255, fontStyle: 'bold', halign: 'center', fontSize: 10 },
-                styles: { fontSize: 9, cellPadding: 2, font: 'helvetica' },
+                headStyles: { fillColor: [44, 62, 80], textColor: 255, fontStyle: 'bold', halign: 'center', fontSize: 9 },
+                styles: { fontSize: 8, cellPadding: 2, font: 'helvetica' },
                 columnStyles: columnStyles
             });
 
@@ -3597,7 +3638,7 @@
             doc.save(`WorkingPaper_${safeClientName}_${safePeriod}.pdf`);
         };
         
-        // V66: Excel generation updated for new data model and flat structure
+        // V67: Excel generation updated for new data model
         const generateWorkingPaperExcel = async (engagementId) => {
             const reportData = await getReportData(engagementId);
             if (!reportData) return;
@@ -3611,7 +3652,7 @@
                 [],
                 ["Client Name:", engagement.clientName],
                 ["Engagement Period:", engagement.engagementPeriod],
-                ["Materiality Threshold:", data.materialityThreshold ? { t: 'n', v: data.materialityThreshold, z: moneyFormat } : 'N/A'],
+                // V67: Removed materiality from summary
                 ["Report Generated On:", new Date().toLocaleDateString('en-GB')],
                 [],
                 ["Points for Discussion with Management"],
@@ -3637,19 +3678,12 @@
 
             const summary_ws = XLSX.utils.aoa_to_sheet(summaryData);
             summary_ws['!cols'] = [{ wch: 25 }, { wch: 40 }, {wch: 10}, {wch: 20}];
-            const merges = [
-                { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }, 
-                { s: { r: 8, c: 0 }, e: { r: 8, c: 3 } },
-                { s: { r: 11, c: 0 }, e: { r: 11, c: 3 } }
-            ];
-            if (shouldRenderSignOff) {
-                merges.push({ s: { r: 13, c: 0 }, e: { r: 13, c: 3 } });
-            }
+            const merges = [ { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } }, { s: { r: 6, c: 0 }, e: { r: 6, c: 3 } }, { s: { r: 9, c: 0 }, e: { r: 9, c: 3 } }];
+            if (shouldRenderSignOff) { merges.push({ s: { r: 11, c: 0 }, e: { r: 11, c: 3 } }); }
             summary_ws["!merges"] = merges;
 
-            // V66: Map to a simple, flat structure with only the required 10 columns for Excel
             const detailedJson = data.matchingResults.map((item, index) => {
-                const rowIndex = index + 2; // Excel rows are 1-based, +1 for header
+                const rowIndex = index + 2;
                 const closingBalance = item.closingBalance !== null ? item.closingBalance : 0;
                 const openingBalance = item.openingBalance !== null ? item.openingBalance : 0;
                 
@@ -3657,11 +3691,11 @@
                 let columnMap = {};
                 
                 if (hasCodes) {
-                    Object.assign(columnMap, { pp_code: 'A', cp_code: 'B', pp_name: 'C', cp_name: 'D', closingBalance: 'E', openingBalance: 'F', difference: 'G', isMaterial: 'H' });
+                    Object.assign(columnMap, { pp_code: 'A', cp_code: 'B', pp_name: 'C', cp_name: 'D', closingBalance: 'E', openingBalance: 'F', difference: 'G' });
                     rowData["Prior Period Code"] = item.pp_code;
                     rowData["Current Period Code"] = item.cp_code;
                 } else {
-                    Object.assign(columnMap, { pp_name: 'A', cp_name: 'B', closingBalance: 'C', openingBalance: 'D', difference: 'E', isMaterial: 'F' });
+                    Object.assign(columnMap, { pp_name: 'A', cp_name: 'B', closingBalance: 'C', openingBalance: 'D', difference: 'E' });
                 }
 
                 rowData["Prior Period Name"] = item.pp_name;
@@ -3669,12 +3703,8 @@
                 rowData["Closing Balance"] = { t: 'n', v: closingBalance, z: moneyFormat };
                 rowData["Opening Balance"] = { t: 'n', v: openingBalance, z: moneyFormat };
                 rowData["Difference"] = { t: 'n', f: `${columnMap.openingBalance}${rowIndex}-${columnMap.closingBalance}${rowIndex}`, z: moneyFormat };
-
-                let materialityFormula = `IF(ABS(${columnMap.difference}${rowIndex})>Summary!$B$5, "Yes", "No")`;
-                if (!data.materialityThreshold) { materialityFormula = `"No"`; }
-                rowData["Is Material?"] = { t: 's', f: materialityFormula };
-                
-                rowData["Status"] = item.status.replace('Prior Period Only', 'Prior Period Only');
+                rowData["Account Match Status"] = item.accountMatchStatus;
+                rowData["Balance Match Status"] = item.balanceMatchStatus;
                 rowData["Auditor's Comments"] = item.auditorComment;
 
                 return rowData;
@@ -3683,8 +3713,8 @@
             const detailed_ws = XLSX.utils.json_to_sheet(detailedJson, { cellDates: true });
 
             detailed_ws['!cols'] = hasCodes 
-                ? [{ wch: 15 }, { wch: 15 }, { wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }]
-                : [{ wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 15 }, { wch: 25 }, { wch: 50 }];
+                ? [{ wch: 15 }, { wch: 15 }, { wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 25 }, { wch: 20 }, { wch: 50 }]
+                : [{ wch: 40 }, { wch: 40 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 25 }, { wch: 20 }, { wch: 50 }];
             
             const autoFilterRef = hasCodes ? `A1:J${detailedJson.length + 1}` : `A1:H${detailedJson.length + 1}`;
             detailed_ws['!autofilter'] = { ref: autoFilterRef };
@@ -3832,17 +3862,16 @@
             const table = reviewTableContainer.querySelector('.review-table');
             if (!table) return;
 
-            // V66: Target sub-header row for filter icons
             const subHeaderRow = table.querySelector('.sub-header');
             if (subHeaderRow) {
                  subHeaderRow.querySelectorAll('th[data-key]').forEach(th => addFilterIconToTh(th));
             }
-            // Also target mid-header for non-split columns
+
             table.querySelectorAll('.mid-header th[rowspan="2"]').forEach(th => {
-                const key = tableConfig.find(c => c.label === th.textContent.trim())?.key;
-                 if (key) {
-                    th.dataset.key = key;
-                    th.dataset.type = tableConfig.find(c => c.key === key)?.dataType;
+                const columnConfig = tableConfig.find(c => c.label === th.textContent.trim());
+                if (columnConfig) {
+                    th.dataset.key = columnConfig.key;
+                    th.dataset.type = columnConfig.dataType;
                     addFilterIconToTh(th);
                 }
             });
@@ -3893,7 +3922,13 @@
             let content = '';
 
             if (type === 'categorical' || type === 'boolean') {
-                const uniqueValues = [...new Set(appState.filteredResultsCache.map(item => String(item[key] || '')))];
+                let uniqueValues = [...new Set(appState.filteredResultsCache.map(item => {
+                   // if (key === 'accountMatchStatus' && item[key]?.startsWith('Name Similarity')) {
+                   //     return 'Name Similarity';
+                   // }
+                    return String(item[key] || '');
+                }))];
+
                 let values = (type === 'boolean') ? ['true', 'false'] : uniqueValues.sort();
                 
                 const checkedValues = existingFilter?.values || values;
@@ -3901,7 +3936,6 @@
                     let displayVal = val;
                     if (val === '') { displayVal = '(Blank)'; }
                     if (key === 'reviewStatus') { displayVal = val === 'true' ? 'Reviewed' : 'Pending'; }
-                    if (key === 'status') { displayVal = val.replace('Prior Period Only', 'Prior Period Only'); }
                     return `<label class="filter-popup-checklist-item"><input type="checkbox" value="${val}" ${checkedValues.includes(val) ? 'checked' : ''}> ${displayVal}</label>`;
                 }).join('');
                 
@@ -4015,8 +4049,7 @@
         const clearAllFilters = () => {
             appState.columnFilters = {};
             appState.searchTerm = '';
-            filterPopup.classList.add
-            // V55: Reset bulk selection state on filter clear
+            filterPopup.classList.add('hidden');
             appState.selectedRows.clear();
             appState.bulkSelectionScope = 'page';
             filterAndRenderReviewTable();
@@ -4207,8 +4240,8 @@
             }
 
             const keyField = data.hasAccountCodes ? 'code' : 'name';
-            const unmatchedCP = data.matchingResults.filter(item => item.status === 'New Account');
-            const unmatchedPP = data.matchingResults.filter(item => item.status === 'Prior Period Only');
+            const unmatchedCP = data.matchingResults.filter(item => item.accountMatchStatus === 'New Account');
+            const unmatchedPP = data.matchingResults.filter(item => item.accountMatchStatus === 'Prior Period Only');
 
             unmatchedCPList.innerHTML = unmatchedCP.map(item => `<li class="mapping-item" data-key="${item.cp_code || item.cp_name}">${item.cp_name} ${data.hasAccountCodes ? `(${item.cp_code})` : ''}</li>`).join('');
             unmatchedPPList.innerHTML = unmatchedPP.map(item => `<li class="mapping-item" data-key="${item.pp_code || item.pp_name}">${item.pp_name} ${data.hasAccountCodes ? `(${item.pp_code})` : ''}</li>`).join('');
@@ -4394,7 +4427,6 @@
             cancelProcessingBtn.classList.add('hidden');
             processingBar.classList.remove('hidden');
 
-            // --- V59: Instantiate and use the Parser Worker ---
             parserWorker = createParserWorker();
             parserWorker.postMessage({ file });
 
@@ -5212,42 +5244,22 @@
                     handleCriticalError(error, "File Import Failed");
                 }
             });
-
-            applyMaterialityCheckbox.addEventListener('change', async () => {
-                const isChecked = applyMaterialityCheckbox.checked;
-                materialityInputContainer.classList.toggle('hidden', !isChecked);
-                const dataKey = getEngagementDataKey(appState.currentEngagement.id);
-                const data = await getFromStorage(dataKey) || {};
-                data.applyMateriality = isChecked;
-                if (!isChecked) { data.materialityThreshold = null; materialityThresholdInput.value = ''; }
-                await saveAndNotify(dataKey, data);
-                if (appState.activeTab === 'review') await filterAndRenderReviewTable();
-            });
-
-            materialityThresholdInput.addEventListener('input', async () => {
-                const dataKey = getEngagementDataKey(appState.currentEngagement.id);
-                const data = await getFromStorage(dataKey) || {};
-                const value = parseFloat(materialityThresholdInput.value);
-                data.materialityThreshold = isNaN(value) ? null : value;
-                await saveAndNotify(dataKey, data);
-                if (appState.activeTab === 'review') await filterAndRenderReviewTable();
-            });
             
-            const handleSensitivityChange = async (value) => {
+            const handleSimilarityChange = async (value) => {
                 const dataKey = getEngagementDataKey(appState.currentEngagement.id);
                 const data = await getFromStorage(dataKey) || {};
-                data.matchingSensitivity = parseInt(value, 10);
+                data.nameSimilarityThreshold = parseInt(value, 10);
                 await saveAndNotify(dataKey, data);
             };
 
-            matchingSensitivitySlider.addEventListener('input', () => {
-                matchingSensitivityInput.value = matchingSensitivitySlider.value;
-                handleSensitivityChange(matchingSensitivitySlider.value);
+            nameSimilaritySlider.addEventListener('input', () => {
+                nameSimilarityInput.value = nameSimilaritySlider.value;
+                handleSimilarityChange(nameSimilaritySlider.value);
             });
 
-            matchingSensitivityInput.addEventListener('input', () => {
-                matchingSensitivitySlider.value = matchingSensitivityInput.value;
-                handleSensitivityChange(matchingSensitivityInput.value);
+            nameSimilarityInput.addEventListener('input', () => {
+                nameSimilaritySlider.value = nameSimilarityInput.value;
+                handleSimilarityChange(nameSimilarityInput.value);
             });
             
             reviewSearchInput.addEventListener('input', () => {
@@ -5260,13 +5272,13 @@
                 appState.columnFilters = {}; appState.searchTerm = ''; appState.currentPage = 1;
                 if (filterType !== 'all') {
                     const newFilter = {
-                        type: filterType === 'reviewStatus' ? 'boolean' : 'categorical',
+                        type: 'categorical', // V67: Simplified filter type
                         values: [filterValue]
                     };
                     appState.columnFilters[filterType] = newFilter;
                 }
                 setActiveTab('review');
-                });
+            });
             
             reviewTableContainer.addEventListener('change', (e) => {
                 const target = e.target;
