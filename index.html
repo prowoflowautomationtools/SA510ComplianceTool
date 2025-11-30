@@ -30,9 +30,6 @@
             --success-green-bg: #F0FDF4;
             --warning-yellow: #F59E0B;
             --warning-yellow-bg: #FEFCE8;
-            /* V69: New Muted Orange Color */
-            --warning-orange: #F97316;
-            --warning-orange-bg: #FFF7ED;
             --info-blue-bg: #EFF6FF;
             --info-blue-text: #1E40AF;
             --danger-red: #EF4444;
@@ -56,9 +53,6 @@
             --processing-text: #BFDBFE;
             --success-green-bg: #064E3B;
             --warning-yellow-bg: #78350F;
-            /* V69: New Muted Orange Color (Dark) */
-            --warning-orange: #FB923C;
-            --warning-orange-bg: #7C2D12;
             --info-blue-bg: #1E3A8A;
             --info-blue-text: #BFDBFE;
             --danger-red-bg: #991B1B;
@@ -715,20 +709,17 @@
             white-space: nowrap;
         }
         
-        /* V68 & V69: NEW INDEPENDENT STATUS BADGE STYLES */
+        /* V68: NEW INDEPENDENT STATUS BADGE STYLES */
         /* Account Match Status Colors */
         .status-exact-match .status-badge { background-color: var(--success-green-bg); color: #065F46; }
         .status-manual-match .status-badge { background-color: var(--close-match-purple-bg); color: var(--close-match-purple); }
-        
         .status-code-match-name-similarity .status-badge,
         .status-name-similarity .status-badge,
         .status-code-match-name-mismatch .status-badge,
-        .status-code-mismatch-name-match .status-badge { background-color: var(--info-blue-bg); color: var(--info-blue-text); }
-        
-        /* V69: New statuses for missing data */
-        .status-code-match-name-missing .status-badge,
-.status-name-match-code-missing .status-badge { background-color: var(--warning-orange-bg); color: var(--warning-orange); }
-
+        .status-code-mismatch-name-match .status-badge,
+        .status-name-match-code-missing .status-badge,
+        /* V69 FIX: Corrected class names for new statuses */
+        .status-code-match-name-missing .status-badge { background-color: var(--info-blue-bg); color: var(--info-blue-text); }
         .status-code-mismatch-name-similarity .status-badge { background-color: var(--danger-red-bg); color: var(--danger-red); }
         .status-new-account .status-badge,
         .status-prior-period-only .status-badge { background-color: var(--medium-gray-bg); color: var(--text-light); }
@@ -741,16 +732,13 @@
         /* Dark Mode Statuses */
         body.dark-mode .status-exact-match .status-badge { background-color: #064E3B; color: #A7F3D0; }
         body.dark-mode .status-manual-match .status-badge { background-color: #5B21B6; color: #DDD6FE; }
-
         body.dark-mode .status-code-match-name-similarity .status-badge,
         body.dark-mode .status-name-similarity .status-badge,
         body.dark-mode .status-code-match-name-mismatch .status-badge,
-        body.dark-mode .status-code-mismatch-name-match .status-badge { background-color: #1E40AF; color: #BFDBFE; }
-        
-        /* V69: Dark mode for new statuses */
-        body.dark-mode .status-code-match-name-missing .status-badge,
-body.dark-mode .status-name-match-code-missing .status-badge { background-color: var(--warning-orange-bg); color: var(--warning-orange); }
-        
+        body.dark-mode .status-code-mismatch-name-match .status-badge,
+        body.dark-mode .status-name-match-code-missing .status-badge,
+        /* V69 FIX: Corrected class names for new statuses (Dark Mode) */
+        body.dark-mode .status-code-match-name-missing .status-badge { background-color: #1E40AF; color: #BFDBFE; }
         body.dark-mode .status-code-mismatch-name-similarity .status-badge { background-color: #991B1B; color: #FECACA; }
         body.dark-mode .status-new-account .status-badge,
         body.dark-mode .status-prior-period-only .status-badge { background-color: #374151; color: #D1D5DB; }
@@ -830,7 +818,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
         body.dark-mode #toggle-filter-btn:hover { background-color: #374151; }
         body.dark-mode #toggle-filter-btn.active { background-color: #1E40AF; color: #E0E7FF; border-color: #E0E7FF; }
 
-        /* V52: ENHANCED FILTER POPUP STYLES (Excel-inspired) */
+        /* V52 & V69: ENHANCED FILTER POPUP STYLES (Excel-inspired) */
         #filter-popup {
             position: fixed; /* Changed from absolute to fixed for viewport relativity */
             z-index: 1001; /* Above table content but below modals */
@@ -925,6 +913,42 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
             width: 1rem;
             height: 1rem;
         }
+        /* V69: Styles for grouped/expandable checklist */
+        .filter-popup-checklist details {
+            margin-bottom: 0.25rem;
+        }
+        .filter-popup-checklist summary {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.375rem;
+            border-radius: 0.25rem;
+        }
+        .filter-popup-checklist summary:hover {
+            background-color: var(--medium-gray-bg);
+        }
+        body.dark-mode .filter-popup-checklist summary:hover {
+            background-color: #374151;
+        }
+        .filter-popup-checklist summary::marker,
+        .filter-popup-checklist summary::-webkit-details-marker {
+            display: none; /* Hide default marker */
+        }
+        .filter-popup-checklist summary .summary-icon {
+            transition: transform 0.2s;
+            width: 1rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .filter-popup-checklist details[open] > summary .summary-icon {
+            transform: rotate(90deg);
+        }
+        .filter-popup-checklist .checklist-group {
+            padding-left: 1.75rem; /* Indent children */
+            margin: 0.25rem 0 0 0;
+        }
+
         .filter-popup-actions {
             display: flex;
             justify-content: flex-end;
@@ -1957,7 +1981,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                              <button id="refresh-dashboard-btn" class="btn" data-tooltip="Reloads all dashboard stats from the latest saved data. Useful for syncing progress if the engagement is open in another tab."><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991 4.992v-4.992" /></svg><span>Refresh</span></button>
                         </div>
                     </div>
-                    <!-- V68 & V69: UPDATED DASHBOARD GRID & SEQUENCE -->
+                    <!-- V68: UPDATED DASHBOARD GRID & SEQUENCE -->
                     <div class="dashboard-grid" id="dashboard-grid">
                         <div class="stat-card stat-clickable" data-filter-type="all">
                             <div class="icon-wrapper blue"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg></div>
@@ -2057,7 +2081,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                         <div id="sensitivity-input-container" class="form-group" style="margin-top: 1rem; margin-bottom: 0;">
                             <label for="name-similarity-input" style="display:flex; align-items: center; gap: 0.5rem; font-weight: 600;">
                                 Name Similarity Threshold
-                                <span class="tooltip-container" data-tooltip="Controls the strictness for fuzzy matching account names. Higher values require a more exact match. A threshold of 75% means names must be at least 75% similar to be considered a potential match.">
+                                <span class="tooltip-container" data-tooltip="Controls the strictness for fuzzy matching account names. Higher values require a more exact match.">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="color: var(--text-light);"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.054.592.11.854.173.236.065.418.158.544.294.125.137.188.319.188.553 0 .25-.074.455-.22.615-.146.16-.36.24-.626.24h-.832v.46h.832c.39 0 .695-.121.914-.363.219-.243.328-.55.328-.913 0-.415-.147-.755-.44-1.036-.293-.282-.662-.485-1.076-.614zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4z"/></svg>
                                 </span>
                             </label>
@@ -2077,11 +2101,35 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                     <div class="alert-banner info info-list">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
                         <div>
-                            <b>Matching Algorithm</b>
-                            <ul><li><b>Account Code Matching:</b> Exact matches on account codes receive highest priority.</li><li><b>Name Similarity:</b> Fuzzy matching on account names to handle minor variations.</li>
-                                <li><b>Account Type:</b> Considers account classification (Asset, Liability, etc.).</li>
-                                <li><b>Difference Analysis:</b> Algorithm analyzes significant differences and suggests possible causes.</li>
-                                <li><b>Audit Assertions:</b> Automatically identifies relevant audit assertions for each variance.</li>
+                            <b>Matching Algorithm (V2)</b>
+                            <ul style="margin-top: 0.5rem;">
+                                <li><b>1. Data Sanitization:</b><br>Before matching, the system automatically cleans the data. Account Codes or Names that are blank, a hyphen (`-`), or zero (`0`) are treated as empty to prevent false positives and ensure matches are based on meaningful data.</li>
+                                <li><b>2. Adaptive Core Logic:</b><br>The algorithm first detects if your trial balances use Account Codes. It then adapts its strategy for the highest accuracy:
+                                    <ul style="padding-left: 1rem; margin-top: 0.25rem;">
+                                        <li><b>With Account Codes:</b> A comprehensive 7-pass process is used, prioritizing code matches first, then falling back to name analysis for any remaining items.</li>
+                                        <li><b>Names Only:</b> A streamlined 4-pass process is used, focusing exclusively on exact and similar name matching.</li>
+                                    </ul>
+                                </li>
+                                <li><b>3. Detailed Passes (for TBs with Account Codes):</b><br>The system prioritizes matches in the following order of confidence:
+                                    <ul style="padding-left: 1rem; margin-top: 0.25rem;">
+                                        <li><b>Pass 1: Exact Match:</b> Identifies pairs with a perfect match on both their Account Code and Account Name.</li>
+                                        <li><b>Pass 2: Code-Primary Matching:</b> For accounts with matching codes but different names, the system intelligently categorizes the pair:
+                                            <ul style="padding-left: 1rem; margin-top: 0.25rem;">
+                                                <li><b>Name Similarity:</b> Uses a fuzzy-matching algorithm for minor name variations (e.g., "Trade Receivable" vs. "Accounts Receivable").</li>
+                                                <li><b>Name Missing:</b> Creates a valid match if one or both names are blank, assigning the status `Code Match (Name Missing !!)` to flag the data quality issue.</li>
+                                                <li><b>Name Mismatch:</b> Flags pairs with matching codes but completely different names for mandatory auditor review.</li>
+                                            </ul>
+                                        </li>
+                                        <li><b>Pass 3: Name-Primary Matching:</b> If codes do not match or are not used, the system seeks matches based on the account name:
+                                            <ul style="padding-left: 1rem; margin-top: 0.25rem;">
+                                                <li><b>Exact Name Match (Code Missing/Mismatched):</b> Creates a valid match if names are identical but one/both codes are blank (`Name Match (Code Missing !!)`) or if the codes are present but different (`Code Mismatch Name Match`).</li>
+                                                <li><b>Similar Name Match (Code Mismatched):</b> As a final step, the system uses fuzzy matching to find pairs with similar names, even if their codes are different, flagging them as `Code Mismatch Name Similarity (XX%)` for careful review.</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><b>4. Final Categorization:</b><br>Any account that remains unpaired after these passes is definitively classified as either a `New Account` or `Prior Period Only`.</li>
+                                <li><b>5. Analysis & Assertions:</b><br>For every matched pair, the system calculates the variance and automatically identifies the most relevant audit assertion (e.g., Accuracy, Completeness, Classification) to guide and streamline your review process.</li>
                             </ul>
                         </div>
                     </div>
@@ -2211,33 +2259,29 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
             </div>
         </main>
     </div>
-
 <script>
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V69 (Robust Edge Case Handling & UX Refinements)
-     * Description: This version enhances the matching engine to handle null/blank data more explicitly,
-     * introduces a new status color for clarity, and refines the UI based on stakeholder feedback.
-     * - [Requirement 1] New Matching Engine Logic for Nulls/Blanks:
-     *   - [Logic] A new helper function, `isNullOrBlank`, is implemented to standardize the definition of "empty" data (null, "", "-", 0, whitespace).
-     *   - [Logic] The "Exact Match" logic is now stricter: it will not trigger if either the code or name field is blank.
-     *   - [New Status] Implemented two new sub-cases for missing data:
-     *     - `Code Match (Name Missing !!)`: Triggers when codes match but one/both names are blank.
-     *     - `Name Match (Code Missing !!)`: Triggers when names match but one/both codes are blank.
+     * Version: V69 (Matching Engine V2 & Filter UI Enhancement)
+     * Description: This version introduces a significantly more intelligent matching algorithm (V2) that handles
+     * "Null/Blank" data and specific edge cases for missing codes or names. It also enhances the user experience by
+     * upgrading the "Account Match Status" filter to a two-level, expandable checklist for better usability.
+     * - [Requirement 1] New Matching Engine (V2):
+     *   - [Logic] The `cleanAndStandardizeTB` function in the worker is updated to treat '0' (zero), hyphens, and dashes
+     *     as "Null/Blank" for both codes and names, preventing false positive exact matches.
+     *   - [Logic] The core matching passes are refactored to handle cases where one identifier is valid but the other is missing:
+     *     - A valid code match with a missing name now gets the status "Code Match (Name Missing !!)".
+     *     - A valid name match with a missing code now gets the status "Name Match (Code Missing !!)".
      * - [Requirement 2] UI & UX Enhancements:
-     *   - [New Color] A "Muted Orange" color has been added to the theme and is applied to the new "Missing Data" status badges to draw auditor attention.
-     *   - [Dashboard] The stat cards on the dashboard have been re-sequenced as per the final layout plan.
-     *   - [Tooltip] A new, descriptive tooltip has been added to the dashboard's refresh button.
-     * - [Requirement 3] Stability & Reliability (Carry-over from V68 plan):
-     *   - [Error Handling] Implemented a dual-layer safety net for the matching worker, with both a `try...catch` block and a global `onerror` handler.
-     *   - [Bug Fix] The progress bar logic was refactored with procedural loops to provide smooth, incremental updates.
-     *   - [Bug Fix] The CSS class generation for status badges with percentages was corrected to ensure proper styling.
-     * - [Requirement 4] Finalized V68 Features:
-     *   - The full dual-path 7-case/4-case matching algorithm is included.
-     *   - The full 8-card interactive dashboard is included.
-     *   - The independent, multi-color status columns and the "explainability" tooltip are included.
-     *   - The granular, searchable filter for Account Match Status is included.
+     *   - [Filter UI] The `openFilterPopup` function now includes logic to group categorical filter values. For the "Account Match Status"
+     *     column, it dynamically groups statuses with percentages (e.g., "Name Similarity (92%)") under a common parent.
+     *   - [Filter UI] The popup rendering now uses `<details>` and `<summary>` elements to create an expandable/collapsible two-level
+     *     checklist. Event listeners are added to manage parent/child checkbox synchronization and the indeterminate state.
+     *   - [Filter UI] The filter search functionality is enhanced to correctly find and expand parent groups when a child item matches.
+     *   - [Styling] New CSS classes (`.status-code-match-name-missing`, `.status-name-match-code-missing--`) are added to apply the
+     *     "Info Blue" color scheme to the new status badges.
+     *   - [Documentation] The "Matching Algorithm" info card in the "Balance Matching" tab has been updated with the approved V2 text.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2413,7 +2457,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
             return new Worker(URL.createObjectURL(blob));
         };
 
-        // --- V69: Matching Web Worker (Overhaul) ---
+        // --- V69: Matching Web Worker (V2 Algorithm) ---
         let matcherWorker;
         const createMatcherWorker = () => {
             const workerCode = `
@@ -2421,8 +2465,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                 const analyzeDifference = ${analyzeDifference.toString()};
                 const cleanAndStandardizeTB = ${cleanAndStandardizeTB.toString()};
                 const aggregateTB = ${aggregateTB.toString()};
-                const isNullOrBlank = ${isNullOrBlank.toString()};
-
+                
                 self.onmessage = function(e) {
                     try {
                         const { engagementData, oldAnnotationsMap } = e.data;
@@ -2432,13 +2475,12 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                         let unmatchedPP = aggregateTB(cleanAndStandardizeTB(engagementData.priorPeriodTB));
                         const totalAccounts = (unmatchedCP.length + unmatchedPP.length) || 1;
                         let processedCount = 0;
-
+                        
                         const results = [];
                         const manualMappings = engagementData.manualMappings || [];
                         const similarityThreshold = engagementData.nameSimilarityThreshold || engagementData.matchingSensitivity || 65;
                         const hasCodes = engagementData.hasAccountCodes;
                         
-                        // --- UTILITY ---
                         const getBalance = (item) => item.hasOwnProperty('Final_signed_Closing_balance') ? item.Final_signed_Closing_balance : item.balance;
                         const getAnnotations = (key) => oldAnnotations.get(key) || { tickMark: '', reviewStatus: false, auditorComment: '' };
                         
@@ -2473,12 +2515,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                             
                             return result;
                         };
-
-                        const reportProgress = () => {
-                            self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
-                        };
                         
-                        // --- PASS 0: MANUAL MAPPINGS ---
                         manualMappings.forEach(([cpKey, ppKey]) => {
                             const cpIndex = unmatchedCP.findIndex(item => (hasCodes ? item.code : item.name) === cpKey);
                             const ppIndex = unmatchedPP.findIndex(item => (hasCodes ? item.code : item.name) === ppKey);
@@ -2490,90 +2527,55 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                                 processedCount += 2;
                             }
                         });
-                        reportProgress();
+                        self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
                         if (hasCodes) {
-                            // --- SCENARIO A: TBs WITH CODES ---
                             let tempUnmatchedCP = [...unmatchedCP];
 
-                            // PASS 1: Exact Code & Exact Name
                             tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                                if (isNullOrBlank(cp.code) || isNullOrBlank(cp.name)) return true;
-                                const ppIndex = unmatchedPP.findIndex(pp => !isNullOrBlank(pp.code) && !isNullOrBlank(pp.name) && pp.code === cp.code && pp.name.toLowerCase() === cp.name.toLowerCase());
+                                if (cp.code === null) return true;
+                                const ppIndex = unmatchedPP.findIndex(pp => pp.code === cp.code);
                                 if (ppIndex > -1) {
                                     const pp = unmatchedPP.splice(ppIndex, 1)[0];
-                                    results.push(createResult(cp, pp, 'Exact Match'));
-                                    processedCount += 2; return false;
-                                }
-                                return true;
-                            });
-                            reportProgress();
-
-                            // PASS 2: Exact Code & Similar Name OR Missing Name
-                            tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                                if (isNullOrBlank(cp.code)) return true;
-                                let bestMatch = null, highScore = similarityThreshold, bestPpIndex = -1;
-                                let isMissingNameCase = false;
-
-                                unmatchedPP.forEach((pp, ppIndex) => {
-                                    if (pp.code === cp.code) {
-                                        if (isNullOrBlank(cp.name) || isNullOrBlank(pp.name)) {
-                                            isMissingNameCase = true;
-                                            bestMatch = pp; bestPpIndex = ppIndex;
-                                            return; // Exit forEach inner loop
-                                        }
+                                    if (cp.name !== null && cp.name.toLowerCase() === pp.name?.toLowerCase()) {
+                                        results.push(createResult(cp, pp, 'Exact Match'));
+                                    } else if (cp.name === null || pp.name === null) {
+                                        results.push(createResult(cp, pp, 'Code Match (Name Missing !!)'));
+                                    } else {
                                         const score = Math.round((1 - levenshteinDistance(cp.name, pp.name) / Math.max(cp.name.length, pp.name.length)) * 100);
-                                        if (score >= highScore) { highScore = score; bestMatch = pp; bestPpIndex = ppIndex; isMissingNameCase = false; }
+                                        if (score >= similarityThreshold) {
+                                            results.push(createResult(cp, pp, \`Code Match Name Similarity (\${score}%)\`));
+                                        } else {
+                                            results.push(createResult(cp, pp, 'Code Match Name Mismatch', score));
+                                        }
                                     }
-                                });
-                                
-                                if (bestMatch) {
-                                    const pp = unmatchedPP.splice(bestPpIndex, 1)[0];
-                                    const status = isMissingNameCase ? 'Code Match (Name Missing !!)' : \`Code Match Name Similarity (\${highScore}%)\`;
+                                    processedCount += 2; return false;
+                                }
+                                return true;
+                            });
+                            self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
+
+                            tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
+                                if (cp.name === null) return true;
+                                const ppIndex = unmatchedPP.findIndex(pp => pp.name !== null && pp.name.toLowerCase() === cp.name.toLowerCase());
+                                if (ppIndex > -1) {
+                                    const pp = unmatchedPP.splice(ppIndex, 1)[0];
+                                    const status = (cp.code === null || pp.code === null) ? 'Name Match (Code Missing !!)' : 'Code Mismatch Name Match';
                                     results.push(createResult(cp, pp, status));
                                     processedCount += 2; return false;
                                 }
                                 return true;
                             });
-                            reportProgress();
+                            self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
-                            // PASS 3: Exact Code & Mismatched Name
-                            tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                                if (isNullOrBlank(cp.code)) return true;
-                                const ppIndex = unmatchedPP.findIndex(pp => !isNullOrBlank(pp.code) && pp.code === cp.code);
-                                if (ppIndex > -1) {
-                                    const pp = unmatchedPP.splice(ppIndex, 1)[0];
-                                    const score = isNullOrBlank(cp.name) || isNullOrBlank(pp.name) ? 0 : Math.round((1 - levenshteinDistance(cp.name, pp.name) / Math.max(cp.name.length, pp.name.length)) * 100);
-                                    results.push(createResult(cp, pp, 'Code Match Name Mismatch', score));
-                                    processedCount += 2; return false;
-                                }
-                                return true;
-                            });
-                            reportProgress();
-
-                            // PASS 4: Mismatched/Missing Code & Exact Name
-                            tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                                if (isNullOrBlank(cp.name)) return true;
-                                const ppIndex = unmatchedPP.findIndex(pp => !isNullOrBlank(pp.name) && pp.name.toLowerCase() === cp.name.toLowerCase());
-                                if (ppIndex > -1) {
-                                    const pp = unmatchedPP.splice(ppIndex, 1)[0];
-                                    const status = (isNullOrBlank(cp.code) || isNullOrBlank(pp.code)) ? 'Name Match (Code Missing !!)' : 'Code Mismatch Name Match';
-                                    results.push(createResult(cp, pp, status));
-                                    processedCount += 2; return false;
-                                }
-                                return true;
-                            });
-                            reportProgress();
-
-                            // PASS 5: Mismatched Code & Similar Name
                             let nextUnmatched = [];
                             for (let i = 0; i < tempUnmatchedCP.length; i++) {
                                 const cp = tempUnmatchedCP[i];
-                                if (isNullOrBlank(cp.name)) { nextUnmatched.push(cp); continue; }
+                                if (cp.name === null) { nextUnmatched.push(cp); continue; }
                                 let bestMatch = null, highScore = similarityThreshold, bestPpIndex = -1;
                                 for (let j = 0; j < unmatchedPP.length; j++) {
                                     const pp = unmatchedPP[j];
-                                    if(isNullOrBlank(pp.name)) continue;
+                                    if (pp.name === null) continue;
                                     const score = Math.round((1 - levenshteinDistance(cp.name, pp.name) / Math.max(cp.name.length, pp.name.length)) * 100);
                                     if (score >= highScore) { highScore = score; bestMatch = pp; bestPpIndex = j; }
                                 }
@@ -2584,17 +2586,15 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                                 } else {
                                     nextUnmatched.push(cp);
                                 }
-                                if (i % 20 === 0) reportProgress();
+                                if (i % 20 === 0) self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
                             }
                             unmatchedCP = nextUnmatched;
                         } else {
-                             // --- SCENARIO B: TBs WITH NAMES ONLY ---
                              let tempUnmatchedCP = [...unmatchedCP];
                              
-                             // PASS 1: Exact Name Match
                              tempUnmatchedCP = tempUnmatchedCP.filter(cp => {
-                                if (isNullOrBlank(cp.name)) return true;
-                                const ppIndex = unmatchedPP.findIndex(pp => !isNullOrBlank(pp.name) && pp.name.toLowerCase() === cp.name.toLowerCase());
+                                if (cp.name === null) return true;
+                                const ppIndex = unmatchedPP.findIndex(pp => pp.name !== null && pp.name.toLowerCase() === cp.name.toLowerCase());
                                 if (ppIndex > -1) {
                                     const pp = unmatchedPP.splice(ppIndex, 1)[0];
                                     results.push(createResult(cp, pp, 'Exact Match'));
@@ -2602,17 +2602,16 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                                 }
                                 return true;
                             });
-                            reportProgress();
+                            self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
-                            // PASS 2: Name Similarity Match
                             let nextUnmatched = [];
                             for (let i = 0; i < tempUnmatchedCP.length; i++) {
                                 const cp = tempUnmatchedCP[i];
-                                if (isNullOrBlank(cp.name)) { nextUnmatched.push(cp); continue; }
+                                if (cp.name === null) { nextUnmatched.push(cp); continue; }
                                 let bestMatch = null, highScore = similarityThreshold, bestPpIndex = -1;
                                 for (let j = 0; j < unmatchedPP.length; j++) {
                                     const pp = unmatchedPP[j];
-                                    if(isNullOrBlank(pp.name)) continue;
+                                    if (pp.name === null) continue;
                                     const score = Math.round((1 - levenshteinDistance(cp.name, pp.name) / Math.max(cp.name.length, pp.name.length)) * 100);
                                     if (score >= highScore) { highScore = score; bestMatch = pp; bestPpIndex = j; }
                                 }
@@ -2623,14 +2622,13 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                                 } else {
                                     nextUnmatched.push(cp);
                                 }
-                                if (i % 20 === 0) reportProgress();
+                                if (i % 20 === 0) self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
                             }
-                            unmatchedCP = nextUnmatched;
+                             unmatchedCP = nextUnmatched;
                         }
 
-                        reportProgress();
+                        self.postMessage({ type: 'progress', progress: processedCount / totalAccounts });
 
-                        // --- FINAL PASS: UNMATCHED ---
                         unmatchedCP.forEach(cp => results.push(createResult(cp, null, 'New Account')));
                         unmatchedPP.forEach(pp => results.push(createResult(null, pp, 'Prior Period Only')));
                         
@@ -2792,11 +2790,6 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
         const saveStatusContainer = document.getElementById('save-status-container');
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
-
-        // --- V69: isNullOrBlank Helper ---
-        const isNullOrBlank = (value) => {
-            return value === null || value === undefined || value === 0 || String(value).trim() === '' || String(value).trim() === '-' || String(value).trim() === '–';
-        };
 
         // --- V67: Dynamic Review Table Configuration "Blueprint" ---
         const getDynamicTableConfig = (engagementData) => {
@@ -3110,7 +3103,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                 switch (r.accountMatchStatus) {
                     case 'New Account': acc.new++; break;
                     case 'Prior Period Only': acc.prior++; break;
-                    case 'Manual Match': acc.manual++; break;
+                    case 'Manual Match': acc.manual++; acc.matched++; break; // Manual matches are a subset of matched
                     default: acc.matched++; break;
                 }
                 return acc;
@@ -3230,14 +3223,17 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
 
         const cleanAndStandardizeTB = (tb) => {
             if (!tb) return [];
+            const nullOrBlankValues = ['', '-', '–', '0'];
             return tb.map(item => {
                 const cleanedItem = { ...item };
-                const code = String(item.code || '').trim();
-                cleanedItem.code = code === '' ? null : code;
-                cleanedItem.name = String(item.name || '').trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, ""); 
-                if (isNullOrBlank(cleanedItem.name)) cleanedItem.name = null;
-                if (isNullOrBlank(cleanedItem.code)) cleanedItem.code = null;
-                if (cleanedItem.name === null && cleanedItem.code === null) return null;
+                
+                let code = String(item.code || '').trim();
+                cleanedItem.code = (code === '' || nullOrBlankValues.includes(code)) ? null : code;
+
+                let name = String(item.name || '').trim().replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+                cleanedItem.name = (name === '' || nullOrBlankValues.includes(name)) ? null : name;
+
+                if (cleanedItem.name === null) return null; // A row without a name is unusable.
                 return cleanedItem;
             }).filter(Boolean);
         };
@@ -3373,7 +3369,7 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
                         
                         // V68: Special filter logic for dashboard "Matched Accounts"
                         if (key === 'matchedAccounts') {
-                            const nonMatchedStatuses = ['Manual Match', 'New Account', 'Prior Period Only'];
+                            const nonMatchedStatuses = ['New Account', 'Prior Period Only'];
                             return !nonMatchedStatuses.includes(item.accountMatchStatus);
                         }
 
@@ -3500,21 +3496,14 @@ body.dark-mode .status-name-match-code-missing .status-badge { background-color:
             const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
             const tickMarkOptionsHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="${opt.symbol}">${opt.symbol}</option>`).join('');
 
-            // V69: Helper to create CSS classes from status text
-const getStatusClass = (statusText) => {
-    const lower = (statusText || '').toLowerCase();
-    // This new approach explicitly checks for each complex status type first.
-    if (lower.startsWith('code match (name missing')) return 'code-match-name-missing';
-    if (lower.startsWith('name match (code missing')) return 'name-match-code-missing';
-    if (lower.startsWith('code match name similarity')) return 'code-match-name-similarity';
-    if (lower.startsWith('code mismatch name similarity')) return 'code-mismatch-name-similarity';
-    if (lower.startsWith('name similarity')) return 'name-similarity';
-    if (lower.startsWith('code match name mismatch')) return 'code-match-name-mismatch';
-    if (lower.startsWith('code mismatch name match')) return 'code-mismatch-name-match';
-    
-    // For simple statuses like "Exact Match", a basic replacement is safe.
-    return lower.replace(/[\s/]/g, '-');
-};
+            // V69 FIX: Replaces the old function to correctly generate CSS classes from status text
+            const getStatusClass = (statusText) => {
+                return (statusText || '')
+                    .toLowerCase()
+                    .replace(/\s*\(\d+%\)/, '')      // Remove percentage part first e.g. (92%)
+                    .replace(/[^\w\d]+/g, '-')       // Replace any non-alphanumeric character sequences with a single hyphen
+                    .replace(/^-+|-+$/g, '');        // Remove leading/trailing hyphens
+            };
 
             pageResults.forEach(item => {
                 const itemKey = item[keyField] || item.pp_name || item.cp_name;
@@ -3532,9 +3521,7 @@ const getStatusClass = (statusText) => {
 
                 let accountStatusCellHTML = `<span class="status-badge">${item.accountMatchStatus}</span>`;
                 if (item.accountMatchStatus === 'Code Match Name Mismatch' && item.hasOwnProperty('nameMismatchScore')) {
-                    const threshold = engagementData.nameSimilarityThreshold;
-                    const score = item.nameMismatchScore;
-                    const tooltipText = `Name mismatch: The similarity score was only ${score}%, which is below the required threshold of ${threshold}%.`;
+                    const tooltipText = `Name mismatch: The similarity score was only ${item.nameMismatchScore}%, which is below the required threshold of ${engagementData.nameSimilarityThreshold}%.`;
                     accountStatusCellHTML = `<span class="tooltip-container" data-tooltip="${tooltipText}">${accountStatusCellHTML}</span>`;
                 }
 
@@ -3903,7 +3890,7 @@ const getStatusClass = (statusText) => {
             }
             engagementData.parserSettings = parserSettings;
             engagementData.matchingResults = null;
-            engagementData.hasAccountCodes = normalizedData.some(item => !isNullOrBlank(item.code));
+            engagementData.hasAccountCodes = normalizedData.some(item => item.code && item.code.trim() !== '');
 
             await saveAndNotify(dataKey, engagementData);
             await renderUploadedFiles(appState.currentEngagement.id);
@@ -4065,6 +4052,27 @@ const getStatusClass = (statusText) => {
             }
         };
 
+        const groupCategoricalFilterValues = (values) => {
+            const grouped = {};
+            const singles = [];
+            const groupRegex = /(.+?)\s*\(\d+%\)/;
+
+            values.forEach(value => {
+                const match = value.match(groupRegex);
+                if (match) {
+                    const groupName = match[1].trim();
+                    if (!grouped[groupName]) {
+                        grouped[groupName] = { type: 'group', label: groupName, children: [] };
+                    }
+                    grouped[groupName].children.push(value);
+                } else {
+                    singles.push({ type: 'single', value: value });
+                }
+            });
+
+            return [...Object.values(grouped), ...singles];
+        };
+        
         const openFilterPopup = async (th, tableConfig) => {
             if (!appState.filteredResultsCache) return;
             
@@ -4087,19 +4095,45 @@ const getStatusClass = (statusText) => {
                 let values = (type === 'boolean') ? ['true', 'false'] : uniqueValues.sort((a, b) => a.localeCompare(b, undefined, {numeric: true}));
                 
                 const checkedValues = existingFilter?.values || values;
-                const checklistItems = values.map(val => {
-                    let displayVal = val;
-                    if (val === '') { displayVal = '(Blank)'; }
-                    if (key === 'reviewStatus') { displayVal = val === 'true' ? 'Reviewed' : 'Pending'; }
-                    return `<label class="filter-popup-checklist-item"><input type="checkbox" value="${val}" ${checkedValues.includes(val) ? 'checked' : ''}> ${displayVal}</label>`;
-                }).join('');
                 
                 content += `
                     <div class="filter-popup-checklist-search">
                         <input type="text" id="filter-checklist-search" placeholder="Search values...">
                     </div>
                     <label class="filter-popup-checklist-item"><input type="checkbox" id="filter-select-all"> <b>(Select All)</b></label>
-                    <div class="filter-popup-checklist">${checklistItems}</div>`;
+                    <div class="filter-popup-checklist">`;
+
+                if (key === 'accountMatchStatus') {
+                    const groupedValues = groupCategoricalFilterValues(values);
+                    groupedValues.forEach(item => {
+                        if (item.type === 'single') {
+                            content += `<label class="filter-popup-checklist-item"><input type="checkbox" value="${item.value}" ${checkedValues.includes(item.value) ? 'checked' : ''}> ${item.value || '(Blank)'}</label>`;
+                        } else {
+                            const allChildrenChecked = item.children.every(child => checkedValues.includes(child));
+                            const someChildrenChecked = item.children.some(child => checkedValues.includes(child));
+                            content += `
+                                <details>
+                                    <summary>
+                                        <span class="summary-icon">►</span>
+                                        <input type="checkbox" class="filter-group-parent" ${allChildrenChecked ? 'checked' : ''}>
+                                        <span>${item.label}</span>
+                                    </summary>
+                                    <div class="checklist-group">
+                                        ${item.children.map(child => `<label class="filter-popup-checklist-item"><input type="checkbox" class="filter-group-child" value="${child}" ${checkedValues.includes(child) ? 'checked' : ''}> ${child}</label>`).join('')}
+                                    </div>
+                                </details>`;
+                        }
+                    });
+                } else {
+                    content += values.map(val => {
+                        let displayVal = val;
+                        if (val === '') { displayVal = '(Blank)'; }
+                        if (key === 'reviewStatus') { displayVal = val === 'true' ? 'Reviewed' : 'Pending'; }
+                        return `<label class="filter-popup-checklist-item"><input type="checkbox" value="${val}" ${checkedValues.includes(val) ? 'checked' : ''}> ${displayVal}</label>`;
+                    }).join('');
+                }
+
+                content += `</div>`;
 
             } else if (type === 'string') {
                 content += `
@@ -4157,10 +4191,47 @@ const getStatusClass = (statusText) => {
                  
                  searchInput.oninput = () => {
                      const term = searchInput.value.toLowerCase();
-                     checklist.querySelectorAll('label').forEach(label => {
-                         label.style.display = label.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
+                     checklist.querySelectorAll('label, details').forEach(el => {
+                         const isDetails = el.tagName === 'DETAILS';
+                         if (isDetails) {
+                             const summaryText = el.querySelector('summary span').textContent.toLowerCase();
+                             const children = el.querySelectorAll('.filter-popup-checklist-item');
+                             let childMatch = false;
+                             children.forEach(childLabel => {
+                                 const childVisible = childLabel.textContent.toLowerCase().includes(term);
+                                 childLabel.style.display = childVisible ? 'flex' : 'none';
+                                 if (childVisible) childMatch = true;
+                             });
+                             const parentMatch = summaryText.includes(term);
+                             el.style.display = (parentMatch || childMatch) ? 'block' : 'none';
+                             if (childMatch && !parentMatch) el.open = true;
+                         } else if (el.id !== 'filter-select-all') {
+                             el.style.display = el.textContent.toLowerCase().includes(term) ? 'flex' : 'none';
+                         }
                      });
                  };
+
+                 checklist.querySelectorAll('.filter-group-parent').forEach(parentCb => {
+                     parentCb.onclick = (e) => e.stopPropagation();
+                     parentCb.onchange = (e) => {
+                         const group = e.target.closest('details');
+                         group.querySelectorAll('.filter-group-child').forEach(child => child.checked = e.target.checked);
+                     };
+                 });
+
+                 checklist.querySelectorAll('.filter-group-child').forEach(childCb => {
+                     childCb.onchange = (e) => {
+                         const group = e.target.closest('details');
+                         const parentCb = group.querySelector('.filter-group-parent');
+                         const children = Array.from(group.querySelectorAll('.filter-group-child'));
+                         const allChecked = children.every(c => c.checked);
+                         const someChecked = children.some(c => c.checked);
+                         parentCb.checked = allChecked;
+                         parentCb.indeterminate = someChecked && !allChecked;
+                     };
+                 });
+
+                 checklist.querySelectorAll('.filter-group-parent').forEach(parentCb => parentCb.dispatchEvent(new Event('change')));
             }
         };
         
@@ -4168,7 +4239,7 @@ const getStatusClass = (statusText) => {
             const filter = {};
 
             if (type === 'categorical' || type === 'boolean') {
-                const checkboxes = filterPopup.querySelectorAll('.filter-popup-checklist input[type="checkbox"]:checked');
+                const checkboxes = filterPopup.querySelectorAll('.filter-popup-checklist input[type="checkbox"]:checked:not(#filter-select-all):not(.filter-group-parent)');
                  if (checkboxes.length > 0) {
                     filter.type = type;
                     filter.values = Array.from(checkboxes).map(cb => cb.value);
@@ -4772,18 +4843,18 @@ const getStatusClass = (statusText) => {
             
             dataArea.forEach(originalRow => {
                  const name = String(originalRow[columnMap.name] || '').trim();
-                 if (isNullOrBlank(name)) return;
+                 if (!name) return;
 
                  let item = { originalRow, name, code: columnMap.code !== undefined ? String(originalRow[columnMap.code] || '').trim() : null };
                  
                  if (splitCombinedCheckbox.checked && columnMap.hasOwnProperty('name')) {
                     const splitResult = splitCombinedAccount(item.name);
-                    if (splitResult.code && isNullOrBlank(item.code)) {
+                    if (splitResult.code && item.code === null) {
                         item.code = splitResult.code;
                         item.name = splitResult.name;
                     }
                  }
-                 if(isNullOrBlank(item.code)) item.code = null;
+                 if(item.code === '') item.code = null;
 
 
                 let balance = 0, error = false;
@@ -4859,7 +4930,7 @@ const getStatusClass = (statusText) => {
             const headerLength = Object.keys(columnMap).length;
 
             data.forEach(item => {
-                if(!isNullOrBlank(item.code)) { // Only count duplicates if codes exist
+                if(item.code) { // Only count duplicates if codes exist
                     codeCounts[item.code] = (codeCounts[item.code] || 0) + 1;
                 }
                 
@@ -4888,7 +4959,7 @@ const getStatusClass = (statusText) => {
             }
 
             const subtotalKeywords = ['total', 'assets', 'liabilities', 'equity', 'income', 'expenses'];
-            const potentialSubtotals = data.filter(item => subtotalKeywords.some(kw => (item.name || '').toLowerCase().includes(kw)));
+            const potentialSubtotals = data.filter(item => item.name && subtotalKeywords.some(kw => item.name.toLowerCase().includes(kw)));
             if (potentialSubtotals.length > 0) {
                 report.hasIssues = true;
                 report.summary += `<li><b>${potentialSubtotals.length} potential subtotal row(s) detected.</b> Please ensure these are not actual accounts.</li>`;
