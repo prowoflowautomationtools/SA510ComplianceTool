@@ -709,6 +709,22 @@
             white-space: nowrap;
         }
         
+        /* V70: New Auditor Override Icon Style */
+        .auditor-override-icon {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+            color: var(--text-light);
+        }
+        .auditor-override-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+        .auditor-override-icon .icon-user {
+             margin-right: -4px;
+        }
+
         /* V68: NEW INDEPENDENT STATUS BADGE STYLES */
         /* Account Match Status Colors */
         .status-exact-match .status-badge { background-color: var(--success-green-bg); color: #065F46; }
@@ -718,7 +734,6 @@
         .status-code-match-name-mismatch .status-badge,
         .status-code-mismatch-name-match .status-badge,
         .status-name-match-code-missing .status-badge,
-        /* V69 FIX: Corrected class names for new statuses */
         .status-code-match-name-missing .status-badge { background-color: var(--info-blue-bg); color: var(--info-blue-text); }
         .status-code-mismatch-name-similarity .status-badge { background-color: var(--danger-red-bg); color: var(--danger-red); }
         .status-new-account .status-badge,
@@ -737,7 +752,6 @@
         body.dark-mode .status-code-match-name-mismatch .status-badge,
         body.dark-mode .status-code-mismatch-name-match .status-badge,
         body.dark-mode .status-name-match-code-missing .status-badge,
-        /* V69 FIX: Corrected class names for new statuses (Dark Mode) */
         body.dark-mode .status-code-match-name-missing .status-badge { background-color: #1E40AF; color: #BFDBFE; }
         body.dark-mode .status-code-mismatch-name-similarity .status-badge { background-color: #991B1B; color: #FECACA; }
         body.dark-mode .status-new-account .status-badge,
@@ -1140,7 +1154,7 @@
         .modal-footer { margin-top: 1.5rem; text-align: right; flex-shrink: 0; display: flex; justify-content: flex-end; gap: 0.75rem;}
 
         /* V58: Error & Privacy Modal Specifics */
-        #error-modal .modal-content, #privacy-modal .modal-content, #session-recovery-modal .modal-content {
+        #error-modal .modal-content, #privacy-modal .modal-content, #session-recovery-modal .modal-content, #unmatch-confirm-modal .modal-content {
             max-width: 550px;
         }
         .modal-body-icon {
@@ -1176,6 +1190,28 @@
         }
         body.dark-mode #error-details-content textarea {
             color: var(--text-light);
+        }
+        
+        /* V70: Unmatch Confirmation Modal Specifics */
+        #unmatch-confirm-modal .modal-body {
+             display: flex;
+             align-items: flex-start;
+             gap: 1rem;
+        }
+        #unmatch-confirm-modal .modal-body-icon {
+            color: var(--warning-yellow);
+        }
+        #unmatch-confirm-checkbox-container {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-confirm-destructive {
+            background-color: var(--danger-red);
+        }
+        .btn-confirm-destructive:hover {
+            background-color: #B91C1C;
         }
 
         /* Manual Mapping Modal Specifics */
@@ -1680,6 +1716,30 @@
         </div>
     </div>
 
+    <!-- V70: NEW Un-match Confirmation Modal -->
+    <div id="unmatch-confirm-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Un-match</h2>
+                <button id="unmatch-confirm-close-btn" class="btn btn-minimal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <span class="modal-body-icon">⚠️</span>
+                <div>
+                    <p id="unmatch-confirm-message">Are you sure you want to un-match the selected account(s)? This action cannot be undone.</p>
+                    <div id="unmatch-confirm-checkbox-container">
+                        <input type="checkbox" id="unmatch-confirm-checkbox">
+                        <label for="unmatch-confirm-checkbox">Don't ask again for this session</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="unmatch-confirm-cancel-btn" class="btn btn-minimal">Cancel</button>
+                <button id="unmatch-confirm-btn" class="btn btn-confirm-destructive">Confirm Un-match</button>
+            </div>
+        </div>
+    </div>
+
     <!-- V41/V42/V43: Tick Mark Manager Sidebar -->
     <div id="tick-manager-sidebar-overlay"></div>
     <aside id="tick-manager-sidebar">
@@ -2173,6 +2233,7 @@
                                 <option value="markReviewed">Mark as Reviewed</option>
                                 <option value="clearReviewed">Clear Reviewed Status</option>
                                 <option value="clearTicksAndComments">Clear Ticks & Comments</option>
+                                <option value="unmatch">Un-match Selected</option>
                                 <optgroup id="bulk-action-ticks-optgroup" label="Apply Tick Mark">
                                     <!-- Dynamically populated -->
                                 </optgroup>
@@ -2263,25 +2324,31 @@
     /*
      * D6: Comprehensive Documentation & Tracking
      * Changelog & Versionlog Maintenance
-     * Version: V69 (Matching Engine V2 & Filter UI Enhancement)
-     * Description: This version introduces a significantly more intelligent matching algorithm (V2) that handles
-     * "Null/Blank" data and specific edge cases for missing codes or names. It also enhances the user experience by
-     * upgrading the "Account Match Status" filter to a two-level, expandable checklist for better usability.
-     * - [Requirement 1] New Matching Engine (V2):
-     *   - [Logic] The `cleanAndStandardizeTB` function in the worker is updated to treat '0' (zero), hyphens, and dashes
-     *     as "Null/Blank" for both codes and names, preventing false positive exact matches.
-     *   - [Logic] The core matching passes are refactored to handle cases where one identifier is valid but the other is missing:
-     *     - A valid code match with a missing name now gets the status "Code Match (Name Missing !!)".
-     *     - A valid name match with a missing code now gets the status "Name Match (Code Missing !!)".
-     * - [Requirement 2] UI & UX Enhancements:
-     *   - [Filter UI] The `openFilterPopup` function now includes logic to group categorical filter values. For the "Account Match Status"
-     *     column, it dynamically groups statuses with percentages (e.g., "Name Similarity (92%)") under a common parent.
-     *   - [Filter UI] The popup rendering now uses `<details>` and `<summary>` elements to create an expandable/collapsible two-level
-     *     checklist. Event listeners are added to manage parent/child checkbox synchronization and the indeterminate state.
-     *   - [Filter UI] The filter search functionality is enhanced to correctly find and expand parent groups when a child item matches.
-     *   - [Styling] New CSS classes (`.status-code-match-name-missing`, `.status-name-match-code-missing--`) are added to apply the
-     *     "Info Blue" color scheme to the new status badges.
-     *   - [Documentation] The "Matching Algorithm" info card in the "Balance Matching" tab has been updated with the approved V2 text.
+     * Version: V70 (Auditor Un-match Override)
+     * Description: This version introduces a critical auditor override feature allowing users to manually un-match
+     * accounts that were incorrectly paired by the algorithm. This enhances audit defensibility and user control.
+     * - [Requirement 1] Un-match Logic:
+     *   - [Logic] A new bulk action `unmatch` is added. When applied, it finds the selected matched rows in the
+     *     `matchingResults` array, deletes them, and replaces them with two new rows: one 'New Account' and one
+     *     'Prior Period Only' row, clearing all prior audit work for those items.
+     *   - [Data Structure] A new boolean field, `isAuditorOverride`, is added to the `matchingResults` items to
+     *     flag rows created by this manual un-match action.
+     *   - [Logic] The `difference` for these new un-matched rows is calculated based on their single balance,
+     *     consistent with existing V69 logic for unmatched accounts.
+     * - [Requirement 2] Confirmation Modal:
+     *   - [UI] A new modal (`#unmatch-confirm-modal`) is added to the HTML to confirm the destructive un-match action.
+     *   - [State] A new session-based state variable, `appState.skipUnmatchConfirmation`, is added to handle the
+     *     "Don't ask again for this session" functionality.
+     *   - [Workflow] The `applyBulkAction` function is updated to show this modal before executing the un-match logic.
+     * - [Requirement 3] Visual Indicator & Audit Trail:
+     *   - [UI] The `renderReviewTable` function is updated to render a new "Auditor Override" icon (a user icon
+     *     plus a broken link icon) next to the status badge if `isAuditorOverride` is true.
+     *   - [UI] The icon includes a helpful tooltip explaining its meaning.
+     *   - [Logic] The un-match transformation logic now prepends an auto-generated comment, "Auditor Override:
+     *     Manually un-matched.", to the `auditorComment` field, creating a clear audit trail.
+     * - [Requirement 4] Seamless Integration:
+     *   - [UI] The "Un-match Selected" option is added to the bulk action dropdown and includes logic to be
+     *     disabled if the user's selection contains already-unmatched items.
     */
 
     // Apply theme on initial script load to prevent FOUC
@@ -2669,6 +2736,7 @@
             isReviewTabInitialized: false, 
             recentlyUsedSymbols: JSON.parse(localStorage.getItem('recentlyUsedSymbols')) || [],
             saveIndicatorTimeout: null,
+            skipUnmatchConfirmation: false, // V70: New state for confirmation modal
         };
 
         // --- DOM Element Selection ---
@@ -2790,6 +2858,10 @@
         const saveStatusContainer = document.getElementById('save-status-container');
         const saveStatusIndicator = document.getElementById('save-status-indicator');
         const lastSavedTimestamp = document.getElementById('last-saved-timestamp');
+        // V70: New Unmatch Confirmation Modal Elements
+        const unmatchConfirmModal = document.getElementById('unmatch-confirm-modal');
+        const unmatchConfirmMessage = document.getElementById('unmatch-confirm-message');
+        const unmatchConfirmCheckbox = document.getElementById('unmatch-confirm-checkbox');
 
         // --- V67: Dynamic Review Table Configuration "Blueprint" ---
         const getDynamicTableConfig = (engagementData) => {
@@ -2967,6 +3039,7 @@
             appState.selectedRows.clear();
             appState.bulkSelectionScope = 'page';
             appState.isFilterUIVisible = false;
+            appState.skipUnmatchConfirmation = false; // Reset for new session
             await saveAndNotify('currentEngagement', engagement);
             const title = `${engagement.clientName} (${engagement.engagementPeriod})`;
             engagementTitleContext.textContent = title;
@@ -3203,7 +3276,7 @@
             const name = (currentPeriodAccount?.name || priorPeriodAccount?.name || '').toLowerCase();
             const analysis = { assertion: '', suggestedCause: '', generatedComment: '' };
              
-            const difference = (openingBalance || 0) - (closingBalance || 0);
+            const difference = (openingBalance !== null ? openingBalance : 0) - (closingBalance !== null ? closingBalance : 0);
 
             if (accountMatchStatus.includes('Similarity')) { analysis.assertion = 'Classification'; analysis.suggestedCause = 'Account names are similar but not identical. Verify if this is a reclassification.'; analysis.generatedComment = 'Account appears to be a reclassification. Verified nature of change.'; }
             else if (accountMatchStatus === 'New Account') { analysis.assertion = 'Completeness / Classification'; analysis.suggestedCause = 'New account opened during the period.'; analysis.generatedComment = 'New account opened during the period. Verified opening transaction.'; }
@@ -3496,13 +3569,12 @@
             const currencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' });
             const tickMarkOptionsHTML = appState.appConfiguration.tickMarkDefinitions.map(opt => `<option value="${opt.symbol}">${opt.symbol}</option>`).join('');
 
-            // V69 FIX: Replaces the old function to correctly generate CSS classes from status text
             const getStatusClass = (statusText) => {
                 return (statusText || '')
                     .toLowerCase()
-                    .replace(/\s*\(\d+%\)/, '')      // Remove percentage part first e.g. (92%)
-                    .replace(/[^\w\d]+/g, '-')       // Replace any non-alphanumeric character sequences with a single hyphen
-                    .replace(/^-+|-+$/g, '');        // Remove leading/trailing hyphens
+                    .replace(/\s*\(\d+%\)/, '')      
+                    .replace(/[^\w\d]+/g, '-')       
+                    .replace(/^-+|-+$/g, '');        
             };
 
             pageResults.forEach(item => {
@@ -3523,6 +3595,13 @@
                 if (item.accountMatchStatus === 'Code Match Name Mismatch' && item.hasOwnProperty('nameMismatchScore')) {
                     const tooltipText = `Name mismatch: The similarity score was only ${item.nameMismatchScore}%, which is below the required threshold of ${engagementData.nameSimilarityThreshold}%.`;
                     accountStatusCellHTML = `<span class="tooltip-container" data-tooltip="${tooltipText}">${accountStatusCellHTML}</span>`;
+                }
+
+                if (item.isAuditorOverride) {
+                    accountStatusCellHTML += `<span class="auditor-override-icon" data-tooltip="Manually un-matched by auditor">
+                        <svg class="icon-user" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10 8a3 3 0 100-6 3 3 0 000 6zM3.465 14.493a1.23 1.23 0 00.41 1.412A9.957 9.957 0 0010 18c2.31 0 4.438-.784 6.131-2.095a1.23 1.23 0 00.41-1.412A9.957 9.957 0 0010 12c-2.31 0-4.438.784-6.131 2.095z" /></svg>
+                        <svg class="icon-broken-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.207 2.207a3 3 0 00-4.243 0L6.293 3.879a3 3 0 000 4.242l2.25 2.25a.75.75 0 001.06-1.06l-2.25-2.25a1.5 1.5 0 010-2.121L8.828 3.28a1.5 1.5 0 012.121 0l1.414 1.414a.75.75 0 001.06-1.06l-1.414-1.414zM8.828 12.25a.75.75 0 00-1.06 1.06l2.25 2.25a3 3 0 004.243 0l1.671-1.671a3 3 0 000-4.242l-2.25-2.25a.75.75 0 00-1.06 1.06l2.25 2.25a1.5 1.5 0 010 2.121l-1.414 1.414a1.5 1.5 0 01-2.121 0l-2.25-2.25z" clip-rule="evenodd" /></svg>
+                    </span>`;
                 }
 
                 rowHTML += `
@@ -4299,11 +4378,30 @@
             setDarkMode(!document.body.classList.contains('dark-mode'));
         };
 
-        const updateBulkActionsUI = () => {
+        const updateBulkActionsUI = async () => {
             const hasSelection = appState.selectedRows.size > 0;
             bulkActionsContainer.classList.toggle('hidden', !hasSelection);
+            
             if (hasSelection) {
                 renderBulkActionScopeUI();
+                
+                // V70: Conditionally disable the unmatch option
+                const dataKey = getEngagementDataKey(appState.currentEngagement.id);
+                const data = await getFromStorage(dataKey);
+                const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
+                
+                let canUnmatch = true;
+                for (const key of appState.selectedRows) {
+                    const item = data.matchingResults.find(r => (r[keyField] || r.pp_name || r.cp_name) === key);
+                    if (item && (item.accountMatchStatus === 'New Account' || item.accountMatchStatus === 'Prior Period Only')) {
+                        canUnmatch = false;
+                        break;
+                    }
+                }
+                const unmatchOption = bulkActionSelect.querySelector('option[value="unmatch"]');
+                if (unmatchOption) {
+                    unmatchOption.disabled = !canUnmatch;
+                }
             }
         };
         const renderBulkActionScopeUI = () => {
@@ -4403,7 +4501,25 @@
         const applyBulkAction = async () => {
             const action = bulkActionSelect.value;
             if (!action || appState.selectedRows.size === 0) return;
+            
+            // V70: Handle unmatch confirmation
+            if (action === 'unmatch') {
+                if (appState.skipUnmatchConfirmation) {
+                    await executeUnmatch();
+                } else {
+                    const count = appState.selectedRows.size;
+                    unmatchConfirmMessage.textContent = `Are you sure you want to un-match the selected ${count} account(s)? This action cannot be undone.`;
+                    unmatchConfirmCheckbox.checked = false;
+                    unmatchConfirmModal.classList.remove('hidden');
+                    document.body.classList.add('modal-open');
+                }
+                return; // Stop further execution until confirmed
+            }
 
+            await executeBulkAction(action);
+        };
+
+        const executeBulkAction = async (action) => {
             const dataKey = getEngagementDataKey(appState.currentEngagement.id);
             const data = await getFromStorage(dataKey);
             const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
@@ -4455,6 +4571,65 @@
             appState.bulkSelectionScope = 'page';
             updateBulkActionsUI();
             await filterAndRenderReviewTable();
+            bulkActionSelect.value = '';
+        };
+
+        const executeUnmatch = async () => {
+            const dataKey = getEngagementDataKey(appState.currentEngagement.id);
+            const data = await getFromStorage(dataKey);
+            const keyField = data.hasAccountCodes ? 'cp_code' : 'cp_name';
+
+            const keysToUnmatch = new Set(appState.selectedRows);
+            const newRows = [];
+
+            data.matchingResults = data.matchingResults.filter(item => {
+                const itemKey = item[keyField] || item.pp_name || item.cp_name;
+                if (!keysToUnmatch.has(itemKey)) {
+                    return true; // Keep this item
+                }
+                
+                // This item is being unmatched, create two new rows for it
+                const autoComment = "Auditor Override: Manually un-matched.";
+
+                // Create the 'New Account' row
+                const cpData = { cp_code: item.cp_code, cp_name: item.cp_name, openingBalance: item.openingBalance };
+                const analysisCP = analyzeDifference(cpData, null, 'New Account', item.openingBalance, null);
+                newRows.push({
+                    ...cpData,
+                    pp_code: null, pp_name: null, closingBalance: null,
+                    accountMatchStatus: 'New Account',
+                    balanceMatchStatus: 'N/A',
+                    ...analysisCP,
+                    isAuditorOverride: true, // V70 Flag
+                    auditorComment: autoComment,
+                    tickMark: '', reviewStatus: false,
+                });
+
+                // Create the 'Prior Period Only' row
+                const ppData = { pp_code: item.pp_code, pp_name: item.pp_name, closingBalance: item.closingBalance };
+                const analysisPP = analyzeDifference(null, ppData, 'Prior Period Only', null, item.closingBalance);
+                newRows.push({
+                    ...ppData,
+                    cp_code: null, cp_name: null, openingBalance: null,
+                    accountMatchStatus: 'Prior Period Only',
+                    balanceMatchStatus: 'N/A',
+                    ...analysisPP,
+                    isAuditorOverride: true, // V70 Flag
+                    auditorComment: autoComment,
+                    tickMark: '', reviewStatus: false,
+                });
+
+                return false; // Remove the original matched item
+            });
+
+            data.matchingResults.push(...newRows);
+
+            await saveAndNotify(dataKey, data);
+            appState.selectedRows.clear();
+            appState.bulkSelectionScope = 'page';
+            updateBulkActionsUI();
+            await filterAndRenderReviewTable();
+            await updateDashboard(appState.currentEngagement.id);
             bulkActionSelect.value = '';
         };
 
@@ -5438,6 +5613,7 @@
                     symbolPickerPopup.classList.add('hidden'); reportOptionsDropdown.parentElement.classList.remove('open');
                     profileManagerModal.classList.add('hidden'); document.body.classList.remove('modal-open');
                     privacyModal.classList.add('hidden'); errorModal.classList.add('hidden');
+                    unmatchConfirmModal.classList.add('hidden');
                 }
             });
 
@@ -5820,6 +5996,23 @@
                 await showCreationView();
                 sessionRecoveryModal.classList.add('hidden');
                 document.body.classList.remove('modal-open');
+            });
+
+            // V70: Listeners for the new Un-match confirmation modal
+            unmatchConfirmModal.addEventListener('click', (e) => {
+                if (e.target.id === 'unmatch-confirm-modal' || e.target.closest('#unmatch-confirm-close-btn') || e.target.closest('#unmatch-confirm-cancel-btn')) {
+                    unmatchConfirmModal.classList.add('hidden');
+                    document.body.classList.remove('modal-open');
+                    bulkActionSelect.value = ''; // Reset dropdown
+                }
+            });
+            document.getElementById('unmatch-confirm-btn').addEventListener('click', async () => {
+                if (unmatchConfirmCheckbox.checked) {
+                    appState.skipUnmatchConfirmation = true;
+                }
+                unmatchConfirmModal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+                await executeUnmatch();
             });
 
             window.addEventListener('beforeunload', () => {
